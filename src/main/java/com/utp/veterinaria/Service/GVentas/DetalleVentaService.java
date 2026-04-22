@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Service.GVentas;
 
-import com.example.vet.Model.GestionVentas.DetalleVenta;
-import com.example.vet.Repository.GVentas.DetalleVentaRepository;
+import com.utp.veterinaria.Model.GestionVentas.DetalleVenta;
+import com.utp.veterinaria.Repository.GVentas.DetalleVentaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

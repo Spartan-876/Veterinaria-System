@@ -1,10 +1,10 @@
 package com.utp.veterinaria.Service.GUsuarios;
 
-import com.example.vet.DTO.TrabajadorRequestDTO;
-import com.example.vet.Model.GestionUsuarios.Trabajador;
-import com.example.vet.Repository.GUsuarios.RolRepository;
-import com.example.vet.Repository.GUsuarios.TrabajadorRepository;
-import com.example.vet.Repository.GUsuarios.UsuarioRepository;
+import com.utp.veterinaria.DTO.TrabajadorRequestDTO;
+import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
+import com.utp.veterinaria.Repository.GUsuarios.RolRepository;
+import com.utp.veterinaria.Repository.GUsuarios.TrabajadorRepository;
+import com.utp.veterinaria.Repository.GUsuarios.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

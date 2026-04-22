@@ -1,16 +1,16 @@
 package com.utp.veterinaria.Service.GUsuarios;
 
-import com.example.vet.Config.JwtUtil;
-import com.example.vet.DTO.LoginRequest;
-import com.example.vet.DTO.LoginResponse;
-import com.example.vet.DTO.RegistroClienteDTO;
-import com.example.vet.Model.GestionUsuarios.Cliente;
-import com.example.vet.Model.GestionUsuarios.Rol;
-import com.example.vet.Model.GestionUsuarios.Usuario;
-import com.example.vet.Repository.GUsuarios.ClienteRepository;
-import com.example.vet.Repository.GUsuarios.RolRepository;
-import com.example.vet.Repository.GUsuarios.TrabajadorRepository;
-import com.example.vet.Repository.GUsuarios.UsuarioRepository;
+import com.utp.veterinaria.Config.JwtUtil;
+import com.utp.veterinaria.DTO.LoginRequest;
+import com.utp.veterinaria.DTO.LoginResponse;
+import com.utp.veterinaria.DTO.RegistroClienteDTO;
+import com.utp.veterinaria.Model.GestionUsuarios.Cliente;
+import com.utp.veterinaria.Model.GestionUsuarios.Rol;
+import com.utp.veterinaria.Model.GestionUsuarios.Usuario;
+import com.utp.veterinaria.Repository.GUsuarios.ClienteRepository;
+import com.utp.veterinaria.Repository.GUsuarios.RolRepository;
+import com.utp.veterinaria.Repository.GUsuarios.TrabajadorRepository;
+import com.utp.veterinaria.Repository.GUsuarios.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

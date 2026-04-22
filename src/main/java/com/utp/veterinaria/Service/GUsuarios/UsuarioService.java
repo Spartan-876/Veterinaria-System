@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Service.GUsuarios;
 
-import com.example.vet.Model.GestionUsuarios.Usuario;
-import com.example.vet.Repository.GUsuarios.UsuarioRepository;
+import com.utp.veterinaria.Model.GestionUsuarios.Usuario;
+import com.utp.veterinaria.Repository.GUsuarios.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

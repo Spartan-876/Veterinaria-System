@@ -1,6 +1,6 @@
 package com.utp.veterinaria.Model.GestionUsuarios;
 
-import com.example.vet.Model.GestionMedica.Mascota;
+import com.utp.veterinaria.Model.GestionMedica.Mascota;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

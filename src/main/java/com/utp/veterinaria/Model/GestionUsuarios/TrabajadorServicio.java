@@ -1,6 +1,6 @@
 package com.utp.veterinaria.Model.GestionUsuarios;
 
-import com.example.vet.Model.GestionVentas.Servicio;
+import com.utp.veterinaria.Model.GestionVentas.Servicio;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;

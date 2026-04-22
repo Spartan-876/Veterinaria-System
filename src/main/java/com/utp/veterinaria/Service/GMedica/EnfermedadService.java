@@ -1,12 +1,12 @@
 package com.utp.veterinaria.Service.GMedica;
 
-import com.example.vet.DTO.EnfermedadDTO;
-import com.example.vet.DTO.EnfermedadRequestDTO;
-import com.example.vet.DTO.EspecieDTO;
-import com.example.vet.Model.GestionMedica.Enfermedad;
-import com.example.vet.Model.GestionMedica.Especie;
-import com.example.vet.Repository.GMedica.EnfermedadRepository;
-import com.example.vet.Repository.GMedica.EspecieRepository;
+import com.utp.veterinaria.DTO.EnfermedadDTO;
+import com.utp.veterinaria.DTO.EnfermedadRequestDTO;
+import com.utp.veterinaria.DTO.EspecieDTO;
+import com.utp.veterinaria.Model.GestionMedica.Enfermedad;
+import com.utp.veterinaria.Model.GestionMedica.Especie;
+import com.utp.veterinaria.Repository.GMedica.EnfermedadRepository;
+import com.utp.veterinaria.Repository.GMedica.EspecieRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

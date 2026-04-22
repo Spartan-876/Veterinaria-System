@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Service.GUsuarios;
 
-import com.example.vet.Model.GestionUsuarios.Horario;
-import com.example.vet.Repository.GUsuarios.HorarioRepository;
+import com.utp.veterinaria.Model.GestionUsuarios.Horario;
+import com.utp.veterinaria.Repository.GUsuarios.HorarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

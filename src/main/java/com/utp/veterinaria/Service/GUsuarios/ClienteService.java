@@ -1,8 +1,8 @@
 package com.utp.veterinaria.Service.GUsuarios;
 
-import com.example.vet.DTO.ClienteDTO;
-import com.example.vet.Model.GestionUsuarios.Cliente;
-import com.example.vet.Repository.GUsuarios.ClienteRepository;
+import com.utp.veterinaria.DTO.ClienteDTO;
+import com.utp.veterinaria.Model.GestionUsuarios.Cliente;
+import com.utp.veterinaria.Repository.GUsuarios.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

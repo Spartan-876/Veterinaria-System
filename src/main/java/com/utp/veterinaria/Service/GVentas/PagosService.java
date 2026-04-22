@@ -1,10 +1,10 @@
 package com.utp.veterinaria.Service.GVentas;
 
-import com.example.vet.DTO.PagosResumenDTO;
-import com.example.vet.Model.GestionUsuarios.Cita;
-import com.example.vet.Model.GestionVentas.Venta;
-import com.example.vet.Repository.GUsuarios.CitaRepository;
-import com.example.vet.Repository.GVentas.VentaRepository;
+import com.utp.veterinaria.DTO.PagosResumenDTO;
+import com.utp.veterinaria.Model.GestionUsuarios.Cita;
+import com.utp.veterinaria.Model.GestionVentas.Venta;
+import com.utp.veterinaria.Repository.GUsuarios.CitaRepository;
+import com.utp.veterinaria.Repository.GVentas.VentaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

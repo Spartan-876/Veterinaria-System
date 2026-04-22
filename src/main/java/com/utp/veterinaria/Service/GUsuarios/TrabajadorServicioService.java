@@ -1,9 +1,9 @@
 package com.utp.veterinaria.Service.GUsuarios;
 
-import com.example.vet.DTO.TrabajadorServicioDTO;
-import com.example.vet.Model.GestionUsuarios.Trabajador;
-import com.example.vet.Model.GestionUsuarios.TrabajadorServicio;
-import com.example.vet.Repository.GUsuarios.TrabajadorServicioRepository;
+import com.utp.veterinaria.DTO.TrabajadorServicioDTO;
+import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
+import com.utp.veterinaria.Model.GestionUsuarios.TrabajadorServicio;
+import com.utp.veterinaria.Repository.GUsuarios.TrabajadorServicioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

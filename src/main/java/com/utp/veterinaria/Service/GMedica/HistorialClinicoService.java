@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Service.GMedica;
 
-import com.example.vet.Model.GestionMedica.HistorialClinico;
-import com.example.vet.Repository.GMedica.HistorialClinicoRepository;
+import com.utp.veterinaria.Model.GestionMedica.HistorialClinico;
+import com.utp.veterinaria.Repository.GMedica.HistorialClinicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

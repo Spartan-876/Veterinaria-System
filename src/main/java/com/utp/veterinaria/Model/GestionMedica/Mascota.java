@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Model.GestionMedica;
 
-import com.example.vet.Model.GestionUsuarios.Cita;
-import com.example.vet.Model.GestionUsuarios.Cliente;
+import com.utp.veterinaria.Model.GestionUsuarios.Cita;
+import com.utp.veterinaria.Model.GestionUsuarios.Cliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Service.GVentas;
 
-import com.example.vet.Model.GestionVentas.Producto;
-import com.example.vet.Repository.GVentas.ProductoRepository;
+import com.utp.veterinaria.Model.GestionVentas.Producto;
+import com.utp.veterinaria.Repository.GVentas.ProductoRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

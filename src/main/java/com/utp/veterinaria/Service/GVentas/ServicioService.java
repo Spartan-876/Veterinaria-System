@@ -1,11 +1,11 @@
 package com.utp.veterinaria.Service.GVentas;
 
-import com.example.vet.DTO.ServicioRequestDTO;
-import com.example.vet.Model.GestionUsuarios.Trabajador;
-import com.example.vet.Model.GestionUsuarios.TrabajadorServicio;
-import com.example.vet.Model.GestionVentas.Servicio;
-import com.example.vet.Repository.GUsuarios.TrabajadorRepository;
-import com.example.vet.Repository.GVentas.ServicioRepository;
+import com.utp.veterinaria.DTO.ServicioRequestDTO;
+import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
+import com.utp.veterinaria.Model.GestionUsuarios.TrabajadorServicio;
+import com.utp.veterinaria.Model.GestionVentas.Servicio;
+import com.utp.veterinaria.Repository.GUsuarios.TrabajadorRepository;
+import com.utp.veterinaria.Repository.GVentas.ServicioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

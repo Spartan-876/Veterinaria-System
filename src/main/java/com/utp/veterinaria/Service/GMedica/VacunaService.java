@@ -1,7 +1,7 @@
 package com.utp.veterinaria.Service.GMedica;
 
-import com.example.vet.Model.GestionMedica.VacunaCatalogo;
-import com.example.vet.Repository.GMedica.VacunaRepository;
+import com.utp.veterinaria.Model.GestionMedica.VacunaCatalogo;
+import com.utp.veterinaria.Repository.GMedica.VacunaRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
