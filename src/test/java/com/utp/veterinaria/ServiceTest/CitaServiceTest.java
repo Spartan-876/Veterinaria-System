@@ -76,23 +76,23 @@ class CitaServiceTest {
     @Test
     @DisplayName("Debe crear una cita exitosamente cuando todos los datos son válidos")
     void crearCitaExitosamente() {
-        // Arrange
+
         when(mascotaRepository.findById(1L)).thenReturn(Optional.of(mascota));
         when(servicioRepository.findById(1L)).thenReturn(Optional.of(servicio));
         when(trabajadorRepository.findById(1L)).thenReturn(Optional.of(trabajador));
         when(trabajadorServicioRepository.existsByTrabajadorIdAndServicioId(1L, 1L)).thenReturn(true);
 
-        // Simulamos el guardado
+
         when(citaRepository.save(any(Cita.class))).thenAnswer(invocation -> {
             Cita cita = invocation.getArgument(0);
-            cita.setId(100L); // Simulamos ID generado
+            cita.setId(100L);
             return cita;
         });
 
-        // Act
+
         CitaDTO resultado = citaService.crearCita(requestDTO);
 
-        // Assert
+
         assertThat(resultado).isNotNull();
         assertThat(resultado.getId()).isEqualTo(100L);
         assertThat(resultado.getEstado()).isEqualTo("PENDIENTE");
@@ -102,13 +102,13 @@ class CitaServiceTest {
     @Test
     @DisplayName("Debe lanzar excepción si el trabajador no ofrece el servicio")
     void crearCitaErrorTrabajadorNoOfreceServicio() {
-        // Arrange
+
         when(mascotaRepository.findById(1L)).thenReturn(Optional.of(mascota));
         when(servicioRepository.findById(1L)).thenReturn(Optional.of(servicio));
         when(trabajadorRepository.findById(1L)).thenReturn(Optional.of(trabajador));
         when(trabajadorServicioRepository.existsByTrabajadorIdAndServicioId(1L, 1L)).thenReturn(false);
 
-        // Act & Assert
+
         assertThatThrownBy(() -> citaService.crearCita(requestDTO))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("El trabajador no ofrece este servicio");
@@ -119,7 +119,7 @@ class CitaServiceTest {
     @Test
     @DisplayName("Debe cancelar una cita pendiente correctamente")
     void cancelarCitaExito() {
-        // Arrange
+
         Cita citaExistente = new Cita();
         citaExistente.setId(1L);
         citaExistente.setEstado(Cita.EstadoCita.PENDIENTE);
@@ -127,10 +127,10 @@ class CitaServiceTest {
         when(citaRepository.findById(1L)).thenReturn(Optional.of(citaExistente));
         when(citaRepository.save(any(Cita.class))).thenReturn(citaExistente);
 
-        // Act
+
         CitaDTO resultado = citaService.cancelarCita(1L);
 
-        // Assert
+
         assertThat(resultado.getEstado()).isEqualTo("CANCELADA");
         verify(citaRepository).save(citaExistente);
     }
@@ -138,14 +138,14 @@ class CitaServiceTest {
     @Test
     @DisplayName("No debe permitir cancelar una cita que ya fue realizada")
     void cancelarCitaErrorYaRealizada() {
-        // Arrange
+
         Cita citaRealizada = new Cita();
         citaRealizada.setId(1L);
         citaRealizada.setEstado(Cita.EstadoCita.REALIZADA);
 
         when(citaRepository.findById(1L)).thenReturn(Optional.of(citaRealizada));
 
-        // Act & Assert
+
         assertThatThrownBy(() -> citaService.cancelarCita(1L))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("No se puede cancelar una cita realizada");

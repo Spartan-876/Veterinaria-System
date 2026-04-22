@@ -26,17 +26,11 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain chain)
             throws ServletException, IOException {
         String header = request.getHeader("Authorization");
-        System.out.println("Header: " + header);
-
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             if (jwtUtil.validarToken(token)) {
                 String username = jwtUtil.extraerCorreo(token);
                 String rol = jwtUtil.extraerRol(token);
-                System.out.println("=== JWT DEBUG ===");
-                System.out.println("Username: " + username);
-                System.out.println("Rol extraído: " + rol);
-                System.out.println("Token válido: true");
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 username, null,

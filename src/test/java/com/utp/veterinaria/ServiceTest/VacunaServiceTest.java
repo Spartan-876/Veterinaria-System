@@ -44,13 +44,11 @@ class VacunaServiceTest {
     @Test
     @DisplayName("Debe listar todas las vacunas del catálogo")
     void listarTodasTest() {
-        // Arrange
+
         when(vacunaRepository.findAll()).thenReturn(Arrays.asList(vacunaBase, new VacunaCatalogo()));
 
-        // Act
         List<VacunaCatalogo> resultado = vacunaService.listarTodas();
 
-        // Assert
         assertThat(resultado).hasSize(2);
         verify(vacunaRepository, times(1)).findAll();
     }
@@ -58,13 +56,11 @@ class VacunaServiceTest {
     @Test
     @DisplayName("Debe buscar una vacuna por ID exitosamente")
     void buscarPorIdExito() {
-        // Arrange
+
         when(vacunaRepository.findById(1L)).thenReturn(Optional.of(vacunaBase));
 
-        // Act
         VacunaCatalogo resultado = vacunaService.buscarPorId(1L);
 
-        // Assert
         assertThat(resultado).isNotNull();
         assertThat(resultado.getNombre()).isEqualTo("Antirrábica");
     }
@@ -72,20 +68,17 @@ class VacunaServiceTest {
     @Test
     @DisplayName("Debe retornar null cuando la vacuna no existe")
     void buscarPorIdNull() {
-        // Arrange
+
         when(vacunaRepository.findById(99L)).thenReturn(Optional.empty());
 
-        // Act
         VacunaCatalogo resultado = vacunaService.buscarPorId(99L);
 
-        // Assert
         assertThat(resultado).isNull();
     }
 
     @Test
     @DisplayName("Debe actualizar todos los campos de una vacuna existente")
     void actualizarExito() {
-        // Arrange
         VacunaCatalogo datosNuevos = new VacunaCatalogo();
         datosNuevos.setNombre("Quíntuple");
         datosNuevos.setFabricante("Pfizer");
@@ -94,32 +87,26 @@ class VacunaServiceTest {
         datosNuevos.setEdadRecomendada(6);
 
         when(vacunaRepository.findById(1L)).thenReturn(Optional.of(vacunaBase));
-        // El servicio llama internamente a guardar(), así que mockeamos el save
         when(vacunaRepository.save(any(VacunaCatalogo.class))).thenAnswer(i -> i.getArgument(0));
 
-        // Act
         VacunaCatalogo resultado = vacunaService.actualizar(1L, datosNuevos);
 
-        // Assert
         assertThat(resultado).isNotNull();
         assertThat(resultado.getNombre()).isEqualTo("Quíntuple");
         assertThat(resultado.getPrecio()).isEqualTo(45.0);
         assertThat(resultado.getFabricante()).isEqualTo("Pfizer");
 
-        // Verificamos que se llamó a save con el objeto modificado
         verify(vacunaRepository).save(vacunaBase);
     }
 
     @Test
     @DisplayName("Debe retornar null al intentar actualizar una vacuna que no existe")
     void actualizarInexistente() {
-        // Arrange
+
         when(vacunaRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
         VacunaCatalogo resultado = vacunaService.actualizar(1L, new VacunaCatalogo());
 
-        // Assert
         assertThat(resultado).isNull();
         verify(vacunaRepository, never()).save(any());
     }
@@ -127,10 +114,9 @@ class VacunaServiceTest {
     @Test
     @DisplayName("Debe llamar al repositorio para eliminar una vacuna")
     void eliminarTest() {
-        // Act
+
         vacunaService.eliminar(1L);
 
-        // Assert
         verify(vacunaRepository, times(1)).deleteById(1L);
     }
 }

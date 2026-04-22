@@ -68,7 +68,7 @@ public class CitaController {
         return ResponseEntity.ok(citaService.trabajadoresDisponibles(servicioId, fecha));
     }
 
-    // ✅ Mascotas del cliente (para el formulario)
+    // Mascotas del cliente (para el formulario)
     @GetMapping("/mascotas/cliente/{clienteId}")
     public ResponseEntity<List<Mascota>> mascotasPorCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(mascotaRepository.findByClienteId(clienteId));

@@ -33,7 +33,7 @@ class TrabajadorServicioServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Trabajador 1: Activo
+
         Trabajador t1 = new Trabajador();
         t1.setId(1L);
         t1.setNombres("Juan");
@@ -44,7 +44,7 @@ class TrabajadorServicioServiceTest {
         tsActivo = new TrabajadorServicio();
         tsActivo.setTrabajador(t1);
 
-        // Trabajador 2: Inactivo
+
         Trabajador t2 = new Trabajador();
         t2.setId(2L);
         t2.setNombres("Ana");
@@ -59,21 +59,18 @@ class TrabajadorServicioServiceTest {
     @Test
     @DisplayName("Debe listar solo los trabajadores activos para un servicio dado")
     void obtenerTrabajadoresPorServicioFiltrado() {
-        // Arrange
+
         Long servicioId = 10L;
-        // Simulamos que el repo devuelve ambos (activo e inactivo)
+
         when(trabajadorServicioRepository.findByServicioId(servicioId))
                 .thenReturn(Arrays.asList(tsActivo, tsInactivo));
 
-        // Act
         List<TrabajadorServicioDTO> resultado = trabajadorServicioService.obtenerTrabajadoresPorServicio(servicioId);
 
-        // Assert
         assertThat(resultado).hasSize(1);
         assertThat(resultado.get(0).getTrabajadorNombre()).isEqualTo("Juan Pérez");
         assertThat(resultado.get(0).getEstado()).isEqualTo("ACTIVO");
 
-        // Verificar que Ana (Inactiva) fue filtrada
         assertThat(resultado.stream()
                 .anyMatch(dto -> dto.getTrabajadorNombre().contains("Ana")))
                 .isFalse();
@@ -84,26 +81,22 @@ class TrabajadorServicioServiceTest {
     @Test
     @DisplayName("Debe retornar lista vacía si no hay trabajadores para el servicio")
     void obtenerTrabajadoresVacio() {
-        // Arrange
+
         when(trabajadorServicioRepository.findByServicioId(anyLong())).thenReturn(List.of());
 
-        // Act
         List<TrabajadorServicioDTO> resultado = trabajadorServicioService.obtenerTrabajadoresPorServicio(1L);
 
-        // Assert
         assertThat(resultado).isEmpty();
     }
 
     @Test
     @DisplayName("Debe mapear correctamente los campos del Trabajador al DTO")
     void validarMapeoDTO() {
-        // Arrange
+
         when(trabajadorServicioRepository.findByServicioId(1L)).thenReturn(List.of(tsActivo));
 
-        // Act
         TrabajadorServicioDTO dto = trabajadorServicioService.obtenerTrabajadoresPorServicio(1L).get(0);
 
-        // Assert
         assertThat(dto.getTrabajadorId()).isEqualTo(1L);
         assertThat(dto.getCargo()).isEqualTo("VETERINARIO");
         assertThat(dto.getTrabajadorNombre()).isEqualTo("Juan Pérez");

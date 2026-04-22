@@ -55,39 +55,36 @@ class VentaServiceTest {
     @Test
     @DisplayName("Debe realizar una venta con éxito calculando totales y asignando cliente")
     void realizarVentaDTOSuccess() {
-        // 1. Mockeamos el DTO y el objeto interno de la lista detalles
+
         VentaRequestDTO dto = mock(VentaRequestDTO.class);
-        // Usamos var o el tipo específico que use tu lista en el DTO
+
         var detalleItem = mock(VentaRequestDTO.DetalleDTO.class);
 
-        // 2. Configuramos el comportamiento del detalle (Mocking del DTO de entrada)
+
         when(detalleItem.getProductoId()).thenReturn(100L);
         when(detalleItem.getNombreProducto()).thenReturn("Vitaminas Caninas");
         when(detalleItem.getPrecioUnitario()).thenReturn(50.0);
         when(detalleItem.getCantidad()).thenReturn(2);
 
-        // 3. Configuramos el DTO principal
+
         when(dto.getClienteId()).thenReturn(1L);
         when(dto.getDetalles()).thenReturn(List.of(detalleItem));
 
-        // 4. Mocking de Repositorios
+
         when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
         when(productoRepository.findById(100L)).thenReturn(Optional.of(producto));
         when(ventaRepository.save(any(Venta.class))).thenAnswer(invocation -> {
             Venta v = invocation.getArgument(0);
-            v.setId(500L); // Simular ID generado
+            v.setId(500L);
             return v;
         });
 
-        // --- Ejecución ---
         Venta resultado = ventaService.realizarVentaDTO(dto);
 
-        // --- Verificaciones ---
         assertThat(resultado).isNotNull();
         assertThat(resultado.getCliente().getNombres()).isEqualTo("Carlos");
         assertThat(resultado.getEstado()).isEqualTo(Venta.Estadoventa.COMPLETADA);
 
-        // Verificación de cálculos: 50.0 * 2 = 100.0
         assertThat(resultado.getTotal()).isEqualTo(100.0);
         assertThat(resultado.getDetalles()).hasSize(1);
         assertThat(resultado.getDetalles().get(0).getSubtotal()).isEqualTo(100.0);
@@ -99,12 +96,11 @@ class VentaServiceTest {
     @Test
     @DisplayName("Debe lanzar excepción si el cliente no es encontrado")
     void realizarVentaClienteNoEncontrado() {
-        // Arrange
+
         VentaRequestDTO dto = mock(VentaRequestDTO.class);
         when(dto.getClienteId()).thenReturn(99L);
         when(clienteRepository.findById(99L)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThatThrownBy(() -> ventaService.realizarVentaDTO(dto))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Cliente no encontrado");
@@ -115,13 +111,11 @@ class VentaServiceTest {
     @Test
     @DisplayName("Debe listar todas las ventas correctamente")
     void listarVentasTest() {
-        // Arrange
+
         when(ventaRepository.findAll()).thenReturn(List.of(new Venta(), new Venta()));
 
-        // Act
         List<Venta> lista = ventaService.listarVentas();
 
-        // Assert
         assertThat(lista).hasSize(2);
         verify(ventaRepository).findAll();
     }
