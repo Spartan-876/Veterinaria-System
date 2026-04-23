@@ -39,19 +39,16 @@ public class CitaController {
         return ResponseEntity.ok(citaService.getDashboard());
     }
 
-    // Citas por cliente
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<CitaDTO>> porCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(citaService.listarPorCliente(clienteId));
     }
 
-    // Cancelar
     @PatchMapping("/{id}/cancelar")
     public ResponseEntity<CitaDTO> cancelar(@PathVariable Long id) {
         return ResponseEntity.ok(citaService.cancelarCita(id));
     }
 
-    // Cambiar estado (admin)
     @PatchMapping("/{id}/estado")
     public ResponseEntity<CitaDTO> cambiarEstado(
             @PathVariable Long id,
@@ -59,7 +56,6 @@ public class CitaController {
         return ResponseEntity.ok(citaService.cambiarEstado(id, estado));
     }
 
-    //Trabajadores disponibles
     @GetMapping("/trabajadores-disponibles")
     public ResponseEntity<List<Trabajador>> disponibles(
             @RequestParam Long servicioId,
@@ -68,7 +64,6 @@ public class CitaController {
         return ResponseEntity.ok(citaService.trabajadoresDisponibles(servicioId, fecha));
     }
 
-    // Mascotas del cliente (para el formulario)
     @GetMapping("/mascotas/cliente/{clienteId}")
     public ResponseEntity<List<Mascota>> mascotasPorCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(mascotaRepository.findByClienteId(clienteId));
