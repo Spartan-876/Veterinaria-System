@@ -1,0 +1,327 @@
+<div class="p-1">
+  <div class="bg-white rounded-3xl shadow-sm border border-blue-100/50 p-8 mb-6 backdrop-blur-sm">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div>
+        <h3 class="text-4xl font-bold bg-gradient-to-r from-[#0D72C5] to-[#0a5a9c] bg-clip-text text-transparent mb-2">
+          Lista de Servicios
+        </h3>
+        <p class="text-gray-600 text-sm flex items-center gap-2">
+          Gestiona tus servicios de manera eficiente
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+        <div class="relative group w-full sm:w-80">
+          <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#0D72C5] transition-colors"></i>
+          <input type="text" [(ngModel)]="terminoBusqueda" (input)="filtrar()"
+                 placeholder="Buscar servicio..."
+                 class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none text-sm bg-white/80 backdrop-blur-sm"/>
+        </div>
+        <button (click)="abrirNuevo()"
+                class="bg-[#0D72C5] hover:bg-[#0a5a9c] text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-blue-200/50 hover:shadow-xl hover:shadow-blue-300/50 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+          <span class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
+          Nuevo Servicio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden p-4">
+    <div class="overflow-x-auto">
+      <p-table [value]="serviciosMostrados" [sortMode]="'single'" styleClass="modern-table">
+        <ng-template pTemplate="header">
+          <tr class="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b-2 border-gray-200">
+            <th pSortableColumn="nombre" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-tag text-[#0D72C5]"></i>
+                Nombre
+                <p-sortIcon field="nombre" class="group-hover:text-[#0D72C5] transition-colors"></p-sortIcon>
+              </div>
+            </th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-file-edit text-blue-500"></i>
+                Descripción
+              </div>
+            </th>
+            <th pSortableColumn="precio" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-money-bill text-[#0D72C5]"></i>
+                Precio
+                <p-sortIcon field="precio" class="group-hover:text-[#0D72C5] transition-colors"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="estado" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-circle text-purple-500"></i>
+                Estado
+                <p-sortIcon field="estado" class="group-hover:text-[#0D72C5] transition-colors"></p-sortIcon>
+              </div>
+            </th>
+            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+              <div class="flex items-center gap-2">
+                <i class="pi pi-cog text-gray-500"></i>
+                Acciones
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-servicio>
+          <tr class="border-b border-gray-100 hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-blue-50/20 transition-all duration-200 group">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shadow-sm">
+                  <span class="material-symbols-outlined text-[#0D72C5] text-lg">{{ servicio.icono }}</span>
+                </div>
+                <div class="text-sm font-semibold text-gray-800">{{ servicio.nombre }}</div>
+              </div>
+            </td>
+            <td class="px-6 py-4 max-w-md">
+              <div class="text-sm text-gray-600 line-clamp-2">{{ servicio.descripcion }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-base font-bold text-gray-900 bg-gray-50 px-3 py-1.5 rounded-lg inline-block border border-gray-200">
+                S/ {{ servicio.precio | number:'1.2-2' }}
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span [ngClass]="{
+                'bg-blue-50 text-primary border-blue-100': servicio.estado === 'ACTIVO',
+                'bg-gray-100 text-gray-600 border-gray-200': servicio.estado === 'INACTIVO'
+              }" class="px-4 py-2 inline-flex items-center gap-2 rounded-full font-semibold text-xs border shadow-sm">
+                <span class="w-2 h-2 rounded-full" [ngClass]="{
+                  'bg-[#0D72C5] animate-pulse': servicio.estado === 'ACTIVO',
+                  'bg-gray-400': servicio.estado === 'INACTIVO'
+                }"></span>
+                {{ servicio.estado }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <div class="flex justify-center gap-2">
+                <button (click)="abrirEditar(servicio)" class="p-2 text-indigo-500 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer">
+                  <span class="material-symbols-outlined text-lg">edit</span>
+                </button>
+                <button class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                  <span class="material-symbols-outlined text-lg">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="text-center py-12">
+              <div class="flex flex-col items-center !mb-2">
+                <i class="pi pi-inbox !text-4xl text-gray-400 !m-2"></i>
+                <span class="text-gray-400 font-medium">No se encontraron servicios registrados</span>
+                <p class="text-gray-500 text-sm">Intenta nuevamente</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <div class="mt-6">
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+                 [totalRecords]="serviciosFiltrados.length">
+    </p-paginator>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--              MODAL EDITAR SERVICIO              -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <p-dialog header="Editar Servicio" [(visible)]="displayEdit" [modal]="true" [style]="{width: '600px'}"
+            [draggable]="false" [resizable]="false" styleClass="modern-dialog">
+
+    <div class="flex flex-col gap-5 mt-4">
+
+      <!-- Nombre -->
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+          <i class="pi pi-tag text-[#0D72C5]"></i>
+          Nombre del Servicio
+        </label>
+        <input pInputText [(ngModel)]="selectedServicio.nombre"
+               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+               placeholder="Ej: Consulta General"/>
+      </div>
+
+      <!-- Descripción -->
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+          <i class="pi pi-file-edit text-[#0D72C5]"></i>
+          Descripción
+        </label>
+        <textarea [(ngModel)]="selectedServicio.descripcion" rows="3"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none resize-none"
+                  placeholder="Describe el servicio en detalle..."></textarea>
+      </div>
+
+      <!-- Precio + Estado -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+            <i class="pi pi-money-bill text-[#0D72C5]"></i>
+            Precio (S/)
+          </label>
+          <input pInputText type="number" [(ngModel)]="selectedServicio.precio"
+                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none"/>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+            <i class="pi pi-circle text-[#0D72C5]"></i>
+            Estado
+          </label>
+          <select [(ngModel)]="selectedServicio.estado"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
+            <option value="ACTIVO">Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Trabajadores asignados -->
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+          <i class="pi pi-users text-[#0D72C5]"></i>
+          Trabajadores asignados
+        </label>
+        <div class="border-2 border-gray-200 rounded-xl p-3 max-h-44 overflow-y-auto flex flex-col gap-2">
+          <div *ngFor="let t of trabajadores"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+               (click)="toggleTrabajador(t)">
+            <div class="w-5 h-5 rounded border-2 flex items-center justify-center transition-colors"
+                 [ngClass]="estaSeleccionado(t) ? 'bg-[#0D72C5] border-[#0D72C5]' : 'border-gray-300'">
+              <i *ngIf="estaSeleccionado(t)" class="pi pi-check text-white text-xs"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-gray-800">{{ t.nombres }} {{ t.apellidos }}</span>
+              <span class="text-xs text-gray-500">{{ t.cargo }}</span>
+            </div>
+          </div>
+          <p *ngIf="trabajadores.length === 0" class="text-sm text-gray-400 text-center py-2">
+            No hay trabajadores disponibles
+          </p>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+          {{ trabajadoresSeleccionados.length }} trabajador(es) seleccionado(s)
+        </p>
+      </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3 justify-end pt-4">
+        <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
+                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+                (click)="displayEdit = false"></button>  <!-- ✅ cierra displayEdit -->
+        <button pButton label="Guardar Cambios" icon="pi pi-check"
+                class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-blue-200 transition-all font-semibold border-none"
+                (click)="guardarCambios()"></button>      <!-- ✅ guardarCambios -->
+      </div>
+    </ng-template>
+  </p-dialog>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--              MODAL NUEVO SERVICIO               -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <p-dialog header="Nuevo Servicio" [(visible)]="displayNew" [modal]="true" [style]="{width: '600px'}"
+            [draggable]="false" [resizable]="false" styleClass="modern-dialog">
+
+    <div class="flex flex-col gap-5 mt-4">
+
+      <!-- Nombre -->
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+          <i class="pi pi-tag text-[#0D72C5]"></i>
+          Nombre del Servicio
+        </label>
+        <input pInputText [(ngModel)]="selectedServicio.nombre"
+               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+               placeholder="Ej: Consulta General"/>
+      </div>
+
+      <!-- Descripción -->
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+          <i class="pi pi-file-edit text-[#0D72C5]"></i>
+          Descripción
+        </label>
+        <textarea [(ngModel)]="selectedServicio.descripcion" rows="3"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none resize-none"
+                  placeholder="Describe el servicio en detalle..."></textarea>
+      </div>
+
+      <!-- Precio + Estado -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+            <i class="pi pi-money-bill text-[#0D72C5]"></i>
+            Precio (S/)
+          </label>
+          <input pInputText type="number" [(ngModel)]="selectedServicio.precio"
+                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none"/>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+            <i class="pi pi-circle text-[#0D72C5]"></i>
+            Estado
+          </label>
+          <select [(ngModel)]="selectedServicio.estado"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
+            <option value="ACTIVO">Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Trabajadores asignados -->
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+          <i class="pi pi-users text-[#0D72C5]"></i>
+          Trabajadores asignados
+        </label>
+        <div class="border-2 border-gray-200 rounded-xl p-3 max-h-44 overflow-y-auto flex flex-col gap-2">
+          <div *ngFor="let t of trabajadores"
+               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+               (click)="toggleTrabajador(t)">
+            <div class="w-5 h-5 rounded border-2 flex items-center justify-center transition-colors"
+                 [ngClass]="estaSeleccionado(t) ? 'bg-[#0D72C5] border-[#0D72C5]' : 'border-gray-300'">
+              <i *ngIf="estaSeleccionado(t)" class="pi pi-check text-white text-xs"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-gray-800">{{ t.nombres }} {{ t.apellidos }}</span>
+              <span class="text-xs text-gray-500">{{ t.cargo }}</span>
+            </div>
+          </div>
+          <p *ngIf="trabajadores.length === 0" class="text-sm text-gray-400 text-center py-2">
+            No hay trabajadores disponibles
+          </p>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+          {{ trabajadoresSeleccionados.length }} trabajador(es) seleccionado(s)
+        </p>
+      </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3 justify-end pt-4">
+        <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
+                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+                (click)="displayNew = false"></button>   <!-- ✅ cierra displayNew -->
+        <button pButton label="Guardar Servicio" icon="pi pi-check"
+                class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-blue-200 transition-all font-semibold border-none"
+                (click)="guardarNuevo()"></button>        <!-- ✅ guardarNuevo -->
+      </div>
+    </ng-template>
+  </p-dialog>
+
+</div>

@@ -1,0 +1,192 @@
+<div class="flex h-screen w-full bg-gray-200 overflow-hidden">
+
+  <!-- SIDEBAR -->
+  <aside [class]="sidebarOpen ? 'w-64' : 'w-16'"
+         class="bg-[#102139] text-white flex flex-col shadow-xl transition-all duration-300 ease-in-out overflow-hidden">
+
+    <!-- HEADER LOGO -->
+    <div class="p-4 flex flex-col items-center border-b border-slate-700 min-h-[80px] justify-center">
+      @if (sidebarOpen) {
+        <div class="flex flex-col items-center w-full transition-opacity duration-200">
+          <img src="logo.png" alt="Logo" class="w-24 h-auto object-contain">
+          <p class="text-xs text-gray-400 font-medium tracking-widest uppercase border-t border-gray-600 pt-2 mt-1">
+            Panel Administrativo
+          </p>
+        </div>
+      } @else {
+        <div class="w-8 h-8 bg-blue-primary rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined text-sm">pets</span>
+        </div>
+      }
+    </div>
+
+    <!-- NAV LINKS -->
+    <nav class="flex-1 mt-4 px-2 space-y-1">
+
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">home</span>
+        @if (sidebarOpen) {
+          <span class="transition-opacity duration-200 whitespace-nowrap">Dashboard</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Dashboard</span>
+        }
+      </a>
+
+      <a routerLink="/admin/citas" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">calendar_clock</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Citas</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Citas</span>
+        }
+      </a>
+
+      <a routerLink="/admin/servicios" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">nearby</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Servicios</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Servicios</span>
+        }
+      </a>
+
+      <a routerLink="/admin/productos" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">inventory</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Productos</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Productos</span>
+        }
+      </a>
+
+      <a routerLink="/admin/ventas" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">shopping_bag</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Ventas</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Ventas</span>
+        }
+      </a>
+
+      <a routerLink="/admin/pagos" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <i class="fas fa-credit-card w-5 text-lg"></i>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Pagos</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Ventas</span>
+        }
+      </a>
+
+      <a routerLink="/admin/horarios" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <i class="fas fa-clock w-5 text-lg"></i>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Horarios</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Ventas</span>
+        }
+      </a>
+
+      <a routerLink="/admin/clientes" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">person</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Clientes</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Clientes</span>
+        }
+      </a>
+
+      <a routerLink="/admin/trabajadores" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined flex-shrink-0">group</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Trabajadores</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Trabajadores</span>
+        }
+      </a>
+
+      <a routerLink="/admin/mascotas" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">pets</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Mascotas</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Mascotas</span>
+        }
+      </a>
+
+      <a routerLink="/admin/enfermedades" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">medication</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Enfermedades</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Enfermedades</span>
+        }
+      </a>
+
+      <a routerLink="/admin/vacunas" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">vaccines</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Vacunas</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Vacunas</span>
+        }
+      </a>
+
+    </nav>
+
+    <!-- FOOTER: CERRAR SESIÓN -->
+    <div class="p-2 border-t border-slate-700">
+      <button (click)="cerrarSesion()"
+              class="flex items-center cursor-pointer gap-3 p-3 text-red-600 py-2.5 hover:text-red-500 w-full group relative rounded-lg hover:bg-red-400/10 transition-colors">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">exit_to_app</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Cerrar Sesión</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Cerrar Sesión</span>
+        }
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="flex-1 flex flex-col overflow-hidden transition-all duration-300">
+    <header class="bg-white h-16 shadow-sm flex items-center justify-between px-6">
+      <div class="flex items-center gap-4">
+        <button (click)="toggleSidebar()"
+                class="w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-blue-primary transition-colors">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <span class="text-gray-400">|</span>
+          <p class=" font-bold text-gray-800">{{ titulo }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-sm font-bold text-black leading-none">{{ nombre.toUpperCase() }}</p>
+          <p class="text-[10px] text-slate-500">{{ rolFormateado }}</p>
+        </div>
+        <div class="w-10 h-10 bg-blue-primary text-white rounded-full flex items-center justify-center font-bold">
+          {{ inicial }}
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-8">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

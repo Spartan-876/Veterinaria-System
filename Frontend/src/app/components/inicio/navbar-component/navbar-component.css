@@ -1,0 +1,9 @@
+/* Animación de entrada inicial (como el initial de motion) */
+nav {
+  animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}

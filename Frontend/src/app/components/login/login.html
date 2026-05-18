@@ -1,0 +1,233 @@
+<div class="min-h-screen flex bg-white">
+
+  <!-- Panel izquierdo decorativo -->
+  <div
+    class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#2d6a4f] via-[#52b788] to-[#1e4d38] relative overflow-hidden">
+    <div class="absolute inset-0 bg-black/10"></div>
+    <div class="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+
+    <!-- Botón regresar -->
+    <button
+      (click)="regresar()"
+      class="absolute top-6 left-6 z-20 flex items-center cursor-pointer gap-2 text-white/60 hover:text-white transition-colors text-sm">
+      <span class="material-symbols-outlined text-base">arrow_back</span>
+      Regresar
+    </button>
+
+    <div class="relative z-10 flex flex-col justify-center px-16 text-white">
+      <div class="mb-12">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">pets</span>
+          </div>
+          <div>
+            <h1 class="text-4xl font-bold">Huellitas</h1>
+            <p class="text-white/80">Clínica Veterinaria</p>
+          </div>
+        </div>
+        <h2 class="text-3xl font-bold mb-4">Bienvenido de vuelta</h2>
+        <p class="text-white/90 text-lg">Gestiona tu clínica veterinaria de manera eficiente</p>
+      </div>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined">check</span>
+          </div>
+          <span class="text-lg">Gestión completa de citas</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined">check</span>
+          </div>
+          <span class="text-lg">Historial médico digital</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel derecho formulario -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#f8faf8]">
+    <div class="w-full max-w-md">
+
+      <!-- Logo mobile -->
+      <div class="lg:hidden flex items-center justify-center gap-3 mb-8">
+        <span class="material-symbols-outlined text-[#2d6a4f] text-4xl">pets</span>
+        <h1 class="text-3xl font-bold text-[#1b1b1b]">Huellitas</h1>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-2 mb-8 bg-gray-100 p-1 rounded-xl">
+        <button (click)="cambiarTab('login')"
+                [class]="tabActivo === 'login'
+                  ? 'flex-1 py-3 px-4 font-semibold cursor-pointer rounded-lg transition-all bg-white text-[#2d6a4f] shadow-sm'
+                  : 'flex-1 py-3 px-4 font-semibold cursor-pointer rounded-lg transition-all text-gray-500 hover:text-gray-800'">
+          Iniciar Sesión
+        </button>
+        <button (click)="cambiarTab('register')"
+                [class]="tabActivo === 'register'
+                  ? 'flex-1 py-3 px-4 font-semibold cursor-pointer rounded-lg transition-all bg-white text-[#2d6a4f] shadow-sm'
+                  : 'flex-1 py-3 px-4 font-semibold cursor-pointer rounded-lg transition-all text-gray-500 hover:text-gray-800'">
+          Registrarse
+        </button>
+      </div>
+
+      <!-- Alertas -->
+      @if (errorMsg) {
+        <div class="mb-4 p-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200">
+          <span class="font-medium">Error:</span> {{ errorMsg }}
+        </div>
+      }
+      @if (successMsg) {
+        <div class="mb-4 p-4 text-sm text-[#2d6a4f] bg-[#d8f3dc] rounded-xl border border-[#52b788]/30">
+          <span class="font-medium">¡Listo!</span> {{ successMsg }}
+        </div>
+      }
+
+      <!-- Formulario Login -->
+      @if (tabActivo === 'login') {
+        <div>
+          <h2 class="text-2xl font-bold text-[#1b1b1b] mb-2">¡Bienvenido!</h2>
+          <p class="text-[#6b7280] mb-8">Ingresa tus credenciales para continuar</p>
+
+          <div class="space-y-5">
+            <div>
+              <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Correo</label>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">person</span>
+                <input type="text" [(ngModel)]="loginData.correo"
+                       placeholder="example@email.com"
+                       class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Contraseña</label>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">lock</span>
+                <input [type]="mostrarPassword ? 'text' : 'password'"
+                       [(ngModel)]="loginData.password"
+                       placeholder="••••••••"
+                       class="w-full pl-11 pr-12 py-3 text-[#1b1b1b] border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+                <button type="button" (click)="mostrarPassword = !mostrarPassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2d6a4f] transition-colors">
+                  <span class="material-symbols-outlined">{{ mostrarPassword ? 'visibility_off' : 'visibility' }}</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" [(ngModel)]="loginData.rememberMe"
+                       class="w-4 h-4 accent-[#2d6a4f] border-gray-300 rounded">
+                <span class="text-sm text-[#6b7280]">Recordarme</span>
+              </label>
+            </div>
+
+            <button (click)="iniciarSesion()"
+                    class="w-full py-3 cursor-pointer bg-[#2d6a4f] text-white font-semibold rounded-xl shadow-lg hover:bg-[#1e4d38] hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Formulario Registro -->
+      @if (tabActivo === 'register') {
+        <div>
+          <h2 class="text-2xl font-bold text-[#1b1b1b] mb-2">Crear una cuenta</h2>
+          <p class="text-[#6b7280] mb-8">Completa el formulario para registrarte</p>
+
+          <div class="space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Nombres</label>
+                <div class="relative">
+                  <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">person</span>
+                  <input type="text" [(ngModel)]="registerData.nombres" placeholder="Maria"
+                         class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Apellidos</label>
+                <div class="relative">
+                  <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">person</span>
+                  <input type="text" [(ngModel)]="registerData.apellidos" placeholder="Vasquez"
+                         class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-[#1b1b1b] mb-2">DNI</label>
+                <div class="relative">
+                  <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">badge</span>
+                  <input type="text" [(ngModel)]="registerData.dni" placeholder="12345678" maxlength="8"
+                         class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Teléfono</label>
+                <div class="relative">
+                  <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">phone</span>
+                  <input type="text" [(ngModel)]="registerData.telefono" placeholder="999 999 999"
+                         class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Dirección</label>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">home</span>
+                <input type="text" [(ngModel)]="registerData.direccion" placeholder="Av. Principal 123"
+                       class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Correo Electrónico</label>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">mail</span>
+                <input type="email" [(ngModel)]="registerData.correo" placeholder="email@email.com"
+                       class="w-full pl-11 pr-4 py-3 border text-[#1b1b1b] border-gray-200 rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-[#1b1b1b] mb-2">Contraseña</label>
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#52b788]">lock</span>
+                <input [type]="mostrarPasswordReg ? 'text' : 'password'"
+                       [(ngModel)]="registerData.password" placeholder="••••••••"
+                       class="w-full pl-11 pr-12 py-3 border border-gray-200 text-[#1b1b1b] rounded-xl focus:ring-2 focus:ring-[#52b788] focus:border-transparent outline-none transition-all bg-white placeholder:text-gray-400">
+                <button type="button" (click)="mostrarPasswordReg = !mostrarPasswordReg"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2d6a4f] transition-colors">
+                  <span
+                    class="material-symbols-outlined">{{ mostrarPasswordReg ? 'visibility_off' : 'visibility' }}</span>
+                </button>
+              </div>
+              <p class="mt-1 text-xs text-[#6b7280]">Mínimo 8 caracteres</p>
+            </div>
+
+            <button (click)="registrarse()"
+                    class="w-full py-3 cursor-pointer bg-gradient-to-r from-[#2d6a4f] to-[#52b788] text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+              Crear Cuenta
+            </button>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

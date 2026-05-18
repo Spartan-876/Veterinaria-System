@@ -1,0 +1,292 @@
+<div class="p-1">
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h3
+          class="text-4xl font-bold bg-gradient-to-r from-[#0D72C5] to-[#0a5a9c] bg-clip-text text-transparent mb-2">
+          Lista de Trabajadores
+        </h3>
+        <p class="text-gray-500 text-sm">Gestiona eficientemente a los trabajadores de la veterinaria</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+        <div class="relative group w-full sm:w-80">
+          <i
+            class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500 transition-colors"></i>
+          <input type="text" placeholder="Buscar trabajador..." [(ngModel)]="terminoBusqueda"
+                 (input)="filtrar()"
+                 class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-sm bg-white/80 backdrop-blur-sm"/>
+        </div>
+        <button (click)="abrirNuevo()"
+                class="bg-[#0D72C5] text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-blue-200/50 hover:shadow-xl hover:shadow-blue-300/50 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+                    <span
+                      class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
+          Nuevo Trabajador
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden p-4">
+    <div class="overflow-x-auto">
+      <p-table [value]="trabajadoresMostrados" [sortMode]="'single'" class="w-full" styleClass="modern-table">
+        <ng-template pTemplate="header">
+          <tr class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
+            <th pSortableColumn="dni"
+                class="px-6 py-4 text-left font-bold cursor-pointer hover:bg-gray-100 transition-colors">
+              DNI
+              <p-sortIcon field="dni"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombres"
+                class="px-6 py-4 text-left font-bold cursor-pointer hover:bg-gray-100 transition-colors">
+              Trabajador
+              <p-sortIcon field="nombres"></p-sortIcon>
+            </th>
+            <th pSortableColumn="cargo"
+                class="px-6 py-4 text-left font-bold cursor-pointer hover:bg-gray-100 transition-colors">
+              Cargo
+              <p-sortIcon field="cargo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="estado"
+                class="px-6 py-4 text-left font-bold cursor-pointer hover:bg-gray-100 transition-colors">
+              Estado
+              <p-sortIcon field="estado"></p-sortIcon>
+            </th>
+            <th class="px-6 py-4 text-center font-bold">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-t>
+          <tr class="border-b border-gray-100 hover:bg-blue-50/30 transition-all group">
+            <td class="px-6 py-4 text-sm font-medium text-gray-700">{{ t.dni }}</td>
+            <td class="px-6 py-4">
+              <div class="flex flex-col">
+                <span class="text-sm font-bold text-gray-900">{{ t.nombres }} {{ t.apellidos }}</span>
+                <span class="text-xs text-gray-500">{{ t.correo }}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+                            <span
+                              class="px-3 py-1 rounded-lg bg-blue-50 text-blue-600 text-xs font-bold uppercase border border-blue-100">
+                                {{ t.cargo }}
+                            </span>
+            </td>
+
+            <td class="px-6 py-4 text-sm">
+              <div [ngClass]="{
+                                    'text-green-700 bg-green-100': t.estado === 'ACTIVO',
+                                    'text-gray-500 bg-gray-100': t.estado === 'INACTIVO'
+                                }" class="px-3 py-1 inline-block rounded-full font-bold text-[10px] uppercase">
+                {{ t.estado }}
+              </div>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <div class="flex text-center gap-2">
+                <button (click)="abrirEditar(t)"
+                        class="p-2 text-indigo-500 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
+                        title="Editar">
+                  <span class="material-symbols-outlined text-lg">edit</span>
+                </button>
+                <button (click)="toggleEstado(t)"
+                        [class]="t.estado === 'ACTIVO'
+        ? 'p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors cursor-pointer'
+        : 'p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors cursor-pointer'"
+                        [title]="t.estado === 'ACTIVO' ? 'Desactivar' : 'Activar'">
+    <span class="material-symbols-outlined text-lg">
+        {{ t.estado === 'ACTIVO' ? 'person_off' : 'person' }}
+    </span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    @if (trabajadoresMostrados.length === 0) {
+      <div class="text-center py-12">
+        <div class="inline-block p-5 bg-gray-100 rounded-full mb-3">
+          <i class="pi pi-users !text-4xl !text-gray-300 !mb-2"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-700 mb-2">No se encontraron trabajadores</h3>
+        <p class="text-gray-500">Intenta ajustar tu búsqueda o crea uno nuevo</p>
+      </div>
+    }
+  </div>
+
+  <div class="mt-6">
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+                 [totalRecords]="trabajadoresFiltrados.length">
+    </p-paginator>
+  </div>
+
+  <!--EDITAR TRABAJADOR-->
+  <p-dialog header="Editar Trabajador" [(visible)]="displayEdit" [modal]="true" [style]="{width: '500px'}"
+            [draggable]="false" [resizable]="false">
+    <div class="flex flex-col gap-4 mt-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombres: </label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.nombres"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                 placeholder="JUAN FERNANDO" step="0.01"/>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Apellidos:</label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.apellidos"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                 placeholder="TORRES PAZ" step="0.01"/>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Cargo:</label>
+          <select id="cargo" [(ngModel)]="selectedTrabajador.cargo"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
+            <option value="VETERINARIO">VETERINARIO</option>
+            <option value="ESTILISTA">ESTILISTA</option>
+            <option value="RECEPCIONISTA">RECEPCIONISTA</option>
+            <option value="CIRUJANO">CIRUJANO</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+            <i class="pi pi-circle text-[#0D72C5]"></i>
+            Estado
+          </label>
+          <select id="estado" [(ngModel)]="selectedTrabajador.estado"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
+            <option value="ACTIVO">Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">DNI:</label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.dni"
+                 maxlength="8"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                 placeholder="12345678"/>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono:</label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.telefono"
+                 maxlength="9"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                 placeholder="999999999"/>
+        </div>
+      </div>
+      <div class="field">
+        <label class="font-semibold text-gray-700 block mb-2 text-sm">Correo</label>
+        <input pInputText type="text" [(ngModel)]="selectedTrabajador.correo"
+               class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+               placeholder="email@vethuellitas.com" step="0.01"/>
+
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="flex gap-2 justify-end pt-4">
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
+        <button pButton label="Guardar Cambios" icon="pi pi-check"
+                class="!bg-[#0D72C5] hover:bg-blue-600 text-white !border-none" (click)="guardarCambios()"></button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <!--NUEVO TRABAJADOR-->
+  <p-dialog header="Nuevo Trabajador" [(visible)]="displayNew" [modal]="true" [style]="{width: '500px'}"
+            [draggable]="false" [resizable]="false">
+    <div class="flex flex-col gap-4 mt-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombres: </label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.nombres"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+          />
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Apellidos:</label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.apellidos"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Cargo:</label>
+          <select id="cargo" [(ngModel)]="selectedTrabajador.cargo"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
+            <option value="VETERINARIO">VETERINARIO</option>
+            <option value="ESTILISTA">ESTILISTA</option>
+            <option value="RECEPCIONISTA">RECEPCIONISTA</option>
+            <option value="CIRUJANO">CIRUJANO</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+            <i class="pi pi-circle text-[#0D72C5]"></i>
+            Estado
+          </label>
+          <select id="estado" [(ngModel)]="selectedTrabajador.estado"
+                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
+            <option value="ACTIVO">Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">DNI:</label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.dni"
+                 maxlength="8"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                 placeholder="12345678"/>
+        </div>
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono:</label>
+          <input pInputText type="text" [(ngModel)]="selectedTrabajador.telefono"
+                 maxlength="9"
+                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                 placeholder="999999999"/>
+        </div>
+      </div>
+      <div class="space-y-4">
+
+        <!-- EMAIL -->
+        <div class="field">
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">E-mail:</label>
+          <div class="flex gap-2">
+            <div class="flex-grow">
+              <input pInputText type="email"
+                     [(ngModel)]="selectedTrabajador.correo"
+                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                     placeholder="example@vethuellitas.com"/>
+            </div>
+            <!-- Botón auto-generar username -->
+            <button type="button"
+                    (click)="generarCorreo()"
+                    title="Generar usuario automáticamente"
+                    class="flex items-center justify-center px-4 bg-primary hover:bg-blue-700 text-white rounded-lg transition-colors">
+              <span class="material-symbols-outlined">auto_fix_high</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex gap-2 justify-end pt-4">
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200"
+                (click)="displayNew=false"></button>
+        <button pButton label="Guardar" icon="pi pi-check"
+                class="!bg-[#0D72C5] hover:bg-blue-600 text-white !border-none"
+                (click)="guardarNuevo()"></button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+</div>

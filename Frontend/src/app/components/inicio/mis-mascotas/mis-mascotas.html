@@ -1,0 +1,170 @@
+<div class="min-h-screen bg-[#f8faf8] text-[#1b1b1b] px-6 py-24">
+  <div class="max-w-3xl mx-auto">
+
+    <a routerLink="/inicio"
+       class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#2d6a4f]/50 hover:text-[#2d6a4f] transition-colors mb-12 group cursor-pointer">
+      <i class="pi pi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      Regresar
+    </a>
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
+      <div>
+        <span class="font-mono text-xs uppercase tracking-[0.3em] text-[#52b788] mb-4 block">Mi cuenta</span>
+        <h2 class="text-5xl font-display mb-2">Mis Mascotas</h2>
+        <p class="text-[#6b7280] text-sm font-mono">{{ mascotas.length }} mascota(s) registrada(s)</p>
+      </div>
+      <button (click)="abrirNuevo()"
+              class="border border-[#2d6a4f] text-[#2d6a4f] text-xs font-mono uppercase tracking-widest px-6 py-3 hover:bg-[#2d6a4f] hover:text-white transition-all whitespace-nowrap cursor-pointer rounded-xl">
+        + Agregar mascota
+      </button>
+    </div>
+
+    @if (cargando) {
+      <div class="flex flex-col items-center py-32 gap-4">
+        <i class="pi pi-spin pi-spinner text-4xl text-[#52b788]"></i>
+        <p class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Cargando...</p>
+      </div>
+    }
+
+    @if (!cargando && mascotas.length === 0) {
+      <div class="flex flex-col items-center py-32 gap-6 border border-gray-200 text-center rounded-2xl bg-white">
+        <span class="material-symbols-outlined text-[#52b788]/30" style="font-size:80px">pets</span>
+        <div>
+          <h3 class="text-xl font-bold text-[#1b1b1b]/60 mb-2">Sin mascotas registradas</h3>
+          <p class="font-mono text-xs text-[#6b7280] uppercase tracking-widest mb-2">
+            Registra tu mascota para poder agendar citas
+          </p>
+        </div>
+        <button (click)="abrirNuevo()"
+                class="border border-[#2d6a4f] text-[#2d6a4f] text-xs font-mono uppercase tracking-widest px-8 py-3 hover:bg-[#2d6a4f] hover:text-white transition-all cursor-pointer rounded-xl">
+          Registrar primera mascota
+        </button>
+      </div>
+    }
+
+    @if (!cargando && mascotas.length > 0) {
+      <div class="flex flex-col gap-3">
+        @for (m of mascotas; track m.id) {
+          <div class="border border-gray-200 hover:border-[#52b788]/40 transition-colors p-5 flex items-center justify-between gap-4 rounded-xl bg-white">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 border border-[#52b788]/30 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#d8f3dc]/40">
+                <span class="material-symbols-outlined text-[#52b788]">
+                  {{ m.especie === 'Canina' ? 'sound_detection_dog_barking' : 'pets' }}
+                </span>
+              </div>
+              <div>
+                <p class="font-bold text-[#1b1b1b]">{{ m.nombre }}</p>
+                <p class="font-mono text-xs text-[#6b7280] mt-0.5">{{ m.especie }} · {{ m.raza }} · {{ m.sexo }}</p>
+                <p class="font-mono text-xs text-[#6b7280]/60 mt-0.5">{{ m.edad }} · {{ m.peso }} kg</p>
+              </div>
+            </div>
+            <button (click)="confirmarEliminar(m)"
+                    class="font-mono text-[10px] uppercase tracking-widest text-red-400/60 hover:text-red-500 transition-colors cursor-pointer flex-shrink-0">
+              Eliminar
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="mt-6 border border-[#52b788]/20 p-6 flex items-center justify-between gap-4 rounded-xl bg-[#f0faf4]">
+        <div>
+          <p class="font-semibold text-[#1b1b1b] text-sm">¿Listo para agendar una cita?</p>
+          <p class="font-mono text-xs text-[#6b7280] mt-1">Tienes {{ mascotas.length }} mascota(s) disponible(s)</p>
+        </div>
+        <a routerLink="/agendar-cita"
+           class="border border-[#2d6a4f] text-[#2d6a4f] text-xs font-mono uppercase tracking-widest px-6 py-3 hover:bg-[#2d6a4f] hover:text-white transition-all whitespace-nowrap cursor-pointer rounded-xl">
+          Agendar cita →
+        </a>
+      </div>
+    }
+
+  </div>
+</div>
+
+@if (displayNew) {
+  <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+    <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-md p-8 shadow-xl">
+      <h3 class="text-xl font-bold text-[#1b1b1b] mb-6">Registrar Mascota</h3>
+      <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Nombre *</label>
+            <input [(ngModel)]="mascotaSeleccionada.nombre"
+                   class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm"
+                   placeholder="Ej: Luna"/>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Especie *</label>
+            <select [(ngModel)]="mascotaSeleccionada.especie"
+                    class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm">
+              @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
+            </select>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Raza *</label>
+            <input [(ngModel)]="mascotaSeleccionada.raza"
+                   class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm"
+                   placeholder="Ej: Labrador"/>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Sexo *</label>
+            <select [(ngModel)]="mascotaSeleccionada.sexo"
+                    class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm">
+              @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
+            </select>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Edad *</label>
+            <input [(ngModel)]="mascotaSeleccionada.edad"
+                   class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm"
+                   placeholder="Ej: 2 años"/>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Peso (kg) *</label>
+            <input type="number" [(ngModel)]="mascotaSeleccionada.peso"
+                   class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm"
+                   placeholder="5.5"/>
+          </div>
+        </div>
+        <div>
+          <label class="font-mono text-[10px] uppercase tracking-widest text-[#6b7280] block mb-2">Observaciones</label>
+          <textarea [(ngModel)]="mascotaSeleccionada.observaciones" rows="2"
+                    class="w-full bg-[#f8faf8] border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] text-sm resize-none"
+                    placeholder="Alergias, condiciones especiales..."></textarea>
+        </div>
+      </div>
+      <div class="flex gap-3 mt-6">
+        <button (click)="displayNew = false"
+                class="flex-1 border border-gray-200 text-[#6b7280] hover:text-[#2d6a4f] hover:border-[#2d6a4f] py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer rounded-xl">
+          Cancelar
+        </button>
+        <button (click)="guardarNuevo()"
+                class="flex-1 bg-[#2d6a4f] text-white py-3 font-mono text-xs uppercase tracking-widest hover:bg-[#1e4d38] transition-all cursor-pointer rounded-xl">
+          Registrar
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (displayDelete) {
+  <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+    <div class="bg-white border border-gray-200 rounded-2xl w-full max-w-sm p-8 text-center shadow-xl">
+      <div class="w-16 h-16 border border-red-200 rounded-full flex items-center justify-center mx-auto mb-4 bg-red-50">
+        <i class="pi pi-trash text-red-400 text-xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-[#1b1b1b] mb-2">¿Eliminar a {{ mascotaSeleccionada.nombre }}?</h3>
+      <p class="text-[#6b7280] text-sm font-mono mb-6">Esta acción no se puede deshacer</p>
+      <div class="flex gap-3">
+        <button (click)="displayDelete = false"
+                class="flex-1 border border-gray-200 text-[#6b7280] hover:text-[#1b1b1b] py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer rounded-xl">
+          Cancelar
+        </button>
+        <button (click)="eliminar()"
+                class="flex-1 border border-red-300 text-red-500 hover:bg-red-500 hover:text-white py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer rounded-xl">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+}
