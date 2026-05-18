@@ -143,6 +143,26 @@
         }
       </a>
 
+      <a routerLink="/admin/roles" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">admin_panel_settings</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Roles</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Roles</span>
+        }
+      </a>
+
+      <a routerLink="/admin/usuarios" routerLinkActive="bg-blue-primary text-white"
+         class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">account_circle</span>
+        @if (sidebarOpen) {
+          <span class="whitespace-nowrap">Usuarios</span>
+        } @else {
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Usuarios</span>
+        }
+      </a>
+
     </nav>
 
     <!-- FOOTER: CERRAR SESIÓN -->

@@ -17,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +57,12 @@ public class AuthService {
 
         String rol = usuario.getRoles().stream()
                 .findFirst()
-                .map(r -> r.getNombre())
+                .map(Rol::getNombre)
                 .orElse("ROLE_USER");
+
+        List<String> roles = usuario.getRoles().stream()
+                .map(Rol::getNombre)
+                .collect(Collectors.toList());
 
         Long trabajadorId = usuario.getTrabajador() != null
                 ? usuario.getTrabajador().getId()
@@ -77,7 +83,7 @@ public class AuthService {
 
         String token = jwtUtil.generarToken(usuario.getCorreo(), rol);
 
-        return new LoginResponse(token, usuario.getCorreo(), rol, trabajadorId, nombre, clienteId);
+        return new LoginResponse(token, usuario.getCorreo(), rol, roles, trabajadorId, nombre, clienteId);
     }
 
     public void registrarCliente(RegistroClienteDTO dto) {

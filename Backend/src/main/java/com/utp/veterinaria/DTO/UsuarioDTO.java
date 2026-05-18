@@ -9,12 +9,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
-    private String token;
+public class UsuarioDTO {
+    private Long id;
     private String correo;
-    private String rol;
-    private List<String> roles;
-    private Long trabajadorId;
-    private String nombre;
+    private String estado;
     private Long clienteId;
+    private Long trabajadorId;
+    private String nombreCliente;
+    private String nombreTrabajador;
+    private List<String> roles;
 }

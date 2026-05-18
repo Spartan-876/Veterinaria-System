@@ -20,7 +20,8 @@ import { clienteGuard} from './services/clienteGuard';
 import {AgendarCita} from './components/inicio/agendar-cita/agendar-cita';
 import {MisCitas} from './components/inicio/mis-citas/mis-citas';
 import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
-
+import {Roles} from './components/layout/roles/roles';
+import {Usuarios} from './components/layout/usuarios/usuarios';
 
 export const routes: Routes = [
   { path: 'login', component: Login, data: { title: 'Iniciar Sesión' } },
@@ -56,6 +57,8 @@ export const routes: Routes = [
       { path: 'ventas', component: Ventas, data: { title: 'Ventas' } },
       { path: 'citas', component: Citas, data: { title: 'Citas' } },
       { path: 'servicios', component: Servicios, data: { title: 'Servicios' } },
+      { path: 'roles', component: Roles, data: { title: 'Roles' } },
+      { path: 'usuarios', component: Usuarios, data: { title: 'Usuarios' } },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
