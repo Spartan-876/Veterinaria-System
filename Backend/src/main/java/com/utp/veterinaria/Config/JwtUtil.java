@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -23,9 +25,14 @@ public class JwtUtil {
     }
 
     public String generarToken(String correo, String rol, Long trabajadorId) {
+        return generarToken(correo, rol, Collections.emptyList(), trabajadorId);
+    }
+
+    public String generarToken(String correo, String rol, List<String> modulos, Long trabajadorId) {
         return Jwts.builder()
                 .subject(correo)
                 .claim("rol", rol)
+                .claim("modulos", modulos)
                 .claim("trabajadorId", trabajadorId)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
@@ -67,6 +74,21 @@ public class JwtUtil {
 
     public String getRolFromToken(String token) {
         return extraerRol(token);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getModulosFromToken(String token) {
+        try {
+            List<String> modulos = Jwts.parser()
+                    .verifyWith(getKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("modulos", List.class);
+            return modulos != null ? modulos : Collections.emptyList();
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
     }
 
     public boolean validarToken(String token) {

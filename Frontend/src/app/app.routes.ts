@@ -23,6 +23,7 @@ import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
 import {Roles} from './components/layout/roles/roles';
 import {Usuarios} from './components/layout/usuarios/usuarios';
 import { RedirectToFirst } from './components/redirect-to-first';
+import { Agenda } from './components/layout/agenda/agenda';
 
 export const routes: Routes = [
   { path: 'login', component: Login, data: { title: 'Iniciar Sesión' } },
@@ -52,6 +53,7 @@ export const routes: Routes = [
       { path: 'vacunas', component: Vacunas, data: { title: 'Vacunas' } },
       { path: 'pagos', component: PagosComponent, data: { title: 'Pagos' } },
       { path: 'horarios', component: HorarioComponent, data: { title: 'Horarios' } },
+      { path: 'agenda', component: Agenda, data: { title: 'Mi Agenda' } },
       { path: 'enfermedades', component: Enfermedades, data: { title: 'Enfermedades' } },
       { path: 'trabajadores', component: Trabajadores, data: { title: 'Trabajadores' } },
       { path: 'productos', component: Productos, data: { title: 'Productos' } },

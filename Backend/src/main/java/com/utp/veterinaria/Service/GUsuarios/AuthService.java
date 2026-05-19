@@ -88,7 +88,7 @@ public class AuthService {
             nombre = "ChrisoAdmin";
         }
 
-        String token = jwtUtil.generarToken(usuario.getCorreo(), rol, trabajadorId);
+        String token = jwtUtil.generarToken(usuario.getCorreo(), rol, modulos, trabajadorId);
 
         return new LoginResponse(token, usuario.getCorreo(), rol, roles, modulos, trabajadorId, nombre, clienteId);
     }

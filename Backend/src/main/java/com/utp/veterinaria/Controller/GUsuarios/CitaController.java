@@ -42,9 +42,9 @@ public class CitaController {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        String rol = jwtUtil.getRolFromToken(token);
+        List<String> modulos = jwtUtil.getModulosFromToken(token);
         Long trabajadorId = jwtUtil.getTrabajadorIdFromToken(token);
-        return ResponseEntity.ok(citaService.getDashboard(rol, trabajadorId));
+        return ResponseEntity.ok(citaService.getDashboard(modulos, trabajadorId));
     }
 
     @GetMapping("/cliente/{clienteId}")

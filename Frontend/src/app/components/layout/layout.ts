@@ -69,8 +69,11 @@ export class Layout implements OnInit {
   get rolFormateado(): string {
     const roles: Record<string, string> = {
       'ROLE_ADMIN': 'Administrador',
+      'ROLE_RECEPCIONISTA': 'Recepcionista',
       'ROLE_VET': 'Veterinario',
-      'ROLE_USER': 'Usuario'
+      'ROLE_CIRUJANO': 'Cirujano',
+      'ROLE_ESTILISTA': 'Estilista',
+      'ROLE_USER': 'Cliente'
     };
     return roles[this.rol] ?? this.rol.replace('ROLE_', '');
   }

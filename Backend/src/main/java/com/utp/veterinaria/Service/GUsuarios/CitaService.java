@@ -130,7 +130,7 @@ public class CitaService {
         return toDTO(citaRepository.save(cita));
     }
 
-    public DashboardDTO getDashboard(String rol, Long trabajadorId) {
+    public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
         LocalDate hoy = LocalDate.now();
         LocalDateTime inicioHoy = hoy.atStartOfDay();
         LocalDateTime finHoy = hoy.atTime(23, 59, 59);
@@ -141,10 +141,11 @@ public class CitaService {
 
         DashboardDTO dto = new DashboardDTO();
 
-        boolean esAdminOrRecepcionista = "ROLE_ADMIN".equals(rol) || "ROLE_RECEPCIONISTA".equals(rol);
-        boolean esVeterinario = "ROLE_VET".equals(rol) || "ROLE_CIRUJANO".equals(rol);
+        boolean tieneCitas = modulos != null && modulos.contains("CITAS");
+        boolean tieneClientes = modulos != null && modulos.contains("CLIENTES");
+        boolean tieneVentas = modulos != null && modulos.contains("VENTAS");
 
-        if (esAdminOrRecepcionista) {
+        if (tieneCitas && (tieneClientes || tieneVentas)) {
             List<Cita> citasHoy = citaRepository.findByFechaHoraBetween(inicioHoy, finHoy);
             dto.setCitasHoy(citasHoy.size());
             dto.setCitasDeHoy(citasHoy.stream().map(this::toDTO).collect(Collectors.toList()));
@@ -158,7 +159,7 @@ public class CitaService {
             dto.setVentasMes(ventas);
             dto.setClientesActivos(clienteRepository.count());
             dto.setTotalMascotas(mascotaRepository.count());
-        } else if (esVeterinario && trabajadorId != null) {
+        } else if (tieneCitas && trabajadorId != null) {
             List<Cita> citasHoy = citaRepository.findByFechaHoraBetween(inicioHoy, finHoy)
                     .stream()
                     .filter(c -> c.getTrabajador() != null && c.getTrabajador().getId().equals(trabajadorId))

@@ -65,10 +65,11 @@ export class Login {
   }
 
   redirigirSegunRol(rol: string): void {
-    if (rol === 'ROLE_ADMIN' || rol === 'ROLE_VET') {
+    const rolesDashboard = ['ROLE_ADMIN', 'ROLE_RECEPCIONISTA', 'ROLE_VET', 'ROLE_CIRUJANO', 'ROLE_ESTILISTA'];
+    if (rolesDashboard.includes(rol)) {
       this.router.navigate(['/admin/dashboard']);
     } else {
-      this.router.navigate(['/inicio']); // clientes van a la landing
+      this.router.navigate(['/inicio']);
     }
   }
 

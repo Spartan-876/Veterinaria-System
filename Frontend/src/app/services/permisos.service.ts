@@ -7,10 +7,18 @@ export class PermisosService {
   private readonly ORDEN_MODULOS = [
     'CITAS', 'CLIENTES', 'MASCOTAS', 'VENTAS', 'SERVICIOS',
     'PRODUCTOS', 'ENFERMEDADES', 'VACUNAS', 'TRABAJADORES',
-    'ROLES', 'USUARIOS', 'HORARIOS', 'PAGOS', 'DASHBOARD'
+    'ROLES', 'USUARIOS', 'HORARIOS', 'AGENDA', 'PAGOS', 'DASHBOARD'
   ];
 
   constructor(private authService: AuthService) {}
+
+  private getModulosUsuario(): string[] {
+    const modulos = this.authService.getModulos();
+    if (!modulos || modulos.length === 0) {
+      return [];
+    }
+    return modulos;
+  }
 
   tieneAcceso(modulo: string): boolean {
     const rol = this.authService.getRol();
@@ -19,12 +27,8 @@ export class PermisosService {
       return false;
     }
 
-    if (rol === 'ROLE_ADMIN') {
-      return true;
-    }
-
-    const modulos = this.authService.getModulos();
-    if (!modulos || modulos.length === 0) {
+    const modulos = this.getModulosUsuario();
+    if (modulos.length === 0) {
       return false;
     }
 
@@ -33,22 +37,26 @@ export class PermisosService {
 
   tieneAccesoCrear(modulo: string): boolean {
     const rol = this.authService.getRol();
-    
-    // Admin puede crear
-    if (rol === 'ROLE_ADMIN') {
-      return true;
+
+    if (!rol) {
+      return false;
     }
-    
-    // RECEPCIONISTA no tiene delete pero sí crear
+
+    const modulos = this.getModulosUsuario();
+    if (modulos.length === 0) {
+      return false;
+    }
+
+    // RECEPCIONISTA puede crear en módulos que tiene acceso
     if (rol === 'ROLE_RECEPCIONISTA') {
-      return this.tieneAcceso(modulo);
+      return modulos.includes(modulo);
     }
-    
+
     // VET, CIRUJANO, ESTILISTA pueden crear
     if (rol === 'ROLE_VET' || rol === 'ROLE_CIRUJANO' || rol === 'ROLE_ESTILISTA') {
-      return this.tieneAcceso(modulo);
+      return modulos.includes(modulo);
     }
-    
+
     return false;
   }
 
@@ -59,11 +67,12 @@ export class PermisosService {
       return false;
     }
 
-    if (rol === 'ROLE_ADMIN') {
-      return true;
+    const modulos = this.getModulosUsuario();
+    if (modulos.length === 0) {
+      return false;
     }
 
-    return false;
+    return modulos.includes(modulo);
   }
 
   getPrimerModulo(): string | null {
@@ -73,12 +82,8 @@ export class PermisosService {
       return null;
     }
 
-    if (rol === 'ROLE_ADMIN') {
-      return 'DASHBOARD';
-    }
-
-    const modulos = this.authService.getModulos();
-    if (!modulos || modulos.length === 0) {
+    const modulos = this.getModulosUsuario();
+    if (modulos.length === 0) {
       return null;
     }
 
