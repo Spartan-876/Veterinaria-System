@@ -8,23 +8,23 @@
   <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
 
     <!-- Logo -->
-    <a class="font-display text-2xl tracking-tighter">
+    <a routerLink="/inicio" class="font-display text-2xl tracking-tighter cursor-pointer">
       Huellitas<span class="text-xs ml-1 opacity-50 italic">Vet</span>
     </a>
 
     <!-- Links -->
     <div class="hidden md:flex items-center space-x-8">
-      <a [routerLink]="['/inicio']" fragment="about"
+      <a routerLink="/sobre-nosotros"
          class="cursor-pointer text-[10px] uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity">Sobre nosotros</a>
-      <a [routerLink]="['/inicio']" fragment="services"
+      <a routerLink="/servicios"
          class="cursor-pointer text-[10px] uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity">Servicios</a>
-      <a [routerLink]="['/inicio']" fragment="products"
+      <a routerLink="/productos"
          class="cursor-pointer text-[10px] uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity">Productos</a>
-      <a [routerLink]="['/inicio']" fragment="reviews"
+      <a routerLink="/opiniones"
          class="cursor-pointer text-[10px] uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity">Opiniones</a>
-      <a [routerLink]="['/inicio']" fragment="faq"
+      <a routerLink="/faq"
          class="cursor-pointer text-[10px] uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity">FAQ</a>
-      <a [routerLink]="['/inicio']" fragment="contact"
+      <a routerLink="/contacto"
          class="cursor-pointer text-[10px] uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity">Contacto</a>
     </div>
 
@@ -50,33 +50,37 @@
             <span class="material-symbols-outlined text-sm">expand_more</span>
           </button>
 
-          @if (menuPerfil) {
+@if (menuPerfil) {
             <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xl shadow-[#52b788]/10">
-              <a href="#"
-                 class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
-                <span class="material-symbols-outlined text-sm text-[#52b788]">person</span>
-                Mi perfil
-              </a>
-              <a routerLink="/mis-mascotas"
-                 class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
-                <span class="material-symbols-outlined text-sm text-[#52b788]">pets</span>
-                Mis mascotas
-              </a>
-              <a routerLink="/agendar-cita"
-                 class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
-                <span class="material-symbols-outlined text-sm text-[#52b788]">calendar_month</span>
-                Agendar cita
-              </a>
-              <a routerLink="/mis-citas"
-                 class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
-                <span class="material-symbols-outlined text-sm text-[#52b788]">event</span>
-                Mis citas
-              </a>
-              <a routerLink="/mis-compras"
-                 class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
-                <span class="material-symbols-outlined text-sm text-[#52b788]">shopping_bag</span>
-                Mis compras
-              </a>
+              @if (esSoloCliente) {
+                <a routerLink="/mis-mascotas"
+                   class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
+                  <span class="material-symbols-outlined text-sm text-[#52b788]">pets</span>
+                  Mis mascotas
+                </a>
+                <a routerLink="/agendar-cit"
+                   class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
+                  <span class="material-symbols-outlined text-sm text-[#52b788]">calendar_month</span>
+                  Agendar cita
+                </a>
+                <a routerLink="/mis-citas"
+                   class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
+                  <span class="material-symbols-outlined text-sm text-[#52b788]">event</span>
+                  Mis citas
+                </a>
+                <a routerLink="/mis-compras"
+                   class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
+                  <span class="material-symbols-outlined text-sm text-[#52b788]">shopping_bag</span>
+                  Mis compras
+                </a>
+              }
+              @if (esUsuarioConRol) {
+                <a routerLink="/admin"
+                   class="flex items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-[#1b1b1b] hover:bg-[#f0faf4] transition-colors">
+                  <span class="material-symbols-outlined text-sm text-[#52b788]">admin_panel_settings</span>
+                  Panel Admin
+                </a>
+              }
               <button (click)="cerrarSesion()"
                       class="w-full flex cursor-pointer items-center gap-3 px-4 py-3 text-[10px] uppercase tracking-widest text-red-400 hover:bg-red-50 transition-colors">
                 <span class="material-symbols-outlined text-sm">logout</span>
@@ -99,17 +103,17 @@
   @if (menuMobile) {
     <div class="md:hidden bg-white border-t border-gray-200 px-6 py-4 flex flex-col gap-4 shadow-lg">
 
-      <a [routerLink]="['/inicio']" fragment="about" (click)="menuMobile=false"
+      <a routerLink="/sobre-nosotros" (click)="menuMobile=false"
          class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#6b7280] hover:text-[#2d6a4f] transition-colors">Sobre nosotros</a>
-      <a [routerLink]="['/inicio']" fragment="services" (click)="menuMobile=false"
+      <a routerLink="/servicios" (click)="menuMobile=false"
          class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#6b7280] hover:text-[#2d6a4f] transition-colors">Servicios</a>
-      <a [routerLink]="['/inicio']" fragment="products" (click)="menuMobile=false"
+      <a routerLink="/productos" (click)="menuMobile=false"
          class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#6b7280] hover:text-[#2d6a4f] transition-colors">Productos</a>
-      <a [routerLink]="['/inicio']" fragment="reviews" (click)="menuMobile=false"
+      <a routerLink="/opiniones" (click)="menuMobile=false"
          class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#6b7280] hover:text-[#2d6a4f] transition-colors">Opiniones</a>
-      <a [routerLink]="['/inicio']" fragment="faq" (click)="menuMobile=false"
+      <a routerLink="/faq" (click)="menuMobile=false"
          class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#6b7280] hover:text-[#2d6a4f] transition-colors">FAQ</a>
-      <a [routerLink]="['/inicio']" fragment="contact" (click)="menuMobile=false"
+      <a routerLink="/contacto" (click)="menuMobile=false"
          class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#6b7280] hover:text-[#2d6a4f] transition-colors">Contacto</a>
 
       <hr class="border-gray-200">
@@ -122,38 +126,42 @@
         </a>
       }
 
-      @if (isLoggedIn) {
+@if (isLoggedIn) {
         <div class="flex items-center gap-3 mb-2">
           <div class="w-7 h-7 rounded-full bg-[#2d6a4f] text-white flex items-center justify-center text-xs font-bold">
             {{ inicial }}
           </div>
           <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#1b1b1b]">{{ nombre }}</span>
         </div>
-        <a href="#" (click)="menuMobile=false"
-           class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
-          <span class="material-symbols-outlined text-sm text-[#52b788]">person</span>
-          Mi perfil
-        </a>
-        <a routerLink="/mis-mascotas" (click)="menuMobile=false"
-           class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
-          <span class="material-symbols-outlined text-sm text-[#52b788]">pets</span>
-          Mis mascotas
-        </a>
-        <a routerLink="/agendar-cita" (click)="menuMobile=false"
-           class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
-          <span class="material-symbols-outlined text-sm text-[#52b788]">calendar_month</span>
-          Agendar cita
-        </a>
-        <a routerLink="/mis-citas" (click)="menuMobile=false"
-           class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
-          <span class="material-symbols-outlined text-sm text-[#52b788]">event</span>
-          Mis citas
-        </a>
-        <a routerLink="/mis-compras" (click)="menuMobile=false"
-           class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
-          <span class="material-symbols-outlined text-sm text-[#52b788]">shopping_bag</span>
-          Mis compras
-        </a>
+        @if (esSoloCliente) {
+          <a routerLink="/mis-mascotas" (click)="menuMobile=false"
+             class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
+            <span class="material-symbols-outlined text-sm text-[#52b788]">pets</span>
+            Mis mascotas
+          </a>
+          <a routerLink="/agendar-cit" (click)="menuMobile=false"
+             class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
+            <span class="material-symbols-outlined text-sm text-[#52b788]">calendar_month</span>
+            Agendar cita
+          </a>
+          <a routerLink="/mis-citas" (click)="menuMobile=false"
+             class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
+            <span class="material-symbols-outlined text-sm text-[#52b788]">event</span>
+            Mis citas
+          </a>
+          <a routerLink="/mis-compras" (click)="menuMobile=false"
+             class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
+            <span class="material-symbols-outlined text-sm text-[#52b788]">shopping_bag</span>
+            Mis compras
+          </a>
+        }
+        @if (esUsuarioConRol) {
+          <a routerLink="/admin" (click)="menuMobile=false"
+             class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#6b7280] hover:text-[#2d6a4f] transition-colors">
+            <span class="material-symbols-outlined text-sm text-[#52b788]">admin_panel_settings</span>
+            Panel Admin
+          </a>
+        }
         <button (click)="cerrarSesion(); menuMobile=false"
                 class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors">
           <span class="material-symbols-outlined text-sm">logout</span>

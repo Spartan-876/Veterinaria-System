@@ -7,7 +7,7 @@ import { Mascotas } from './components/layout/mascotas/mascotas';
 import { Vacunas } from './components/layout/vacunas/vacunas';
 import { Enfermedades } from './components/layout/enfermedades/enfermedades';
 import { Trabajadores } from './components/layout/trabajadores/trabajadores';
-import { Productos } from './components/layout/productos/productos';
+import { Productos as ProductosAdmin } from './components/layout/productos/productos';
 import { Ventas } from './components/layout/ventas/ventas';
 import { Citas } from './components/layout/citas/citas';
 import { Servicios } from './components/layout/servicios/servicios';
@@ -24,6 +24,12 @@ import {Roles} from './components/layout/roles/roles';
 import {Usuarios} from './components/layout/usuarios/usuarios';
 import { RedirectToFirst } from './components/redirect-to-first';
 import { Agenda } from './components/layout/agenda/agenda';
+import { SobreNosotrosPage } from './components/inicio/pages/sobre-nosotros';
+import { ServiciosPage } from './components/inicio/pages/servicios-page';
+import { ProductosPage } from './components/inicio/pages/productos-page';
+import { OpinionesPage } from './components/inicio/pages/opiniones-page';
+import { FAQPage } from './components/inicio/pages/faq-page';
+import { ContactoPage } from './components/inicio/pages/contacto-page';
 
 export const routes: Routes = [
   { path: 'login', component: Login, data: { title: 'Iniciar Sesión' } },
@@ -32,13 +38,19 @@ export const routes: Routes = [
     component: Inicio,
     data: { title: 'Inicio' }
   },
+  { path: 'sobre-nosotros', component: SobreNosotrosPage, data: { title: 'Sobre Nosotros' } },
+  { path: 'servicios', component: ServiciosPage, data: { title: 'Servicios' } },
+  { path: 'productos', component: ProductosPage, data: { title: 'Productos' } },
+  { path: 'opiniones', component: OpinionesPage, data: { title: 'Opiniones' } },
+  { path: 'faq', component: FAQPage, data: { title: 'Preguntas Frecuentes' } },
+  { path: 'contacto', component: ContactoPage, data: { title: 'Contacto' } },
   {
     path: 'mis-compras',
     component: MisCompras,
     canActivate: [clienteGuard],
     data: { title: 'Mis Compras' }
   },
-  { path: 'agendar-cita', component: AgendarCita, canActivate: [clienteGuard] },
+  { path: 'agendar-cit', component: AgendarCita, canActivate: [clienteGuard] },
   { path: 'mis-citas',    component: MisCitas,    canActivate: [clienteGuard] },
   { path: 'mis-mascotas', component: MisMascotas, canActivate: [clienteGuard] },
 
@@ -56,7 +68,7 @@ export const routes: Routes = [
       { path: 'agenda', component: Agenda, data: { title: 'Mi Agenda' } },
       { path: 'enfermedades', component: Enfermedades, data: { title: 'Enfermedades' } },
       { path: 'trabajadores', component: Trabajadores, data: { title: 'Trabajadores' } },
-      { path: 'productos', component: Productos, data: { title: 'Productos' } },
+      { path: 'productos', component: ProductosAdmin, data: { title: 'Productos' } },
       { path: 'ventas', component: Ventas, data: { title: 'Ventas' } },
       { path: 'citas', component: Citas, data: { title: 'Citas' } },
       { path: 'servicios', component: Servicios, data: { title: 'Servicios' } },

@@ -30,6 +30,18 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  get esSoloCliente(): boolean {
+    if (!this.isLoggedIn) return false;
+    const roles = this.authService.getRoles();
+    return roles.length === 1 && roles.includes('ROLE_USER');
+  }
+
+  get esUsuarioConRol(): boolean {
+    if (!this.isLoggedIn) return false;
+    const roles = this.authService.getRoles();
+    return roles.some(r => r !== 'ROLE_USER');
+  }
+
   @HostListener('window:scroll',[])
   onWindowScroll(){
     this.isScrolled = window.scrollY > 50;
