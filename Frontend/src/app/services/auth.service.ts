@@ -25,6 +25,10 @@ export class AuthService {
       localStorage.setItem('roles', JSON.stringify(res.roles));
     }
 
+    if (res.modulos) {
+      localStorage.setItem('modulos', JSON.stringify(res.modulos));
+    }
+
     if (res.trabajadorId) {
       localStorage.setItem('trabajadorId', res.trabajadorId);
     }
@@ -58,5 +62,13 @@ export class AuthService {
     }
     const rol = localStorage.getItem('rol');
     return rol ? [rol] : [];
+  }
+
+  getModulos(): string[] {
+    const modulosJson = localStorage.getItem('modulos');
+    if (modulosJson) {
+      return JSON.parse(modulosJson);
+    }
+    return [];
   }
 }

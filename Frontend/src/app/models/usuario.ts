@@ -6,7 +6,7 @@ export interface Usuario {
   trabajadorId: number | null;
   nombreCliente: string | null;
   nombreTrabajador: string | null;
-  roles: string[];
+  roles?: string[];
 }
 
 export interface UsuarioRequest {

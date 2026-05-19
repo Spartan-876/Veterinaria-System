@@ -22,10 +22,11 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generarToken(String correo, String rol) {
+    public String generarToken(String correo, String rol, Long trabajadorId) {
         return Jwts.builder()
                 .subject(correo)
                 .claim("rol", rol)
+                .claim("trabajadorId", trabajadorId)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey())
@@ -48,6 +49,24 @@ public class JwtUtil {
                 .parseSignedClaims(token)
                 .getPayload()
                 .get("rol", String.class);
+    }
+
+    public Long getTrabajadorIdFromToken(String token) {
+        try {
+            Integer id = Jwts.parser()
+                    .verifyWith(getKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("trabajadorId", Integer.class);
+            return id != null ? id.longValue() : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getRolFromToken(String token) {
+        return extraerRol(token);
     }
 
     public boolean validarToken(String token) {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { PermisosService } from '../../../services/permisos.service';
 
 interface CitaHoy {
   id: number;
@@ -41,7 +42,11 @@ export class Dashboard implements OnInit {
 
   cargando = true;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
+    public permisosService: PermisosService
+  ) {}
 
   ngOnInit(): void {
     this.cargarDashboard();

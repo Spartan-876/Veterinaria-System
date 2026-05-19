@@ -9,6 +9,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
+    @if (permisosService.tieneAcceso('CITAS')) {
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-2">
         <div>
@@ -20,7 +21,9 @@
         </div>
       </div>
     </div>
+    }
 
+    @if (permisosService.tieneAcceso('CLIENTES')) {
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-2">
         <div>
@@ -32,7 +35,9 @@
         </div>
       </div>
     </div>
+    }
 
+    @if (permisosService.tieneAcceso('VENTAS') || permisosService.tieneAcceso('PAGOS')) {
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-2">
         <div>
@@ -46,6 +51,7 @@
         </div>
       </div>
     </div>
+    }
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-2">
@@ -105,26 +111,34 @@
       <div>
         <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Accesos rápidos</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          @if (permisosService.tieneAcceso('CITAS')) {
           <a routerLink="/admin/citas"
              class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
             <i class="pi pi-calendar text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
             <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Citas</span>
           </a>
+          }
+          @if (permisosService.tieneAcceso('CLIENTES')) {
           <a routerLink="/admin/clientes"
              class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
             <i class="pi pi-users text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
             <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Clientes</span>
           </a>
+          }
+          @if (permisosService.tieneAcceso('VENTAS')) {
           <a routerLink="/admin/ventas"
              class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
             <i class="pi pi-shopping-bag text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
             <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Ventas</span>
           </a>
+          }
+          @if (permisosService.tieneAcceso('PAGOS')) {
           <a routerLink="/admin/pagos"
              class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
             <i class="pi pi-chart-bar text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
             <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Finanzas</span>
           </a>
+          }
         </div>
       </div>
     </div>

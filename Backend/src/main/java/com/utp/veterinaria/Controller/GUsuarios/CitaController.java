@@ -1,5 +1,6 @@
 package com.utp.veterinaria.Controller.GUsuarios;
 
+import com.utp.veterinaria.Config.JwtUtil;
 import com.utp.veterinaria.DTO.CitaDTO;
 import com.utp.veterinaria.DTO.CitaRequestDTO;
 import com.utp.veterinaria.DTO.DashboardDTO;
@@ -7,6 +8,7 @@ import com.utp.veterinaria.Model.GestionMedica.Mascota;
 import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
 import com.utp.veterinaria.Repository.GMedica.MascotaRepository;
 import com.utp.veterinaria.Service.GUsuarios.CitaService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,8 @@ import java.util.List;
 public class CitaController {
 
     private final CitaService citaService;
-
     private final MascotaRepository mascotaRepository;
+    private final JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<List<CitaDTO>> listarCitas() {
@@ -35,8 +37,14 @@ public class CitaController {
     }
 
     @GetMapping("/dashboard")
-    public ResponseEntity<DashboardDTO> getDashboard(){
-        return ResponseEntity.ok(citaService.getDashboard());
+    public ResponseEntity<DashboardDTO> getDashboard(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        String rol = jwtUtil.getRolFromToken(token);
+        Long trabajadorId = jwtUtil.getTrabajadorIdFromToken(token);
+        return ResponseEntity.ok(citaService.getDashboard(rol, trabajadorId));
     }
 
     @GetMapping("/cliente/{clienteId}")

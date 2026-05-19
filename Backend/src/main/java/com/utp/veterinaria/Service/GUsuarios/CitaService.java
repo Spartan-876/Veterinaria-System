@@ -130,7 +130,7 @@ public class CitaService {
         return toDTO(citaRepository.save(cita));
     }
 
-    public DashboardDTO getDashboard() {
+    public DashboardDTO getDashboard(String rol, Long trabajadorId) {
         LocalDate hoy = LocalDate.now();
         LocalDateTime inicioHoy = hoy.atStartOfDay();
         LocalDateTime finHoy = hoy.atTime(23, 59, 59);
@@ -141,27 +141,48 @@ public class CitaService {
 
         DashboardDTO dto = new DashboardDTO();
 
-        // Citas de hoy
-        List<Cita> citasHoy = citaRepository
-                .findByFechaHoraBetween(inicioHoy, finHoy);
-        dto.setCitasHoy(citasHoy.size());
-        dto.setCitasDeHoy(citasHoy.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList()));
+        boolean esAdminOrRecepcionista = "ROLE_ADMIN".equals(rol) || "ROLE_RECEPCIONISTA".equals(rol);
+        boolean esVeterinario = "ROLE_VET".equals(rol) || "ROLE_CIRUJANO".equals(rol);
 
-        // Ventas del mes (solo REALIZADAS)
-        double ventas = citaRepository
-                .findByFechaHoraBetween(inicioMes, finMes)
-                .stream()
-                .filter(c -> c.getEstado() == Cita.EstadoCita.REALIZADA)
-                .filter(c -> c.getServicio() != null)
-                .mapToDouble(c -> c.getServicio().getPrecio())
-                .sum();
-        dto.setVentasMes(ventas);
+        if (esAdminOrRecepcionista) {
+            List<Cita> citasHoy = citaRepository.findByFechaHoraBetween(inicioHoy, finHoy);
+            dto.setCitasHoy(citasHoy.size());
+            dto.setCitasDeHoy(citasHoy.stream().map(this::toDTO).collect(Collectors.toList()));
 
-        // Clientes y mascotas
-        dto.setClientesActivos(clienteRepository.count());
-        dto.setTotalMascotas(mascotaRepository.count());
+            double ventas = citaRepository.findByFechaHoraBetween(inicioMes, finMes)
+                    .stream()
+                    .filter(c -> c.getEstado() == Cita.EstadoCita.REALIZADA)
+                    .filter(c -> c.getServicio() != null)
+                    .mapToDouble(c -> c.getServicio().getPrecio())
+                    .sum();
+            dto.setVentasMes(ventas);
+            dto.setClientesActivos(clienteRepository.count());
+            dto.setTotalMascotas(mascotaRepository.count());
+        } else if (esVeterinario && trabajadorId != null) {
+            List<Cita> citasHoy = citaRepository.findByFechaHoraBetween(inicioHoy, finHoy)
+                    .stream()
+                    .filter(c -> c.getTrabajador() != null && c.getTrabajador().getId().equals(trabajadorId))
+                    .collect(Collectors.toList());
+            dto.setCitasHoy(citasHoy.size());
+            dto.setCitasDeHoy(citasHoy.stream().map(this::toDTO).collect(Collectors.toList()));
+
+            double ventas = citaRepository.findByFechaHoraBetween(inicioMes, finMes)
+                    .stream()
+                    .filter(c -> c.getTrabajador() != null && c.getTrabajador().getId().equals(trabajadorId))
+                    .filter(c -> c.getEstado() == Cita.EstadoCita.REALIZADA)
+                    .filter(c -> c.getServicio() != null)
+                    .mapToDouble(c -> c.getServicio().getPrecio())
+                    .sum();
+            dto.setVentasMes(ventas);
+            dto.setClientesActivos(clienteRepository.count());
+            dto.setTotalMascotas(mascotaRepository.count());
+        } else {
+            dto.setCitasHoy(0);
+            dto.setCitasDeHoy(new java.util.ArrayList<>());
+            dto.setVentasMes(0);
+            dto.setClientesActivos(clienteRepository.count());
+            dto.setTotalMascotas(mascotaRepository.count());
+        }
 
         return dto;
     }

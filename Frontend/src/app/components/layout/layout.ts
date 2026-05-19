@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { AuthService} from '../../services/auth.service';
+import { PermisosService } from '../../services/permisos.service';
 
 @Component({
   selector: 'app-layout',
@@ -23,7 +24,8 @@ export class Layout implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private permisosService: PermisosService
   ) {
   }
 
@@ -58,6 +60,10 @@ export class Layout implements OnInit {
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  tieneAcceso(modulo: string): boolean {
+    return this.permisosService.tieneAcceso(modulo);
   }
 
   get rolFormateado(): string {

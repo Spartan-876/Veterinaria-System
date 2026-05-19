@@ -22,6 +22,7 @@ import {MisCitas} from './components/inicio/mis-citas/mis-citas';
 import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
 import {Roles} from './components/layout/roles/roles';
 import {Usuarios} from './components/layout/usuarios/usuarios';
+import { RedirectToFirst } from './components/redirect-to-first';
 
 export const routes: Routes = [
   { path: 'login', component: Login, data: { title: 'Iniciar Sesión' } },
@@ -59,7 +60,7 @@ export const routes: Routes = [
       { path: 'servicios', component: Servicios, data: { title: 'Servicios' } },
       { path: 'roles', component: Roles, data: { title: 'Roles' } },
       { path: 'usuarios', component: Usuarios, data: { title: 'Usuarios' } },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: '', component: RedirectToFirst }
     ]
   },
 

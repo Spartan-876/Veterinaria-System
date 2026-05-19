@@ -64,6 +64,13 @@ public class AuthService {
                 .map(Rol::getNombre)
                 .collect(Collectors.toList());
 
+        // Obtener módulos de todos los roles del usuario
+        List<String> modulos = usuario.getRoles().stream()
+                .flatMap(r -> r.getModulos().stream())
+                .map(m -> m.getNombre())
+                .distinct()
+                .collect(Collectors.toList());
+
         Long trabajadorId = usuario.getTrabajador() != null
                 ? usuario.getTrabajador().getId()
                 : null;
@@ -81,9 +88,9 @@ public class AuthService {
             nombre = "ChrisoAdmin";
         }
 
-        String token = jwtUtil.generarToken(usuario.getCorreo(), rol);
+        String token = jwtUtil.generarToken(usuario.getCorreo(), rol, trabajadorId);
 
-        return new LoginResponse(token, usuario.getCorreo(), rol, roles, trabajadorId, nombre, clienteId);
+        return new LoginResponse(token, usuario.getCorreo(), rol, roles, modulos, trabajadorId, nombre, clienteId);
     }
 
     public void registrarCliente(RegistroClienteDTO dto) {

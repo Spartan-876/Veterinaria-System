@@ -170,7 +170,7 @@ export class Usuarios implements OnInit {
       estado: this.selectedUsuario.estado,
       clienteId: this.selectedUsuario.clienteId,
       trabajadorId: this.selectedUsuario.trabajadorId,
-      roles: this.selectedUsuario.roles
+      roles: this.selectedUsuario.roles || []
     };
 
     this.usuarioService.actualizar(this.selectedUsuario.id, request).subscribe({
