@@ -58,7 +58,8 @@ public class RolService {
         Rol rol = rolRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + id));
         
-        rol.setNombre(dto.getNombre());
+        // Preservar el nombre existente para evitar cambios accidentales
+        // Solo se permite actualizar los módulos asociados al rol
         
         if (dto.getModulos() != null) {
             Set<Modulo> modulos = new HashSet<>();

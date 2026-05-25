@@ -5,7 +5,7 @@
   </div>
 }
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+<div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-6 mb-8">
 
   @if (permisosService.tieneAcceso('CITAS')) {
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
@@ -131,7 +131,7 @@
 
       <div>
         <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Accesos rápidos</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-2">
           @if (permisosService.tieneAcceso('CITAS')) {
           <a routerLink="/admin/citas"
              class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">

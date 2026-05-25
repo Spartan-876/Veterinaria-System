@@ -67,7 +67,7 @@ export class Login {
   redirigirSegunRol(rol: string): void {
     const rolesDashboard = ['ROLE_ADMIN', 'ROLE_RECEPCIONISTA', 'ROLE_VET', 'ROLE_CIRUJANO', 'ROLE_ESTILISTA'];
     if (rolesDashboard.includes(rol)) {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/admin']);
     } else {
       this.router.navigate(['/inicio']);
     }

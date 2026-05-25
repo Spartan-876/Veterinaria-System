@@ -5,9 +5,11 @@ import { AuthService } from './auth.service';
 export class PermisosService {
 
   private readonly ORDEN_MODULOS = [
-    'CITAS', 'CLIENTES', 'MASCOTAS', 'VENTAS', 'SERVICIOS',
-    'PRODUCTOS', 'ENFERMEDADES', 'VACUNAS', 'TRABAJADORES',
-    'ROLES', 'USUARIOS', 'HORARIOS', 'AGENDA', 'PAGOS', 'DASHBOARD'
+    'DASHBOARD',
+    'ROLES', 'USUARIOS', 'HORARIOS',
+    'CLIENTES', 'TRABAJADORES',
+    'CITAS', 'AGENDA', 'MASCOTAS', 'ENFERMEDADES', 'VACUNAS',
+    'SERVICIOS', 'PRODUCTOS', 'VENTAS', 'PAGOS'
   ];
 
   constructor(private authService: AuthService) {}

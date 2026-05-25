@@ -66,6 +66,10 @@ export class Layout implements OnInit {
     return this.permisosService.tieneAcceso(modulo);
   }
 
+  tieneAccesoAlguno(modulos: string[]): boolean {
+    return modulos.some(m => this.permisosService.tieneAcceso(m));
+  }
+
   get rolFormateado(): string {
     const roles: Record<string, string> = {
       'ROLE_ADMIN': 'Administrador',
