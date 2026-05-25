@@ -14,7 +14,7 @@ public class LoginResponse {
     private String correo;
     private String rol;
     private List<String> roles;
-    private List<String> modulos;
+    private List<ModuloDTO> modulos;
     private Long trabajadorId;
     private String nombre;
     private Long clienteId;

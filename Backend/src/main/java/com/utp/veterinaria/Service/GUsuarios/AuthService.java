@@ -3,6 +3,7 @@ package com.utp.veterinaria.Service.GUsuarios;
 import com.utp.veterinaria.Config.JwtUtil;
 import com.utp.veterinaria.DTO.LoginRequest;
 import com.utp.veterinaria.DTO.LoginResponse;
+import com.utp.veterinaria.DTO.ModuloDTO;
 import com.utp.veterinaria.DTO.RegistroClienteDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Cliente;
 import com.utp.veterinaria.Model.GestionUsuarios.Rol;
@@ -60,11 +61,19 @@ public class AuthService {
                 .map(Rol::getNombre)
                 .collect(Collectors.toList());
 
-        // Obtener módulos de todos los roles del usuario
-        List<String> modulos = usuario.getRoles().stream()
+        // Obtener módulos de todos los roles del usuario (objetos completos)
+        List<ModuloDTO> modulosDTO = usuario.getRoles().stream()
                 .flatMap(r -> r.getModulos().stream())
-                .map(m -> m.getNombre())
                 .distinct()
+                .map(m -> new ModuloDTO(
+                    m.getId(), m.getNombre(), m.getDescripcion(),
+                    m.getNombreMostrar(), m.getRuta(), m.getIcono(),
+                    m.getOrden(), m.getGrupo()
+                ))
+                .collect(Collectors.toList());
+
+        List<String> nombresModulos = modulosDTO.stream()
+                .map(ModuloDTO::getNombre)
                 .collect(Collectors.toList());
 
         Long trabajadorId = usuario.getTrabajador() != null
@@ -86,9 +95,9 @@ public class AuthService {
             );
         }
 
-        String token = jwtUtil.generarToken(usuario.getCorreo(), rol, modulos, trabajadorId);
+        String token = jwtUtil.generarToken(usuario.getCorreo(), rol, nombresModulos, trabajadorId);
 
-        return new LoginResponse(token, usuario.getCorreo(), rol, roles, modulos, trabajadorId, nombre, clienteId);
+        return new LoginResponse(token, usuario.getCorreo(), rol, roles, modulosDTO, trabajadorId, nombre, clienteId);
     }
 
     public void registrarCliente(RegistroClienteDTO dto) {

@@ -17,4 +17,18 @@ public class Modulo {
 
     @Column(length = 100)
     private String descripcion;
+
+    @Column(length = 100)
+    private String nombreMostrar;
+
+    @Column(length = 200)
+    private String ruta;
+
+    @Column(length = 50)
+    private String icono;
+
+    private Integer orden;
+
+    @Column(length = 50)
+    private String grupo;
 }

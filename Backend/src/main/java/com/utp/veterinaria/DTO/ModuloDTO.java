@@ -11,4 +11,9 @@ public class ModuloDTO {
     private Long id;
     private String nombre;
     private String descripcion;
+    private String nombreMostrar;
+    private String ruta;
+    private String icono;
+    private Integer orden;
+    private String grupo;
 }

@@ -27,7 +27,11 @@ public class ModuloService {
         return toDTO(modulo);
     }
 
-    private ModuloDTO toDTO(Modulo modulo) {
-        return new ModuloDTO(modulo.getId(), modulo.getNombre(), modulo.getDescripcion());
+    public ModuloDTO toDTO(Modulo modulo) {
+        return new ModuloDTO(
+            modulo.getId(), modulo.getNombre(), modulo.getDescripcion(),
+            modulo.getNombreMostrar(), modulo.getRuta(), modulo.getIcono(),
+            modulo.getOrden(), modulo.getGrupo()
+        );
     }
 }

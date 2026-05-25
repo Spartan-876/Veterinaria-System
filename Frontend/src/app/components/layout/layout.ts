@@ -4,6 +4,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd, Acti
 import { filter, map } from 'rxjs/operators';
 import { AuthService} from '../../services/auth.service';
 import { PermisosService } from '../../services/permisos.service';
+import { Modulo } from '../../models/modulo';
 
 @Component({
   selector: 'app-layout',
@@ -66,8 +67,8 @@ export class Layout implements OnInit {
     return this.permisosService.tieneAcceso(modulo);
   }
 
-  tieneAccesoAlguno(modulos: string[]): boolean {
-    return modulos.some(m => this.permisosService.tieneAcceso(m));
+  get modulosConGrupos(): { grupo: string; modulos: Modulo[] }[] {
+    return this.permisosService.getModulosConGrupos();
   }
 
   get rolFormateado(): string {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { Modulo } from '../models/modulo';
 
 
 @Injectable({ providedIn: 'root' })
@@ -64,7 +65,7 @@ export class AuthService {
     return rol ? [rol] : [];
   }
 
-  getModulos(): string[] {
+  getModulos(): Modulo[] {
     const modulosJson = localStorage.getItem('modulos');
     if (modulosJson) {
       return JSON.parse(modulosJson);
