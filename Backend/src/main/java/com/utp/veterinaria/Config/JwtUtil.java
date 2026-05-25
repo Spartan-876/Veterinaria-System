@@ -24,10 +24,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generarToken(String correo, String rol, Long trabajadorId) {
-        return generarToken(correo, rol, Collections.emptyList(), trabajadorId);
-    }
-
     public String generarToken(String correo, String rol, List<String> modulos, Long trabajadorId) {
         return Jwts.builder()
                 .subject(correo)

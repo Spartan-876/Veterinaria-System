@@ -11,4 +11,6 @@ public class DashboardDTO {
     private long totalMascotas;
     private double ventasMes;
     private List<CitaDTO> citasDeHoy;
+    private long totalMedicos;
+    private long totalCitasProgramadas;
 }

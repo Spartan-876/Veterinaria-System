@@ -2,13 +2,10 @@ package com.utp.veterinaria.Service.GUsuarios;
 
 import com.utp.veterinaria.DTO.TrabajadorRequestDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
-import com.utp.veterinaria.Repository.GUsuarios.RolRepository;
 import com.utp.veterinaria.Repository.GUsuarios.TrabajadorRepository;
-import com.utp.veterinaria.Repository.GUsuarios.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +17,6 @@ public class TrabajadorService {
     private static final Logger logger = LoggerFactory.getLogger(TrabajadorService.class);
 
     private final TrabajadorRepository trabajadorRepository;
-
-    private final UsuarioRepository usuarioRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
-    private final RolRepository rolRepository;
 
     public List<Trabajador> listarActivos() {
         logger.info("TRABAJADORES ACTIVOS LISTADOS");

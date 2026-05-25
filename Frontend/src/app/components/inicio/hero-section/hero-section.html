@@ -1,51 +1,58 @@
-<section class="relative h-[200vh] w-full bg-[#f8faf8] overflow-hidden">
-  <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+<section class="relative min-h-screen w-full bg-[#f8faf8] flex flex-col items-center justify-center overflow-hidden">
 
-    <div
-      class="absolute inset-0 z-0 transition-transform duration-75 ease-out"
-      [style.transform]="'scale(' + imageScale + ')'"
-      [style.opacity]="scrollOpacity">
-      <img
-        src="https://png.pngtree.com/png-clipart/20230317/original/pngtree-cat-footprint-border-cartoon-cute-paw-print-cat-png-image_8994373.png"
-        alt="Veterinaria Huellitas"
-        class="w-full h-full object-cover object-center"
-      />
-      <div class="absolute inset-0 bg-gradient-to-b from-[#f8faf8]/80 via-[#f8faf8]/20 to-[#f8faf8]"></div>
+  <div class="absolute inset-0 z-0">
+    <img
+      src="https://png.pngtree.com/png-clipart/20230317/original/pngtree-cat-footprint-border-cartoon-cute-paw-print-cat-png-image_8994373.png"
+      alt="Veterinaria Huellitas"
+      class="w-full h-full object-cover object-center"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-[#f8faf8]/80 via-[#f8faf8]/20 to-[#f8faf8]"></div>
+  </div>
+
+  <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 py-24">
+    <span class="fade-in block !font-mono text-xs uppercase tracking-[0.5em] mb-4 text-emerald-900">
+      Cuidado Profesional
+    </span>
+
+    <h1 class="fade-in-up text-6xl md:text-[10rem] font-bold leading-none tracking-tighter mb-6 text-[#1b1b1b]">
+      Huellitas
+    </h1>
+
+    <p class="fade-in-delay max-w-lg mx-auto text-lg md:text-xl font-light mb-12 text-black">
+      Porque su bienestar es nuestra misión. Medicina veterinaria de alta precisión con el amor que ellos merecen.
+    </p>
+
+    <div class="fade-in-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a routerLink="/servicios"
+         class="px-10 py-4 rounded-full border border-[#2d6a4f] text-[#2d6a4f] text-sm uppercase tracking-widest hover:bg-[#2d6a4f] hover:text-white transition-all duration-500">
+        Nuestros Servicios
+      </a>
+      <a routerLink="/agendar-cita"
+         class="px-10 py-4 rounded-full bg-[#2d6a4f] text-white text-sm uppercase tracking-widest hover:bg-transparent hover:text-[#2d6a4f] border border-[#2d6a4f] transition-all duration-500">
+        Agendar Cita
+      </a>
     </div>
+  </div>
 
-    <div
-      class="relative z-10 text-center px-6 text-[#1b1b1b]"
-      [style.transform]="'translateY(' + textY + 'px)'"
-      [style.opacity]="scrollOpacity">
-
-      <span class="fade-in block !font-mono text-xs uppercase tracking-[0.5em] mb-4 text-emerald-900">
-        Cuidado Profesional
-      </span>
-
-      <h1 class="fade-in-up text-6xl md:text-[10rem] font-bold leading-none tracking-tighter mb-6 text-[#1b1b1b]">
-        Huellitas
-      </h1>
-
-      <p class="fade-in-delay max-w-lg mx-auto text-lg md:text-xl font-light mb-12 text-black">
-        Porque su bienestar es nuestra misión. Medicina veterinaria de alta precisión con el amor que ellos merecen.
-      </p>
-
-      <div class="fade-in-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a [routerLink]="['/inicio']" fragment="services"
-           class="px-10 py-4 rounded-full border border-[#2d6a4f] text-[#2d6a4f] text-sm uppercase tracking-widest hover:bg-[#2d6a4f] hover:text-white transition-all duration-500">
-          Nuestros Servicios
-        </a>
-        <a routerLink="/agendar-cita"
-           class="px-10 py-4 rounded-full bg-[#2d6a4f] text-white text-sm uppercase tracking-widest hover:bg-transparent hover:text-[#2d6a4f] border border-[#2d6a4f] transition-all duration-500">
-          Agendar Cita
-        </a>
+  <div class="relative z-10 w-full pb-16 px-6">
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="text-center fade-in-up">
+        <h4 class="text-3xl md:text-4xl font-display mb-1 text-[#2d6a4f]">+7 Años</h4>
+        <p class="text-[10px] uppercase tracking-widest text-[#6b7280]">Experiencia Clínica</p>
+      </div>
+      <div class="text-center fade-in-up">
+        <h4 class="text-3xl md:text-4xl font-display mb-1 text-[#2d6a4f]">24/7</h4>
+        <p class="text-[10px] uppercase tracking-widest text-[#6b7280]">Atención Emergencias</p>
+      </div>
+      <div class="text-center fade-in-up">
+        <h4 class="text-3xl md:text-4xl font-display mb-1 text-[#2d6a4f]">+5000</h4>
+        <p class="text-[10px] uppercase tracking-widest text-[#6b7280]">Pacientes Atendidos</p>
+      </div>
+      <div class="text-center fade-in-up">
+        <h4 class="text-3xl md:text-4xl font-display mb-1 text-[#2d6a4f]">3</h4>
+        <p class="text-[10px] uppercase tracking-widest text-[#6b7280]">Sucursales</p>
       </div>
     </div>
-
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-      <span class="text-[10px] uppercase tracking-widest text-[#2d6a4f]">Desliza</span>
-      <div class="w-[1px] h-12 bg-gradient-to-b from-[#2d6a4f] to-transparent"></div>
-    </div>
-
   </div>
+
 </section>

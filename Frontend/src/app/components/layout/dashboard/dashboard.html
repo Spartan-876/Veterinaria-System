@@ -5,66 +5,88 @@
   </div>
 }
 
-@if (!cargando) {
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-
-    @if (permisosService.tieneAcceso('CITAS')) {
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Citas Hoy</p>
-          <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.citasHoy }}</h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-cyan-500 flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">calendar_today</span>
-        </div>
+  @if (permisosService.tieneAcceso('CITAS')) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <p class="text-sm text-gray-600 font-medium">Citas Hoy</p>
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.citasHoy }}</h3>
       </div>
-    </div>
-    }
-
-    @if (permisosService.tieneAcceso('CLIENTES')) {
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Clientes Activos</p>
-          <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.clientesActivos }}</h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">group</span>
-        </div>
-      </div>
-    </div>
-    }
-
-    @if (permisosService.tieneAcceso('VENTAS') || permisosService.tieneAcceso('PAGOS')) {
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Ventas del Mes (Citas)</p>
-          <h3 class="text-3xl font-bold text-emerald-600 mt-1">
-            S/ {{ data.ventasMes | number:'1.2-2' }}
-          </h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-[#0D72C5] flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">payments</span>
-        </div>
-      </div>
-    </div>
-    }
-
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Mascotas</p>
-          <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.totalMascotas }}</h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-purple-500 flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">pets</span>
-        </div>
+      <div class="w-14 h-14 rounded-xl bg-cyan-500 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-3xl">calendar_today</span>
       </div>
     </div>
   </div>
+  }
+
+@if (permisosService.tieneAcceso('CLIENTES')) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <p class="text-sm text-gray-600 font-medium">Clientes Activos</p>
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.clientesActivos }}</h3>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-3xl">group</span>
+      </div>
+    </div>
+  </div>
+}
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <p class="text-sm text-gray-600 font-medium">Médicos Activos</p>
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.totalMedicos }}</h3>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-green-500 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-3xl">stethoscope</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <p class="text-sm text-gray-600 font-medium">Citas Programadas</p>
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.totalCitasProgramadas }}</h3>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-indigo-500 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-3xl">schedule</span>
+      </div>
+    </div>
+  </div>
+
+  @if (permisosService.tieneAcceso('VENTAS') || permisosService.tieneAcceso('PAGOS')) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <p class="text-sm text-gray-600 font-medium">Ventas del Mes (Citas)</p>
+        <h3 class="text-3xl font-bold text-emerald-600 mt-1">
+          S/ {{ data.ventasMes | number:'1.2-2' }}
+        </h3>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-[#0D72C5] flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-3xl">payments</span>
+      </div>
+    </div>
+  </div>
+  }
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <p class="text-sm text-gray-600 font-medium">Mascotas</p>
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.totalMascotas }}</h3>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-purple-500 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-3xl">pets</span>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -83,9 +105,8 @@
           <p class="text-2xl font-black text-yellow-700">
             {{ contarEstado('PENDIENTE') }}
           </p>
-        </div>
-      </div>
-
+</div>
+</div>
       @if (data.citasDeHoy.length > 0) {
         <div class="mb-6">
           <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
@@ -184,8 +205,5 @@
           </div>
         }
       </div>
-    </div>
+</div>
 
-  </div>
-
-}

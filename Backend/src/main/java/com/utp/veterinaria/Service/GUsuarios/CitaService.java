@@ -130,63 +130,48 @@ public class CitaService {
         return toDTO(citaRepository.save(cita));
     }
 
-    public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
-        LocalDate hoy = LocalDate.now();
-        LocalDateTime inicioHoy = hoy.atStartOfDay();
-        LocalDateTime finHoy = hoy.atTime(23, 59, 59);
+public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
+    LocalDate hoy = LocalDate.now();
+    LocalDateTime inicioHoy = hoy.atStartOfDay();
+    LocalDateTime finHoy = hoy.atTime(23, 59, 59);
+    LocalDateTime inicioMes = hoy.withDayOfMonth(1).atStartOfDay();
+    LocalDateTime finMes = hoy.withDayOfMonth(hoy.lengthOfMonth()).atTime(23, 59, 59);
 
-        LocalDateTime inicioMes = hoy.withDayOfMonth(1).atStartOfDay();
-        LocalDateTime finMes = hoy.withDayOfMonth(
-                hoy.lengthOfMonth()).atTime(23, 59, 59);
+    DashboardDTO dto = new DashboardDTO();
 
-        DashboardDTO dto = new DashboardDTO();
+    // Métricas globales (disponibles para todos los roles)
+    dto.setClientesActivos(clienteRepository.count());
+    dto.setTotalMascotas(mascotaRepository.count());
+    dto.setTotalMedicos(trabajadorRepository.countMedicosActivos());
+    dto.setTotalCitasProgramadas(citaRepository.countCitasProgramadas());
 
-        boolean tieneCitas = modulos != null && modulos.contains("CITAS");
-        boolean tieneClientes = modulos != null && modulos.contains("CLIENTES");
-        boolean tieneVentas = modulos != null && modulos.contains("VENTAS");
+    boolean tieneCitas = modulos != null && modulos.contains("CITAS");
+    boolean tieneClientes = modulos != null && modulos.contains("CLIENTES");
+    boolean tieneVentas = modulos != null && modulos.contains("VENTAS");
 
-        if (tieneCitas && (tieneClientes || tieneVentas)) {
-            List<Cita> citasHoy = citaRepository.findByFechaHoraBetween(inicioHoy, finHoy);
-            dto.setCitasHoy(citasHoy.size());
-            dto.setCitasDeHoy(citasHoy.stream().map(this::toDTO).collect(Collectors.toList()));
-
-            double ventas = citaRepository.findByFechaHoraBetween(inicioMes, finMes)
+    if (tieneCitas) {
+        if (tieneClientes || tieneVentas) {
+            // Vista de admin: todas las citas
+            dto.setCitasHoy(citaRepository.countCitasHoy(inicioHoy, finHoy));
+            dto.setVentasMes(citaRepository.sumVentasMes(inicioMes, finMes));
+            dto.setCitasDeHoy(citaRepository.findByFechaHoraBetween(inicioHoy, finHoy)
                     .stream()
-                    .filter(c -> c.getEstado() == Cita.EstadoCita.REALIZADA)
-                    .filter(c -> c.getServicio() != null)
-                    .mapToDouble(c -> c.getServicio().getPrecio())
-                    .sum();
-            dto.setVentasMes(ventas);
-            dto.setClientesActivos(clienteRepository.count());
-            dto.setTotalMascotas(mascotaRepository.count());
-        } else if (tieneCitas && trabajadorId != null) {
-            List<Cita> citasHoy = citaRepository.findByFechaHoraBetween(inicioHoy, finHoy)
+                    .map(this::toDTO)
+                    .collect(Collectors.toList()));
+        } else if (trabajadorId != null) {
+            // Vista de médico: solo sus citas
+            dto.setCitasHoy(citaRepository.countCitasHoyTrabajador(trabajadorId, inicioHoy, finHoy));
+            dto.setVentasMes(citaRepository.sumVentasMesTrabajador(trabajadorId, inicioMes, finMes));
+            dto.setCitasDeHoy(citaRepository.findByTrabajadorIdAndFechaHoraBetween(
+                    trabajadorId, inicioHoy, finHoy)
                     .stream()
-                    .filter(c -> c.getTrabajador() != null && c.getTrabajador().getId().equals(trabajadorId))
-                    .collect(Collectors.toList());
-            dto.setCitasHoy(citasHoy.size());
-            dto.setCitasDeHoy(citasHoy.stream().map(this::toDTO).collect(Collectors.toList()));
-
-            double ventas = citaRepository.findByFechaHoraBetween(inicioMes, finMes)
-                    .stream()
-                    .filter(c -> c.getTrabajador() != null && c.getTrabajador().getId().equals(trabajadorId))
-                    .filter(c -> c.getEstado() == Cita.EstadoCita.REALIZADA)
-                    .filter(c -> c.getServicio() != null)
-                    .mapToDouble(c -> c.getServicio().getPrecio())
-                    .sum();
-            dto.setVentasMes(ventas);
-            dto.setClientesActivos(clienteRepository.count());
-            dto.setTotalMascotas(mascotaRepository.count());
-        } else {
-            dto.setCitasHoy(0);
-            dto.setCitasDeHoy(new java.util.ArrayList<>());
-            dto.setVentasMes(0);
-            dto.setClientesActivos(clienteRepository.count());
-            dto.setTotalMascotas(mascotaRepository.count());
+                    .map(this::toDTO)
+                    .collect(Collectors.toList()));
         }
-
-        return dto;
     }
+
+    return dto;
+}
 
     public List<CitaDTO> listarPorCliente(Long clienteId) {
         return citaRepository.findByMascotaClienteId(clienteId)

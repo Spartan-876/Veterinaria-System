@@ -19,6 +19,8 @@ interface DashboardData {
   citasHoy: number;
   clientesActivos: number;
   totalMascotas: number;
+  totalMedicos: number;
+  totalCitasProgramadas: number;
   ventasMes: number;
   citasDeHoy: CitaHoy[];
 }
@@ -28,7 +30,7 @@ interface DashboardData {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
-  changeDetection: ChangeDetectionStrategy.OnPush, // ✅
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard implements OnInit {
 
@@ -36,6 +38,8 @@ export class Dashboard implements OnInit {
     citasHoy: 0,
     clientesActivos: 0,
     totalMascotas: 0,
+    totalMedicos: 0,
+    totalCitasProgramadas: 0,
     ventasMes: 0,
     citasDeHoy: []
   };
@@ -57,7 +61,15 @@ export class Dashboard implements OnInit {
       .subscribe({
         next: (data) => {
           Promise.resolve().then(() => {
-            this.data = { ...data };
+            this.data = { 
+              citasHoy: data.citasHoy,
+              clientesActivos: data.clientesActivos,
+              totalMascotas: data.totalMascotas,
+              totalMedicos: data.totalMedicos,
+              totalCitasProgramadas: data.totalCitasProgramadas,
+              ventasMes: data.ventasMes,
+              citasDeHoy: data.citasDeHoy
+            };
             this.cargando = false;
             this.cdr.markForCheck();
           });

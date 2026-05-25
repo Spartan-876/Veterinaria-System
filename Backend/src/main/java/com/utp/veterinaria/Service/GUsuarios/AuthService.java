@@ -9,7 +9,6 @@ import com.utp.veterinaria.Model.GestionUsuarios.Rol;
 import com.utp.veterinaria.Model.GestionUsuarios.Usuario;
 import com.utp.veterinaria.Repository.GUsuarios.ClienteRepository;
 import com.utp.veterinaria.Repository.GUsuarios.RolRepository;
-import com.utp.veterinaria.Repository.GUsuarios.TrabajadorRepository;
 import com.utp.veterinaria.Repository.GUsuarios.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ public class AuthService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private TrabajadorRepository trabajadorRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -85,7 +81,9 @@ public class AuthService {
         } else if (usuario.getCliente() != null) {
             nombre = usuario.getCliente().getNombres();
         } else {
-            nombre = "ChrisoAdmin";
+            throw new IllegalStateException(
+                "Usuario sin perfil de trabajador o cliente asociado: " + usuario.getCorreo()
+            );
         }
 
         String token = jwtUtil.generarToken(usuario.getCorreo(), rol, modulos, trabajadorId);
