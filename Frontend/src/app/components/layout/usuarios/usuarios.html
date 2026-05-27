@@ -254,38 +254,19 @@
         </select>
       </div>
 
-      <!-- Cliente -->
+      <!-- Asignar persona -->
       <div class="field">
-        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-          <i class="pi pi-user text-primary-dark"></i>
-          Cliente (opcional)
+        <label class="flex items-center gap-2 cursor-pointer mb-3">
+          <input type="checkbox" [(ngModel)]="esTrabajador"
+                 class="w-4 h-4 accent-primary-dark rounded">
+          <span class="text-sm text-on-surface-variant">Asignar a un trabajador</span>
         </label>
-        <select
-          [(ngModel)]="nuevoUsuario.clienteId"
-          class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white"
-        >
-          <option [ngValue]="null">Sin cliente</option>
-          <option *ngFor="let c of clientes" [ngValue]="c.id">
-            {{ c.nombres }} {{ c.apellidos }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Trabajador -->
-      <div class="field">
-        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-          <i class="pi pi-briefcase text-primary-dark"></i>
-          Trabajador (opcional)
-        </label>
-        <select
-          [(ngModel)]="nuevoUsuario.trabajadorId"
-          class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white"
-        >
-          <option [ngValue]="null">Sin trabajador</option>
-          <option *ngFor="let t of trabajadores" [ngValue]="t.id">
-            {{ t.nombres }} {{ t.apellidos }} ({{ t.cargo }})
-          </option>
-        </select>
+        <p-select [options]="personasFiltradas" [(ngModel)]="personaId"
+                  optionLabel="nombreCompleto" optionValue="id"
+                  [filter]="true" [showClear]="true"
+                  [placeholder]="esTrabajador ? 'Buscar trabajador...' : 'Buscar cliente...'"
+                  class="w-full">
+        </p-select>
       </div>
 
       <!-- Roles -->
@@ -390,38 +371,19 @@
         </select>
       </div>
 
-      <!-- Cliente -->
+      <!-- Asignar persona -->
       <div class="field">
-        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-          <i class="pi pi-user text-primary-dark"></i>
-          Cliente
+        <label class="flex items-center gap-2 cursor-pointer mb-3">
+          <input type="checkbox" [(ngModel)]="esTrabajador"
+                 class="w-4 h-4 accent-primary-dark rounded">
+          <span class="text-sm text-on-surface-variant">Asignar a un trabajador</span>
         </label>
-        <select
-          [(ngModel)]="selectedUsuario.clienteId"
-          class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white"
-        >
-          <option [ngValue]="null">Sin cliente</option>
-          <option *ngFor="let c of clientes" [ngValue]="c.id">
-            {{ c.nombres }} {{ c.apellidos }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Trabajador -->
-      <div class="field">
-        <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-          <i class="pi pi-briefcase text-primary-dark"></i>
-          Trabajador
-        </label>
-        <select
-          [(ngModel)]="selectedUsuario.trabajadorId"
-          class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white"
-        >
-          <option [ngValue]="null">Sin trabajador</option>
-          <option *ngFor="let t of trabajadores" [ngValue]="t.id">
-            {{ t.nombres }} {{ t.apellidos }} ({{ t.cargo }})
-          </option>
-        </select>
+        <p-select [options]="personasFiltradas" [(ngModel)]="personaId"
+                  optionLabel="nombreCompleto" optionValue="id"
+                  [filter]="true" [showClear]="true"
+                  [placeholder]="esTrabajador ? 'Buscar trabajador...' : 'Buscar cliente...'"
+                  class="w-full">
+        </p-select>
       </div>
 
       <!-- Roles -->

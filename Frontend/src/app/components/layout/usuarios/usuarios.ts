@@ -40,6 +40,9 @@ export class Usuarios implements OnInit {
   selectedUsuario: Usuario = {} as Usuario;
   nuevoUsuario: UsuarioRequest = this.getEmptyUsuario();
 
+  esTrabajador = false;
+  personaId: number | null = null;
+
   first: number = 0;
   rows: number = 8;
 
@@ -131,6 +134,8 @@ export class Usuarios implements OnInit {
   abrirNuevo(): void {
     this.nuevoUsuario = this.getEmptyUsuario();
     this.nuevoUsuario.roles = [];
+    this.esTrabajador = false;
+    this.personaId = null;
     this.displayNew = true;
   }
 
@@ -139,6 +144,8 @@ export class Usuarios implements OnInit {
       ...usuario, 
       roles: usuario.roles || [] 
     };
+    this.esTrabajador = !!usuario.trabajadorId;
+    this.personaId = usuario.trabajadorId || usuario.clienteId || null;
     this.displayEdit = true;
   }
 
@@ -152,6 +159,9 @@ export class Usuarios implements OnInit {
       this.toast.warn('Ingrese correo y contraseña');
       return;
     }
+
+    this.nuevoUsuario.clienteId = this.esTrabajador ? null : this.personaId;
+    this.nuevoUsuario.trabajadorId = this.esTrabajador ? this.personaId : null;
 
     this.usuarioService.crear(this.nuevoUsuario).subscribe({
       next: () => {
@@ -168,8 +178,8 @@ export class Usuarios implements OnInit {
       correo: this.selectedUsuario.correo,
       password: '',
       estado: this.selectedUsuario.estado,
-      clienteId: this.selectedUsuario.clienteId,
-      trabajadorId: this.selectedUsuario.trabajadorId,
+      clienteId: this.esTrabajador ? null : this.personaId,
+      trabajadorId: this.esTrabajador ? this.personaId : null,
       roles: this.selectedUsuario.roles || []
     };
 
@@ -238,6 +248,19 @@ export class Usuarios implements OnInit {
       return this.getTrabajadorNombre(usuario.trabajadorId);
     }
     return 'Sin asignar';
+  }
+
+  get personasFiltradas(): any[] {
+    if (this.esTrabajador) {
+      return this.trabajadores.map(t => ({
+        ...t,
+        nombreCompleto: `${t.nombres} ${t.apellidos} (${t.cargo})`
+      }));
+    }
+    return this.clientes.map(c => ({
+      ...c,
+      nombreCompleto: `${c.nombres} ${c.apellidos}`
+    }));
   }
 
   getUsuarioTipo(usuario: any): string {
