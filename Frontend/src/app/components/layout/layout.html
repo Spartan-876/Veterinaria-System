@@ -1,46 +1,53 @@
-<div class="flex h-screen w-full bg-gray-200 overflow-hidden">
+<div class="flex h-screen w-full bg-surface-container overflow-hidden">
   <!-- SIDEBAR -->
   <aside
     [class]="sidebarOpen ? 'w-64' : 'w-16'"
-    class="bg-[#102139] text-white flex flex-col shadow-xl transition-all duration-300 ease-in-out overflow-hidden"
+    class="bg-[#102139] text-white flex flex-col shadow-xl transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0"
   >
     <!-- HEADER LOGO -->
-    <div
-      class="p-4 flex flex-col items-center border-b border-slate-700 min-h-[80px] justify-center flex-shrink-0"
-    >
+    <div class="p-4 flex flex-col items-center border-b border-slate-700 min-h-[72px] justify-center flex-shrink-0">
       @if (sidebarOpen) {
         <div class="flex flex-col items-center w-full transition-opacity duration-200">
-          <img src="logo.png" alt="Logo" class="w-24 h-auto object-contain" />
-          <p
-            class="text-xs text-gray-400 font-medium tracking-widest uppercase border-t border-gray-600 pt-2 mt-1"
-          >
-            Panel Administrativo
-          </p>
+          <a routerLink="/admin" class="font-display text-xl tracking-tighter text-white">Huellitas</a>
+          <span class="text-[10px] text-slate-400 font-medium tracking-widest uppercase mt-0.5">Gestión Clínica</span>
         </div>
       } @else {
-        <div class="w-8 h-8 bg-blue-primary rounded-lg flex items-center justify-center">
-          <span class="material-symbols-outlined text-sm">pets</span>
+        <a routerLink="/admin" class="w-8 h-8 rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">pets</span>
+        </a>
+      }
+    </div>
+
+    <!-- PERFIL -->
+    <div class="flex items-center gap-3 px-4 py-3 border-b border-slate-700">
+      <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+        {{ inicial }}
+      </div>
+      @if (sidebarOpen) {
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-medium text-white truncate">{{ nombre }}</p>
+          <p class="text-[10px] text-slate-400 truncate">{{ rolFormateado }}</p>
         </div>
       }
     </div>
 
     <!-- NAV LINKS -->
-    <nav class="flex-1 overflow-y-auto mt-4 px-2 scrollbar-thin">
+    <nav class="flex-1 overflow-y-auto mt-4 px-2 dark-scroll">
       @for (grupo of modulosConGrupos; track $index) {
         @if (grupo.grupo) {
           <hr class="border-slate-700/50 my-3" />
           @if (sidebarOpen) {
-            <span class="text-[10px] uppercase tracking-widest text-slate-500 px-3 block mb-1">{{ grupo.grupo }}</span>
+            <span class="text-[10px] uppercase tracking-widest text-slate-500 px-3 block mb-1 font-semibold">{{ grupo.grupo }}</span>
           }
         }
         <div class="space-y-1">
           @for (modulo of grupo.modulos; track modulo.nombre) {
             <a [routerLink]="modulo.ruta"
-               routerLinkActive="bg-blue-primary text-white"
-               class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-blue-hover hover:text-white transition-colors group relative">
-              <span class="material-symbols-outlined flex-shrink-0">{{ modulo.icono }}</span>
+               routerLinkActive="bg-primary text-white"
+               class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-primary hover:text-white transition-colors group relative">
+              <span class="material-symbols-outlined flex-shrink-0 text-base">{{ modulo.icono }}</span>
               @if (sidebarOpen) {
-                <span class="whitespace-nowrap">{{ modulo.nombreMostrar }}</span>
+                <span class="whitespace-nowrap text-sm">{{ modulo.nombreMostrar }}</span>
               } @else {
                 <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
                   {{ modulo.nombreMostrar }}
@@ -52,20 +59,15 @@
       }
     </nav>
 
-    <!-- FOOTER: CERRAR SESIÓN -->
-    <div class="p-2 border-t border-slate-700 flex-shrink-0">
-      <button
-        (click)="cerrarSesion()"
-        class="flex items-center cursor-pointer gap-3 p-3 text-red-600 py-2.5 hover:text-red-500 w-full group relative rounded-lg hover:bg-red-400/10 transition-colors"
-      >
-        <span class="material-symbols-outlined text-xl flex-shrink-0">exit_to_app</span>
+    <!-- CERRAR SESIÓN -->
+    <div class="p-3 border-t border-slate-700 flex-shrink-0 flex flex-col gap-2">
+      <button (click)="cerrarSesion()"
+              class="flex items-center cursor-pointer gap-3 px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-400/10 hover:text-red-300 transition-colors w-full group relative text-sm">
+        <span class="material-symbols-outlined text-base flex-shrink-0">logout</span>
         @if (sidebarOpen) {
-          <span class="whitespace-nowrap">Cerrar Sesión</span>
+          <span>Cerrar Sesión</span>
         } @else {
-          <span
-            class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg"
-            >Cerrar Sesión</span
-          >
+          <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">Cerrar Sesión</span>
         }
       </button>
     </div>
@@ -73,35 +75,22 @@
 
   <!-- CONTENIDO PRINCIPAL -->
   <div class="flex-1 flex flex-col overflow-hidden transition-all duration-300">
-    <header class="bg-white h-16 shadow-sm flex items-center justify-between px-6 flex-shrink-0">
+    <header class="bg-white h-16 flex items-center justify-between px-6 flex-shrink-0 border-b border-outline-variant">
       <div class="flex items-center gap-4">
-        <button
-          (click)="toggleSidebar()"
-          class="w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-blue-primary transition-colors"
-        >
+        <button (click)="toggleSidebar()"
+                class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">
           <span class="material-symbols-outlined">menu</span>
         </button>
-        <div class="flex items-center space-x-4">
-          <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
-          <span class="text-gray-400">|</span>
-          <p class="font-bold text-gray-800">{{ titulo }}</p>
+        <div class="flex items-center gap-3">
+          <h1 class="text-xl font-display font-semibold text-on-surface">Dashboard</h1>
+          <span class="text-outline-variant">|</span>
+          <p class="text-sm font-medium text-on-surface-variant">{{ titulo }}</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <div class="text-right">
-          <p class="text-sm font-bold text-black leading-none">{{ nombre.toUpperCase() }}</p>
-          <p class="text-[10px] text-slate-500">{{ rolFormateado }}</p>
-        </div>
-        <div
-          class="w-10 h-10 bg-blue-primary text-white rounded-full flex items-center justify-center font-bold"
-        >
-          {{ inicial }}
-        </div>
-      </div>
-    </header>
+</header>
 
-    <main class="flex-1 overflow-y-auto p-8">
+    <main class="flex-1 overflow-y-auto p-6">
       <router-outlet></router-outlet>
     </main>
   </div>

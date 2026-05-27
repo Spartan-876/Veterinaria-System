@@ -1,17 +1,17 @@
-<section id="products" class="py-32 px-6 bg-white text-[#1b1b1b]">
+<section id="products" class="py-32 px-6 bg-surface-container text-on-surface">
   <div class="max-w-7xl mx-auto">
 
     <div class="mb-20">
-      <span class="font-mono text-xs uppercase tracking-[0.3em] text-[#52b788] mb-4 block">Tienda</span>
-      <h2 class="text-5xl md:text-7xl font-display text-[#1b1b1b]">Nuestros Productos</h2>
+      <span class="section-label">Tienda</span>
+      <h2 class="text-5xl md:text-7xl font-display text-on-surface">Nuestros Productos</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div
         *ngFor="let producto of productosMostrados; let i = index"
-        class="border border-gray-200 hover:border-[#52b788]/40 hover:shadow-lg hover:shadow-[#52b788]/10 transition-all group overflow-hidden flex flex-col rounded-xl bg-[#f8faf8]">
+        class="card card-hover overflow-hidden flex flex-col bg-white">
 
-        <div class="relative overflow-hidden h-56">
+        <div class="relative overflow-hidden h-40">
           <img
             [src]="producto.imagen_url"
             [alt]="producto.nombre"
@@ -19,36 +19,69 @@
           <span
             class="absolute top-3 right-3 font-mono text-[10px] uppercase tracking-widest px-2 py-1 rounded-full"
             [ngClass]="{
-              'text-[#2d6a4f] bg-[#d8f3dc]': producto.stock > 0,
+              'text-primary-dark bg-primary-container': producto.stock > 0,
               'text-red-500 bg-red-50': producto.stock === 0
             }">
             {{ producto.stock > 0 ? 'En stock' : 'Agotado' }}
           </span>
-          <span
-            class="absolute bottom-3 left-3 font-mono text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity">
-            0{{ i + 1 }}
-          </span>
         </div>
 
-        <div class="p-6 flex flex-col flex-1">
-          <h3 class="text-xl mb-2 text-[#1b1b1b] font-semibold">{{ producto.nombre }}</h3>
-          <p class="text-sm text-[#6b7280] leading-relaxed mb-6">{{ producto.descripcion }}</p>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg mb-1 text-on-surface font-semibold">{{ producto.nombre }}</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed mb-4 line-clamp-2">{{ producto.descripcion }}</p>
           <div class="flex items-center justify-between mt-auto">
-            <span class="font-mono text-sm font-bold text-[#2d6a4f]">S/. {{ producto.precio }}</span>
-            <button
-              (click)="agregarAlCarrito(producto)"
-              [disabled]="producto.stock === 0"
-              class="flex items-center gap-2 px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded-xl transition-all cursor-pointer"
-              [ngClass]="producto.stock > 0
-                ? 'border-[#2d6a4f] text-[#2d6a4f] hover:bg-[#2d6a4f] hover:text-white'
-                : 'border-gray-200 text-gray-300 cursor-not-allowed'">
-              <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
-              Agregar
+            <span class="font-mono text-sm font-bold text-primary-dark">S/. {{ producto.precio }}</span>
+            <button (click)="verDetalle(producto)"
+                    class="inline-flex items-center gap-1 text-sm font-semibold text-primary-dark hover:text-primary transition-colors cursor-pointer bg-transparent border-none">
+              Ver más
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </div>
+          <button
+            (click)="agregarAlCarrito(producto)"
+            [disabled]="producto.stock === 0"
+            class="w-full mt-3 flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all cursor-pointer"
+            [ngClass]="producto.stock > 0
+              ? 'bg-primary text-white hover:bg-primary-darker shadow-sm'
+              : 'bg-gray-100 text-gray-300 cursor-not-allowed'">
+            <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+            Agregar al carrito
+          </button>
         </div>
       </div>
     </div>
 
   </div>
+
+  <p-dialog header="{{ productoSeleccionado?.nombre }}" [(visible)]="dialogVisible" [modal]="true" [style]="{width: '40rem'}" (onHide)="productoSeleccionado = null">
+    <div *ngIf="productoSeleccionado" class="flex gap-6 min-h-[300px]">
+      <div class="w-2/5 shrink-0">
+        <img *ngIf="productoSeleccionado.imagen_url"
+             [src]="productoSeleccionado.imagen_url"
+             [alt]="productoSeleccionado.nombre"
+             class="w-full h-full object-cover rounded-xl"/>
+      </div>
+      <div class="flex flex-col flex-1 gap-4">
+        <div>
+          <h3 class="text-xl font-display font-bold text-on-surface">{{ productoSeleccionado.nombre }}</h3>
+          <span class="font-mono text-xl font-bold text-primary-dark">S/. {{ productoSeleccionado.precio }}</span>
+        </div>
+        <span class="status-pill w-fit"
+              [ngClass]="productoSeleccionado.stock > 0 ? 'status-pill-green' : 'status-pill-red'">
+          {{ productoSeleccionado.stock > 0 ? 'En stock' : 'Agotado' }}
+        </span>
+        <p class="text-sm text-on-surface-variant leading-relaxed flex-1">{{ productoSeleccionado.descripcion }}</p>
+        <button
+          (click)="agregarAlCarrito(productoSeleccionado); dialogVisible = false"
+          [disabled]="productoSeleccionado.stock === 0"
+          class="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer border-none"
+          [ngClass]="productoSeleccionado.stock > 0
+            ? 'bg-primary text-white hover:bg-primary-darker'
+            : 'bg-gray-100 text-gray-300 cursor-not-allowed'">
+          <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+          Agregar al carrito
+        </button>
+      </div>
+    </div>
+  </p-dialog>
 </section>

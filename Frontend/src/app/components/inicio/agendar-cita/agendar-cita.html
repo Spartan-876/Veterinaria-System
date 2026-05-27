@@ -1,57 +1,57 @@
-<div class="min-h-screen bg-[#f8faf8] text-[#1b1b1b] px-6 py-24">
+<div class="min-h-screen bg-surface-container text-on-surface px-6 py-24">
   <div class="max-w-2xl mx-auto">
 
     <a routerLink="/inicio"
-       class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#2d6a4f]/50 hover:text-[#2d6a4f] transition-colors mb-12 group cursor-pointer">
+       class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-primary-dark/50 hover:text-primary-dark transition-colors mb-12 group cursor-pointer">
       <i class="pi pi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
       Regresar
     </a>
 
     @if (exitoso) {
       <div class="flex flex-col items-center text-center gap-8 py-16">
-        <div class="w-24 h-24 border-2 border-[#52b788] rounded-full flex items-center justify-center bg-[#d8f3dc]">
-          <i class="pi pi-check text-4xl text-[#2d6a4f]"></i>
+        <div class="w-24 h-24 border-2 border-primary rounded-full flex items-center justify-center bg-primary-container">
+          <i class="pi pi-check text-4xl text-primary-dark"></i>
         </div>
         <div>
           <h2 class="text-4xl font-display mb-3">¡Cita agendada!</h2>
-          <p class="text-[#6b7280] font-mono text-sm">Tu cita ha sido registrada correctamente</p>
+          <p class="text-on-surface-variant font-mono text-sm">Tu cita ha sido registrada correctamente</p>
         </div>
-        <div class="border border-[#52b788]/20 rounded-2xl p-6 w-full text-left bg-white">
+        <div class="border border-primary/20 rounded-lg p-6 w-full text-left bg-white">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <p class="font-mono text-[10px] text-[#6b7280] uppercase tracking-widest mb-1">Servicio</p>
+              <p class="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Servicio</p>
               <p class="text-sm font-semibold">{{ servicioSeleccionado?.nombre }}</p>
             </div>
             <div>
-              <p class="font-mono text-[10px] text-[#6b7280] uppercase tracking-widest mb-1">Mascota</p>
+              <p class="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Mascota</p>
               <p class="text-sm font-semibold">{{ mascotaSeleccionada?.nombre }}</p>
             </div>
             <div>
-              <p class="font-mono text-[10px] text-[#6b7280] uppercase tracking-widest mb-1">Fecha</p>
+              <p class="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Fecha</p>
               <p class="text-sm font-semibold">{{ fechaHora | date:'dd/MM/yyyy HH:mm' }}</p>
             </div>
             <div>
-              <p class="font-mono text-[10px] text-[#6b7280] uppercase tracking-widest mb-1">Profesional</p>
+              <p class="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Profesional</p>
               <p class="text-sm font-semibold">{{ trabajadorSeleccionado?.nombres }} {{ trabajadorSeleccionado?.apellidos }}</p>
             </div>
           </div>
         </div>
         <button (click)="irAMisCitas()"
-                class="border border-[#2d6a4f] text-[#2d6a4f] text-xs font-mono uppercase tracking-widest px-10 py-3 hover:bg-[#2d6a4f] hover:text-white transition-all cursor-pointer rounded-xl">
+                class="border border-primary text-primary-dark text-xs font-mono uppercase tracking-widest px-10 py-3 hover:bg-primary-dark hover:text-white transition-all cursor-pointer rounded-lg">
           Ver mis citas
         </button>
       </div>
     }
 
     @if (!estaLogueado && !exitoso) {
-      <div class="flex flex-col items-center text-center gap-6 py-20 border border-[#52b788]/20 rounded-2xl bg-white">
-        <i class="pi pi-lock text-5xl text-[#52b788]/40"></i>
+      <div class="flex flex-col items-center text-center gap-6 py-20 border border-primary/20 rounded-lg bg-white">
+        <i class="pi pi-lock text-5xl text-primary/40"></i>
         <div>
-          <h3 class="text-xl font-bold text-[#1b1b1b]/60 mb-2">Inicia sesión para agendar</h3>
-          <p class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Necesitas una cuenta de cliente</p>
+          <h3 class="text-xl font-bold text-on-surface/60 mb-2">Inicia sesión para agendar</h3>
+          <p class="font-mono text-xs text-on-surface-variant uppercase tracking-widest">Necesitas una cuenta de cliente</p>
         </div>
         <a routerLink="/login"
-           class="border border-[#2d6a4f] text-[#2d6a4f] text-xs font-mono uppercase tracking-widest px-8 py-3 hover:bg-[#2d6a4f] hover:text-white transition-all rounded-xl">
+           class="border border-primary text-primary-dark text-xs font-mono uppercase tracking-widest px-8 py-3 hover:bg-primary-dark hover:text-white transition-all rounded-lg">
           Iniciar sesión
         </a>
       </div>
@@ -59,9 +59,9 @@
 
     @if (estaLogueado && !exitoso) {
       <div class="mb-12">
-        <span class="font-mono text-xs uppercase tracking-[0.3em] text-[#52b788] mb-4 block">Citas</span>
-        <h2 class="text-5xl font-display mb-3 text-[#1b1b1b]">Agendar Cita</h2>
-        <p class="text-[#6b7280] text-sm font-mono">Paso {{ paso }} de 4</p>
+        <span class="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4 block">Citas</span>
+        <h2 class="text-5xl font-display mb-3 text-on-surface">Agendar Cita</h2>
+        <p class="text-on-surface-variant text-sm font-mono">Paso {{ paso }} de 4</p>
       </div>
 
       <div class="flex items-center gap-2 mb-12">
@@ -69,15 +69,15 @@
           <div class="flex items-center gap-2 flex-1">
             <div class="w-8 h-8 rounded-full border flex items-center justify-center text-xs font-mono transition-all"
                  [ngClass]="paso > n
-                   ? 'bg-[#2d6a4f] text-white border-[#2d6a4f]'
+                   ? 'bg-primary text-white border-primary'
                    : paso === n
-                     ? 'border-[#2d6a4f] text-[#2d6a4f]'
+                     ? 'border-primary text-primary-dark'
                      : 'border-gray-200 text-gray-300'">
               @if (paso > n) { <i class="pi pi-check text-xs"></i> } @else { {{ n }} }
             </div>
             @if (n < 4) {
               <div class="flex-1 h-px transition-all"
-                   [ngClass]="paso > n ? 'bg-[#52b788]' : 'bg-gray-200'"></div>
+                   [ngClass]="paso > n ? 'bg-primary' : 'bg-gray-200'"></div>
             }
           </div>
         }
@@ -86,23 +86,23 @@
       @if (paso === 1) {
         <div>
           <h3 class="text-2xl font-bold mb-2">¿Qué servicio necesitas?</h3>
-          <p class="text-[#6b7280] text-sm font-mono mb-8">Selecciona el tipo de atención</p>
+          <p class="text-on-surface-variant text-sm font-mono mb-8">Selecciona el tipo de atención</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             @for (s of servicios; track s.id) {
               <div (click)="elegirServicio(s)"
-                   class="border p-5 cursor-pointer transition-all hover:border-[#52b788] rounded-xl bg-white"
+                   class="border p-5 cursor-pointer transition-all hover:border-primary rounded-lg bg-white"
                    [ngClass]="servicioSeleccionado?.id === s.id
-                     ? 'border-[#2d6a4f] bg-[#d8f3dc]/40'
-                     : 'border-gray-200 hover:bg-[#f0faf4]'">
+                     ? 'border-primary bg-primary-container/40'
+                     : 'border-gray-200 hover:bg-primary-hover'">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="material-symbols-outlined text-[#52b788]">{{ s.icono }}</span>
+                  <span class="material-symbols-outlined text-primary">{{ s.icono }}</span>
                   @if (servicioSeleccionado?.id === s.id) {
-                    <i class="pi pi-check-circle text-[#2d6a4f] text-sm"></i>
+                    <i class="pi pi-check-circle text-primary-dark text-sm"></i>
                   }
                 </div>
                 <p class="font-semibold text-sm">{{ s.nombre }}</p>
-                <p class="text-[#6b7280] text-xs mt-1">{{ s.descripcion }}</p>
-                <p class="font-mono text-xs text-[#2d6a4f] mt-3 font-bold">S/ {{ s.precio }}</p>
+                <p class="text-on-surface-variant text-xs mt-1">{{ s.descripcion }}</p>
+                <p class="font-mono text-xs text-primary-dark mt-3 font-bold">S/ {{ s.precio }}</p>
               </div>
             }
           </div>
@@ -112,32 +112,32 @@
       @if (paso === 2) {
         <div>
           <h3 class="text-2xl font-bold mb-2">¿Para qué mascota?</h3>
-          <p class="text-[#6b7280] text-sm font-mono mb-8">Selecciona tu mascota</p>
+          <p class="text-on-surface-variant text-sm font-mono mb-8">Selecciona tu mascota</p>
           @if (mascotas.length === 0) {
-            <div class="border border-gray-200 p-10 text-center rounded-xl bg-white">
+            <div class="border border-gray-200 p-10 text-center rounded-lg bg-white">
               <i class="pi pi-heart text-4xl text-gray-200 mb-4 block"></i>
-              <p class="text-[#6b7280] text-sm">No tienes mascotas registradas</p>
+              <p class="text-on-surface-variant text-sm">No tienes mascotas registradas</p>
               <p class="font-mono text-xs text-gray-400 mt-2 uppercase tracking-widest">Contacta con recepción</p>
             </div>
           }
           <div class="flex flex-col gap-2">
             @for (m of mascotas; track m.id) {
               <div (click)="elegirMascota(m)"
-                   class="border p-4 cursor-pointer transition-all flex items-center justify-between rounded-xl bg-white"
+                   class="border p-4 cursor-pointer transition-all flex items-center justify-between rounded-lg bg-white"
                    [ngClass]="mascotaSeleccionada?.id === m.id
-                     ? 'border-[#2d6a4f] bg-[#d8f3dc]/40'
-                     : 'border-gray-200 hover:border-[#52b788] hover:bg-[#f0faf4]'">
+                     ? 'border-primary bg-primary-container/40'
+                     : 'border-gray-200 hover:border-primary hover:bg-primary-hover'">
                 <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 border border-[#52b788]/30 rounded-xl flex items-center justify-center bg-[#d8f3dc]/50">
-                    <i class="pi pi-heart text-[#52b788]"></i>
+                  <div class="w-10 h-10 border border-primary/30 rounded-lg flex items-center justify-center bg-primary-container/50">
+                    <i class="pi pi-heart text-primary"></i>
                   </div>
                   <div>
                     <p class="font-semibold text-sm">{{ m.nombre }}</p>
-                    <p class="text-[#6b7280] text-xs font-mono">{{ m.especie }} · {{ m.raza }}</p>
+                    <p class="text-on-surface-variant text-xs font-mono">{{ m.especie }} · {{ m.raza }}</p>
                   </div>
                 </div>
                 @if (mascotaSeleccionada?.id === m.id) {
-                  <i class="pi pi-check-circle text-[#2d6a4f]"></i>
+                  <i class="pi pi-check-circle text-primary-dark"></i>
                 }
               </div>
             }
@@ -148,51 +148,51 @@
       @if (paso === 3) {
         <div>
           <h3 class="text-2xl font-bold mb-2">Fecha y profesional</h3>
-          <p class="text-[#6b7280] text-sm font-mono mb-8">Elige cuándo y con quién</p>
+          <p class="text-on-surface-variant text-sm font-mono mb-8">Elige cuándo y con quién</p>
           <div class="mb-6">
-            <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-[#6b7280] block mb-3">Fecha y hora</label>
+            <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-on-surface-variant block mb-3">Fecha y hora</label>
             <input type="datetime-local"
                    [(ngModel)]="fechaHora"
                    [min]="fechaMin"
                    (change)="buscarTrabajadores()"
-                   class="w-full bg-white border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] transition-all font-mono text-sm"/>
+                   class="w-full bg-white border border-gray-200 text-on-surface px-4 py-3 rounded-lg outline-none focus:border-primary transition-all font-mono text-sm"/>
           </div>
 
           @if (cargandoTrabajadores) {
-            <div class="flex items-center gap-3 py-8 text-[#6b7280]">
-              <i class="pi pi-spin pi-spinner text-[#52b788]"></i>
+            <div class="flex items-center gap-3 py-8 text-on-surface-variant">
+              <i class="pi pi-spin pi-spinner text-primary"></i>
               <span class="font-mono text-xs uppercase tracking-widest">Buscando disponibilidad...</span>
             </div>
           }
 
           @if (!cargandoTrabajadores && fechaHora && trabajadoresDisponibles.length === 0) {
-            <div class="border border-gray-200 p-6 text-center rounded-xl bg-white">
-              <p class="text-[#6b7280] text-sm">No hay profesionales disponibles en este horario</p>
+            <div class="border border-gray-200 p-6 text-center rounded-lg bg-white">
+              <p class="text-on-surface-variant text-sm">No hay profesionales disponibles en este horario</p>
               <p class="font-mono text-xs text-gray-400 mt-1">Prueba con otra fecha u hora</p>
             </div>
           }
 
           @if (!cargandoTrabajadores && trabajadoresDisponibles.length > 0) {
             <div>
-              <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-[#6b7280] block mb-3">Profesionales disponibles</label>
+              <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-on-surface-variant block mb-3">Profesionales disponibles</label>
               <div class="flex flex-col gap-2">
                 @for (t of trabajadoresDisponibles; track t.id) {
                   <div (click)="elegirTrabajador(t)"
-                       class="border p-4 cursor-pointer transition-all flex items-center justify-between rounded-xl bg-white"
+                       class="border p-4 cursor-pointer transition-all flex items-center justify-between rounded-lg bg-white"
                        [ngClass]="trabajadorSeleccionado?.id === t.id
-                         ? 'border-[#2d6a4f] bg-[#d8f3dc]/40'
-                         : 'border-gray-200 hover:border-[#52b788] hover:bg-[#f0faf4]'">
+                         ? 'border-primary bg-primary-container/40'
+                         : 'border-gray-200 hover:border-primary hover:bg-primary-hover'">
                     <div class="flex items-center gap-4">
-                      <div class="w-10 h-10 border border-[#52b788]/30 rounded-xl flex items-center justify-center font-bold text-sm bg-[#d8f3dc]/50 text-[#2d6a4f]">
+                      <div class="w-10 h-10 border border-primary/30 rounded-lg flex items-center justify-center font-bold text-sm bg-primary-container/50 text-primary-dark">
                         {{ t.nombres.charAt(0) }}
                       </div>
                       <div>
                         <p class="font-semibold text-sm">{{ t.nombres }} {{ t.apellidos }}</p>
-                        <p class="text-[#6b7280] text-xs font-mono">{{ t.cargo }}</p>
+                        <p class="text-on-surface-variant text-xs font-mono">{{ t.cargo }}</p>
                       </div>
                     </div>
                     @if (trabajadorSeleccionado?.id === t.id) {
-                      <i class="pi pi-check-circle text-[#2d6a4f]"></i>
+                      <i class="pi pi-check-circle text-primary-dark"></i>
                     }
                   </div>
                 }
@@ -205,34 +205,34 @@
       @if (paso === 4) {
         <div>
           <h3 class="text-2xl font-bold mb-2">Confirmar cita</h3>
-          <p class="text-[#6b7280] text-sm font-mono mb-8">Revisa los detalles antes de agendar</p>
-          <div class="border border-gray-200 divide-y divide-gray-100 mb-6 rounded-xl overflow-hidden bg-white">
+          <p class="text-on-surface-variant text-sm font-mono mb-8">Revisa los detalles antes de agendar</p>
+          <div class="border border-gray-200 divide-y divide-gray-100 mb-6 rounded-lg overflow-hidden bg-white">
             <div class="flex justify-between items-center px-5 py-4">
-              <span class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Servicio</span>
+              <span class="font-mono text-xs text-on-surface-variant uppercase tracking-widest">Servicio</span>
               <span class="text-sm font-semibold">{{ servicioSeleccionado?.nombre }}</span>
             </div>
             <div class="flex justify-between items-center px-5 py-4">
-              <span class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Mascota</span>
+              <span class="font-mono text-xs text-on-surface-variant uppercase tracking-widest">Mascota</span>
               <span class="text-sm font-semibold">{{ mascotaSeleccionada?.nombre }}</span>
             </div>
             <div class="flex justify-between items-center px-5 py-4">
-              <span class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Fecha y hora</span>
+              <span class="font-mono text-xs text-on-surface-variant uppercase tracking-widest">Fecha y hora</span>
               <span class="text-sm font-semibold font-mono">{{ fechaHora | date:'dd/MM/yyyy HH:mm' }}</span>
             </div>
             <div class="flex justify-between items-center px-5 py-4">
-              <span class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Profesional</span>
+              <span class="font-mono text-xs text-on-surface-variant uppercase tracking-widest">Profesional</span>
               <span class="text-sm font-semibold">{{ trabajadorSeleccionado?.nombres }} {{ trabajadorSeleccionado?.apellidos }}</span>
             </div>
-            <div class="flex justify-between items-center px-5 py-4 bg-[#f0faf4]">
-              <span class="font-mono text-xs text-[#6b7280] uppercase tracking-widest">Precio</span>
-              <span class="text-sm font-bold text-[#2d6a4f]">S/ {{ servicioSeleccionado?.precio }}</span>
+            <div class="flex justify-between items-center px-5 py-4 bg-primary-hover">
+              <span class="font-mono text-xs text-on-surface-variant uppercase tracking-widest">Precio</span>
+              <span class="text-sm font-bold text-primary-dark">S/ {{ servicioSeleccionado?.precio }}</span>
             </div>
           </div>
           <div class="mb-6">
-            <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-[#6b7280] block mb-3">Motivo de la consulta *</label>
+            <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-on-surface-variant block mb-3">Motivo de la consulta *</label>
             <textarea [(ngModel)]="motivo" rows="3"
                       placeholder="Describe brevemente el motivo de la cita..."
-                      class="w-full bg-white border border-gray-200 text-[#1b1b1b] px-4 py-3 rounded-xl outline-none focus:border-[#2d6a4f] transition-all text-sm resize-none placeholder:text-gray-400">
+                      class="w-full bg-white border border-gray-200 text-on-surface px-4 py-3 rounded-lg outline-none focus:border-primary transition-all text-sm resize-none placeholder:text-gray-400">
             </textarea>
           </div>
         </div>
@@ -241,20 +241,20 @@
       <div class="flex gap-3 mt-10">
         @if (paso > 1) {
           <button (click)="anteriorPaso()"
-                  class="flex-1 border border-gray-200 text-[#6b7280] hover:text-[#2d6a4f] hover:border-[#2d6a4f] py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer rounded-xl">
+                  class="flex-1 border border-gray-200 text-on-surface-variant hover:text-primary-dark hover:border-primary py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer rounded-lg">
             ← Anterior
           </button>
         }
         @if (paso < 4) {
           <button (click)="siguientePaso()"
-                  class="flex-1 bg-[#2d6a4f] text-white py-3 font-mono text-xs uppercase tracking-widest hover:bg-[#1e4d38] transition-all cursor-pointer rounded-xl">
+                  class="flex-1 bg-primary text-white py-3 font-mono text-xs uppercase tracking-widest hover:bg-primary-darker transition-all cursor-pointer rounded-lg">
             Siguiente →
           </button>
         }
         @if (paso === 4) {
           <button (click)="confirmar()" [disabled]="enviando"
-                  class="flex-1 py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 rounded-xl"
-                  [ngClass]="enviando ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-[#2d6a4f] text-white hover:bg-[#1e4d38]'">
+                  class="flex-1 py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2 rounded-lg"
+                  [ngClass]="enviando ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-darker'">
             @if (enviando) { <i class="pi pi-spin pi-spinner text-xs"></i> }
             {{ enviando ? 'Agendando...' : 'Confirmar Cita' }}
           </button>

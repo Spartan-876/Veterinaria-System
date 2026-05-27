@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap');
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 /* PrimeUI debe ir después de Tailwind para que sus capas coincidan */
@@ -14,9 +14,9 @@ body {
     font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Cambia el color del número de página activa de PrimeNG */
+/* PrimeNG overrides con Nature's Care */
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background: #0a9164 !important;
+    background: #2d8a6e !important;
     color: white !important;
     border-radius: 50%;
 }
@@ -26,49 +26,211 @@ body {
     border: none !important;
 }
 @theme {
-  --color-blue-primary: #004DD1;
-  --color-blue-hover: #005DFF;
+  /* Nature's Care - Primary Green */
+  --color-primary: #2d8a6e;
+  --color-primary-dark: #1e6b4f;
+  --color-primary-darker: #175540;
+  --color-primary-light: #52b788;
+  --color-primary-container: #d4f0dc;
+  --color-primary-hover: #eaf5ef;
 
-  --color-primary: var(--color-blue-primary);
-  --color-secondary: #002f9d;
-  --color-blue-dark: #001540;
-  --color-emerald-primary: #10b981;
+  /* Nature's Care - Secondary Terracotta */
+  --color-secondary: #c75643;
+  --color-secondary-dark: #a84535;
+  --color-secondary-container: #fde8e5;
 
+  /* Nature's Care - Tertiary Yellow */
+  --color-tertiary: #d99e30;
+  --color-tertiary-container: #fef2d6;
+
+  /* MD3 Surfaces (warm neutral) */
+  --color-surface: #ffffff;
+  --color-surface-container: #F5F2ED;
+  --color-surface-container-low: #FAF8F5;
+  --color-surface-container-high: #EDE8E0;
+  --color-on-surface: #1c1c1c;
+  --color-on-surface-variant: #6b7280;
+  --color-outline: #d1d5db;
+  --color-outline-variant: #e5e7eb;
+  --color-error: #dc2626;
+  --color-error-container: #fef2f2;
+
+  /* Tipografía */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif !important;
-  --font-display: "Playfair Display", serif !important;
+  --font-headline: "Quicksand", sans-serif !important;
+  --font-display: "Quicksand", sans-serif !important;
   --font-mono: "JetBrains Mono", monospace !important;
-
-  --color-gold: #D4AF37;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
-  /*body {
-    @apply bg-black text-white antialiased selection:bg-white selection:text-black;
-    font-family: var(--font-sans);
-  }*/
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headline);
   }
 }
 
-/* Solo cuando body tiene la clase dark-scroll */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@layer utilities {
+  /* Admin Table */
+  .table-admin {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .table-admin thead th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-on-surface-variant);
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+  .table-admin tbody tr {
+    border-bottom: 1px solid var(--color-outline-variant);
+    transition: background-color 0.15s;
+  }
+  .table-admin tbody tr:hover {
+    background: var(--color-primary-hover);
+  }
+  .table-admin tbody td {
+    padding: 0.75rem 1rem;
+    color: var(--color-on-surface);
+  }
+
+  /* Status Pill */
+  .status-pill {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+  }
+  .status-pill-primary {
+    background: var(--color-primary-container);
+    color: var(--color-primary-dark);
+  }
+  .status-pill-blue {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+  .status-pill-amber {
+    background: #fffbeb;
+    color: #d97706;
+  }
+  .status-pill-red {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+  .status-pill-green {
+    background: #f0fdf4;
+    color: #16a34a;
+  }
+
+  /* Card System */
+  .card {
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-outline);
+    transition: all 0.3s ease;
+  }
+  .card-hover:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+  }
+
+  /* Glass Card */
+  .card-glass {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 0.75rem;
+  }
+
+  /* Floating Element */
+  .floating {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+  }
+
+  /* Section Label */
+  .section-label {
+    display: inline-block;
+    background: var(--color-primary-container);
+    color: var(--color-primary-dark);
+    border-radius: 9999px;
+    padding: 0.25rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+  }
+
+  /* Standard Input */
+  .input {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--color-outline);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: all 0.2s;
+    font-family: var(--font-sans);
+    color: var(--color-on-surface);
+  }
+  .input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45,138,110,0.15);
+  }
+  .input::placeholder {
+    color: #9ca3af;
+  }
+
+  /* Card Stagger Animation */
+  .card-stagger {
+    animation: fadeInUp 0.6s ease-out both;
+  }
+  .card-stagger:nth-child(1) { animation-delay: 0s; }
+  .card-stagger:nth-child(2) { animation-delay: 0.1s; }
+  .card-stagger:nth-child(3) { animation-delay: 0.2s; }
+  .card-stagger:nth-child(4) { animation-delay: 0.3s; }
+  .card-stagger:nth-child(5) { animation-delay: 0.4s; }
+  .card-stagger:nth-child(6) { animation-delay: 0.5s; }
+  .card-stagger:nth-child(7) { animation-delay: 0.6s; }
+  .card-stagger:nth-child(8) { animation-delay: 0.7s; }
+}
+
+/* Scrollbar oscuro para sidebar admin */
 .dark-scroll::-webkit-scrollbar {
   width: 4px;
 }
 
 .dark-scroll::-webkit-scrollbar-track {
-  background: #000000;
+  background: #102139;
 }
 
 .dark-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
 }
 
 .dark-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.3);
 }
 

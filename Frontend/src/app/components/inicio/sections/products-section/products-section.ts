@@ -4,15 +4,18 @@ import { Producto } from '../../../../models/producto';
 import { ProductoService } from '../../../../services/productos';
 import {CarritoService} from '../../../../services/carrito-service';
 import { GToast} from '../../../../services/gtoast';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-products-section',
-  imports: [CommonModule],
+  imports: [CommonModule, DialogModule],
   templateUrl: './products-section.html',
 })
 export class ProductsSection implements OnInit {
   productos: Producto[] = [];
   productosMostrados: Producto[] = [];
+  productoSeleccionado: Producto | null = null;
+  dialogVisible = false;
 
   constructor(private productosService: ProductoService, private cdr: ChangeDetectorRef, private carritoService: CarritoService, private  toast : GToast) {}
 
@@ -29,6 +32,12 @@ export class ProductsSection implements OnInit {
       },
       error: (err) => console.error('Error: ', err)
     });
+  }
+
+  verDetalle(producto: Producto): void {
+    this.productoSeleccionado = producto;
+    this.dialogVisible = true;
+    this.cdr.markForCheck();
   }
 
   agregarAlCarrito(producto: Producto): void {

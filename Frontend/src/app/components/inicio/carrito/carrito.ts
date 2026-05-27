@@ -1,6 +1,7 @@
 // components/carrito/carrito.ts
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { VentaService} from '../../../services/venta-service';
 import { ItemCarrito } from '../../../models/carrito';
 import { GToast } from '../../../services/gtoast';
@@ -9,7 +10,7 @@ import {CarritoService} from '../../../services/carrito-service';
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './carrito.html',
 
 })

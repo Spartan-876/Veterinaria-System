@@ -60,13 +60,13 @@ export class PagosComponent implements OnInit, AfterViewInit {
           {
             label: 'Citas',
             data: citas,
-            backgroundColor: 'rgba(13, 114, 197, 0.8)',
+            backgroundColor: 'rgba(45, 138, 110, 0.85)',
             borderRadius: 6,
           },
           {
             label: 'Productos',
             data: prods,
-            backgroundColor: 'rgba(13, 114, 197, 0.25)',
+            backgroundColor: 'rgba(199, 86, 67, 0.6)',
             borderRadius: 6,
           }
         ]

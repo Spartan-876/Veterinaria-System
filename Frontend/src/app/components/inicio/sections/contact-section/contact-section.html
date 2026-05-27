@@ -1,88 +1,78 @@
-<section id="contact" class="pt-32 pb-12 px-6 bg-white relative overflow-hidden text-[#1b1b1b]">
+<section id="contact" class="pt-32 pb-12 px-6 bg-surface-container relative overflow-hidden text-on-surface">
   <div class="max-w-7xl mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
 
       <!-- Info -->
       <div>
-        <span class="font-mono text-xs uppercase tracking-[0.3em] text-[#52b788] mb-4 block">Contacto</span>
-        <h2 class="text-5xl md:text-7xl font-display mb-8 text-[#1b1b1b]">Visítanos</h2>
-        <p class="text-[#6b7280] mb-12">
+        <span class="section-label">Contacto</span>
+        <h2 class="text-5xl md:text-7xl font-display mb-8 text-on-surface">Visítanos</h2>
+        <p class="text-on-surface-variant mb-12">
           ¿Tienes dudas sobre nuestros servicios o quieres agendar una cita para tu mascota?
           Estamos disponibles para atenderte con el cuidado que tu compañero merece.
         </p>
         <div class="space-y-6">
           <div class="flex items-center gap-4 group">
             <div
-              class="w-12 h-12 rounded-full border border-[#52b788]/30 flex items-center justify-center group-hover:bg-[#2d6a4f] group-hover:text-white group-hover:border-[#2d6a4f] transition-all duration-500 text-[#2d6a4f]">
+              class="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary-dark group-hover:text-white group-hover:border-primary transition-all duration-500 text-primary-dark">
               <span class="material-symbols-outlined text-[20px]">mail</span>
             </div>
-            <span class="text-lg text-[#6b7280]">cristianJ&#64;huellitasvet.com</span>
+            <span class="text-lg text-on-surface-variant">veterinairaHuellitas&#64;huellitasvet.com</span>
           </div>
           <div class="flex items-center gap-4 group">
             <div
-              class="w-12 h-12 rounded-full border border-[#52b788]/30 flex items-center justify-center group-hover:bg-[#2d6a4f] group-hover:text-white group-hover:border-[#2d6a4f] transition-all duration-500 text-[#2d6a4f]">
+              class="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary-dark group-hover:text-white group-hover:border-primary transition-all duration-500 text-primary-dark">
               <span class="material-symbols-outlined text-[20px]">phone</span>
             </div>
-            <span class="text-lg text-[#6b7280]">+51 999 999 999</span>
+            <span class="text-lg text-on-surface-variant">+51 999 999 999</span>
           </div>
           <div class="flex items-center gap-4 group">
             <div
-              class="w-12 h-12 rounded-full border border-[#52b788]/30 flex items-center justify-center group-hover:bg-[#2d6a4f] group-hover:text-white group-hover:border-[#2d6a4f] transition-all duration-500 text-[#2d6a4f]">
+              class="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary-dark group-hover:text-white group-hover:border-primary transition-all duration-500 text-primary-dark">
               <span class="material-symbols-outlined text-[20px]">location_on</span>
             </div>
-            <span class="text-lg text-[#6b7280]">Av. Sáenz Peña 580, Chiclayo, Perú</span>
+            <span class="text-lg text-on-surface-variant">Av. Sáenz Peña 580, Chiclayo, Perú</span>
           </div>
           <div class="flex items-center gap-4 group">
             <div
-              class="w-12 h-12 rounded-full border border-[#52b788]/30 flex items-center justify-center group-hover:bg-[#2d6a4f] group-hover:text-white group-hover:border-[#2d6a4f] transition-all duration-500 text-[#2d6a4f]">
+              class="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center group-hover:bg-primary-dark group-hover:text-white group-hover:border-primary transition-all duration-500 text-primary-dark">
               <span class="material-symbols-outlined text-[20px]">schedule</span>
             </div>
-            <span class="text-lg text-[#6b7280]">Lun – Sáb: 8am – 8pm &nbsp;|&nbsp; Dom: 10am – 2pm</span>
+            <span class="text-lg text-on-surface-variant">Lun – Sáb: 8am – 8pm &nbsp;|&nbsp; Dom: 10am – 2pm</span>
           </div>
         </div>
       </div>
 
       <!-- Formulario -->
-      <div class="bg-[#f8faf8] p-10 rounded-3xl border border-[#52b788]/20">
+      <div class="card p-8 bg-white">
         <div class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="text-[10px] uppercase tracking-widest text-[#6b7280] ml-4 block">Nombre</label>
+              <label class="text-[10px] uppercase tracking-widest text-on-surface-variant ml-4 block">Nombre</label>
               <input type="text" [(ngModel)]="form.nombre" placeholder="Tu nombre"
-                     class="w-full bg-white border border-gray-200 rounded-full px-6 py-4 focus:outline-none focus:border-[#2d6a4f] transition-colors text-[#1b1b1b] placeholder:text-gray-400"/>
+                     class="input"/>
             </div>
             <div class="space-y-2">
-              <label class="text-[10px] uppercase tracking-widest text-[#6b7280] ml-4 block">Email</label>
+              <label class="text-[10px] uppercase tracking-widest text-on-surface-variant ml-4 block">Email</label>
               <input type="email" [(ngModel)]="form.email" placeholder="tu@email.com"
-                     class="w-full bg-white border border-gray-200 rounded-full px-6 py-4 focus:outline-none focus:border-[#2d6a4f] transition-colors text-[#1b1b1b] placeholder:text-gray-400"/>
+                     class="input"/>
             </div>
           </div>
           <div class="space-y-2">
-            <label class="text-[10px] uppercase tracking-widest text-[#6b7280] ml-4 block">Asunto</label>
-            <input type="text" [(ngModel)]="form.asunto" placeholder="¿En qué podemos ayudarte?"
-                   class="w-full bg-white border border-gray-200 rounded-full px-6 py-4 focus:outline-none focus:border-[#2d6a4f] transition-colors text-[#1b1b1b] placeholder:text-gray-400"/>
+            <label class="text-[10px] uppercase tracking-widest text-on-surface-variant ml-4 block">Asunto</label>
+             <input type="text" [(ngModel)]="form.asunto" placeholder="¿En qué podemos ayudarte?"
+                    class="input"/>
           </div>
           <div class="space-y-2">
-            <label class="text-[10px] uppercase tracking-widest text-[#6b7280] ml-4 block">Mensaje</label>
+            <label class="text-[10px] uppercase tracking-widest text-on-surface-variant ml-4 block">Mensaje</label>
             <textarea rows="4" [(ngModel)]="form.mensaje" placeholder="Cuéntanos sobre tu mascota..."
-                      class="w-full bg-white border border-gray-200 rounded-3xl px-6 py-4 focus:outline-none focus:border-[#2d6a4f] transition-colors resize-none text-[#1b1b1b] placeholder:text-gray-400"></textarea>
+                      class="input resize-none"></textarea>
           </div>
           <button (click)="enviar()"
-                  class="w-full bg-[#2d6a4f] text-white font-medium py-5 rounded-full uppercase tracking-widest hover:bg-transparent hover:text-[#2d6a4f] border border-[#2d6a4f] transition-all duration-500">
+                  class="w-full bg-primary text-white font-semibold py-4 rounded-lg hover:bg-primary-darker transition-all border border-primary">
             Enviar Mensaje
           </button>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer
-    class="mt-32 pt-12 border-t border-[#52b788]/20 flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] uppercase tracking-[0.3em] text-[#6b7280]">
-    <p>© 2026 Huellitas Vet. Todos los derechos reservados.</p>
-    <div class="flex gap-8">
-      <a href="#" class="hover:text-[#2d6a4f] transition-colors">Privacidad</a>
-      <a href="#" class="hover:text-[#2d6a4f] transition-colors">Términos</a>
-    </div>
-  </footer>
 </section>

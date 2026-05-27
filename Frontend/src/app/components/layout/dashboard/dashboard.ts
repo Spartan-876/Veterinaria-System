@@ -84,10 +84,10 @@ export class Dashboard implements OnInit {
 
   getEstadoClass(estado: string): string {
     const clases: Record<string, string> = {
-      'PENDIENTE':  'bg-yellow-100 text-yellow-700',
-      'CONFIRMADA': 'bg-blue-100 text-blue-700',
-      'REALIZADA':  'bg-green-100 text-green-700',
-      'CANCELADA':  'bg-red-100 text-red-700'
+      'PENDIENTE':  'bg-tertiary-container text-tertiary',
+      'CONFIRMADA': 'bg-primary-container text-primary-dark',
+      'REALIZADA':  'bg-primary-light text-primary-darker',
+      'CANCELADA':  'bg-red-50 text-red-500'
     };
     return clases[estado] ?? 'bg-gray-100 text-gray-700';
   }
@@ -102,7 +102,7 @@ export class Dashboard implements OnInit {
     const estados = ['PENDIENTE', 'CONFIRMADA', 'REALIZADA', 'CANCELADA'];
     const colores: Record<string, string> = {
       PENDIENTE:  'bg-yellow-400',
-      CONFIRMADA: 'bg-blue-500',
+      CONFIRMADA: 'bg-primary',
       REALIZADA:  'bg-green-500',
       CANCELADA:  'bg-red-400',
     };

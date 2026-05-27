@@ -1,8 +1,8 @@
 <div class="p-1">
-  <div class="bg-white rounded-3xl shadow-sm border border-blue-100/50 p-8 mb-6 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl shadow-sm border border-primary-container/50 p-8 mb-6 backdrop-blur-sm">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
       <div>
-        <h3 class="text-4xl font-bold bg-gradient-to-r from-[#0D72C5] to-[#0a5a9c] bg-clip-text text-transparent mb-2">
+        <h3 class="text-4xl font-bold bg-gradient-to-r from-primary to-primary-darker bg-clip-text text-transparent mb-2">
           Lista de Roles
         </h3>
         <p class="text-gray-600 text-sm flex items-center gap-2">
@@ -11,7 +11,7 @@
       </div>
 
       <button (click)="abrirNuevo()"
-              class="bg-[#0D72C5] hover:bg-[#0a5a9c] text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-blue-200/50 hover:shadow-xl hover:shadow-blue-300/50 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+              class="bg-primary hover:bg-primary-darker text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
         <span class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
         Nuevo Rol
       </button>
@@ -26,15 +26,15 @@
           <tr class="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b-2 border-gray-200">
             <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
               <div class="flex items-center gap-2">
-                <i class="pi pi-hashtag text-[#0D72C5]"></i>
+                <i class="pi pi-hashtag text-primary-dark"></i>
                 ID
               </div>
             </th>
             <th pSortableColumn="nombre" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors group">
               <div class="flex items-center gap-2">
-                <i class="pi pi-shield text-[#0D72C5]"></i>
+                <i class="pi pi-shield text-primary-dark"></i>
                 Nombre
-                <p-sortIcon field="nombre" class="group-hover:text-[#0D72C5] transition-colors"></p-sortIcon>
+                <p-sortIcon field="nombre" class="group-hover:text-primary-dark transition-colors"></p-sortIcon>
               </div>
             </th>
             <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
@@ -53,14 +53,14 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-rol>
-          <tr class="border-b border-gray-100 hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-blue-50/20 transition-all duration-200 group">
+          <tr class="border-b border-gray-100 hover:bg-primary-hover transition-all duration-200 group">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-semibold text-gray-800">{{ rol.id }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center shadow-sm">
-                  <span class="material-symbols-outlined text-[#0D72C5] text-lg">admin_panel_settings</span>
+                  <span class="material-symbols-outlined text-primary-dark text-lg">admin_panel_settings</span>
                 </div>
                 <div class="text-sm font-semibold text-gray-800">{{ rol.nombre }}</div>
               </div>
@@ -68,13 +68,13 @@
             <td class="px-6 py-4">
               <div class="flex flex-wrap gap-1">
                 @for (mod of rol.modulos; track mod) {
-                  <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md font-medium">{{ mod }}</span>
+                  <span class="px-2 py-1 bg-primary-container text-primary-dark text-xs rounded-md font-medium">{{ mod }}</span>
                 }
               </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-center">
               <div class="flex justify-center gap-2">
-                <button (click)="abrirEditar(rol)" class="p-2 text-indigo-500 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer">
+                <button (click)="abrirEditar(rol)" class="p-2 text-primary hover:bg-primary-hover rounded-lg transition-colors cursor-pointer">
                   <span class="material-symbols-outlined text-lg">edit</span>
                 </button>
                 <button (click)="abrirEliminar(rol)" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
@@ -115,17 +115,17 @@
     <div class="flex flex-col gap-5 mt-4">
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-          <i class="pi pi-shield text-[#0D72C5]"></i>
+          <i class="pi pi-shield text-primary-dark"></i>
           Nombre del Rol
         </label>
         <input pInputText [(ngModel)]="selectedRol.nombre"
-               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"
                placeholder="ROLE_NOMBRE"/>
       </div>
 
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-3 text-sm flex items-center gap-2">
-          <i class="pi pi-th-large text-[#0D72C5]"></i>
+          <i class="pi pi-th-large text-primary-dark"></i>
           Módulos Permitidos
         </label>
         <div class="grid grid-cols-2 gap-3">
@@ -145,7 +145,7 @@
                 class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
                 (click)="displayNew = false"></button>
         <button pButton label="Guardar" icon="pi pi-check"
-                class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-blue-200 transition-all font-semibold border-none"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarNuevo()"></button>
       </div>
     </ng-template>
@@ -160,17 +160,17 @@
     <div class="flex flex-col gap-5 mt-4">
        <div class="field">
          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-           <i class="pi pi-shield text-[#0D72C5]"></i>
+           <i class="pi pi-shield text-primary-dark"></i>
            Nombre del Rol
          </label>
          <input pInputText [(ngModel)]="selectedRol.nombre"
-                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"
                 [readonly]="true"/>
        </div>
 
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-3 text-sm flex items-center gap-2">
-          <i class="pi pi-th-large text-[#0D72C5]"></i>
+          <i class="pi pi-th-large text-primary-dark"></i>
           Módulos Permitidos
         </label>
         <div class="grid grid-cols-2 gap-3">
@@ -190,7 +190,7 @@
                 class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
                 (click)="displayEdit = false"></button>
         <button pButton label="Guardar Cambios" icon="pi pi-check"
-                class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-blue-200 transition-all font-semibold border-none"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarCambios()"></button>
       </div>
     </ng-template>

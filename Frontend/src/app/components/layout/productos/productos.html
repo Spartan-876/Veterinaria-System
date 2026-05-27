@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h3
-                    class="text-4xl font-bold bg-gradient-to-r from-[#0D72C5] to-[#0a5a9c] bg-clip-text text-transparent mb-2">
+                    class="text-4xl font-bold bg-gradient-to-r from-primary to-primary-darker bg-clip-text text-transparent mb-2">
                     Catálogo de Productos</h3>
                 <p class="text-gray-500 text-sm">Gestiona tu inventario de manera eficiente</p>
             </div>
@@ -17,7 +17,7 @@
                         class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none text-sm bg-white/80 backdrop-blur-sm" />
                 </div>
                 <button (click)="abrirNuevo()"
-                    class="bg-[#0D72C5] text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-blue-200/50 hover:shadow-xl hover:shadow-blue-300/50 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+                    class="bg-primary text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
                     <span
                         class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
                     Nuevo Producto
@@ -53,7 +53,7 @@
 
                     <div class="flex gap-2">
                         <button (click)="abrirEditar(p)"
-                            class="flex-1 bg-[#0D72C5] hover:bg-[#0B5A9C] text-white py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none">
+                            class="flex-1 bg-primary hover:bg-primary-darker text-white py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none">
                             <i class="pi pi-pencil text-xs"></i>
                             Editar
                         </button>
@@ -90,32 +90,32 @@
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre del Producto</label>
                 <input pInputText [(ngModel)]="selectedProducto.nombre"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
                 <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" rows="3"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"></textarea>
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none resize-none"></textarea>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Precio (S/)</label>
                     <input pInputText type="number" [(ngModel)]="selectedProducto.precio"
-                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
                 </div>
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Stock</label>
                     <input pInputText type="number" [(ngModel)]="selectedProducto.stock"
-                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
                 </div>
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">URL de la Imagen</label>
                 <input pInputText [(ngModel)]="selectedProducto.imagen_url"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
             </div>
         </div>
 
@@ -124,7 +124,7 @@
                 <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
                     class="p-button-text text-gray-600 hover:bg-gray-50" (click)="displayEdit=false"></button>
                 <button pButton label="Guardar Cambios" icon="pi pi-check"
-                    class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] text-white !border-none"
+                    class="!bg-primary hover:!bg-primary-darker text-white !border-none"
                     (click)="guardarCambios()"></button>
             </div>
         </ng-template>
@@ -162,41 +162,41 @@
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre del Producto</label>
                 <input pInputText [(ngModel)]="selectedProducto.nombre"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
                 <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" rows="3"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"></textarea>
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none resize-none"></textarea>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Precio (S/)</label>
                     <input pInputText type="number" [(ngModel)]="selectedProducto.precio"
-                        class="w-full px-3 py-2 rounded-lg border border-gray-300 !focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                        class="w-full px-3 py-2 rounded-lg border border-gray-300 !focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
                 </div>
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Stock</label>
                     <input pInputText type="number" [(ngModel)]="selectedProducto.stock"
-                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
                 </div>
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">URL de la Imagen</label>
                 <input pInputText [(ngModel)]="selectedProducto.imagen_url"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
             </div>
         </div>
 
         <ng-template pTemplate="footer">
             <div class="flex gap-2 justify-end pt-4">
                 <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
-                    class="p-button-text text-gray-600 hover:bg-blue-50" (click)="displayNew=false"></button>
+                    class="p-button-text text-gray-600 hover:bg-primary-hover" (click)="displayNew=false"></button>
                 <button pButton label="Crear Producto" icon="pi pi-check"
-                    class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] text-white !border-none" (click)="guardarNuevo()"></button>
+                    class="!bg-primary hover:!bg-primary-darker text-white !border-none" (click)="guardarNuevo()"></button>
             </div>
         </ng-template>
     </p-dialog>

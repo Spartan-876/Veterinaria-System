@@ -27,8 +27,7 @@ export class Login {
   // Login
   loginData = {
     correo: '',
-    password: '',
-    rememberMe: false
+    password: ''
   };
 
   // Registro

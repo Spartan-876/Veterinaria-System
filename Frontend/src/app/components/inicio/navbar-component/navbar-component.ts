@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule} from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -12,7 +12,6 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl : 'navbar-component.css'
 })
 export class NavbarComponent implements OnInit {
-  isScrolled = false;
   isLoggedIn = false;
   nombre = '';
   inicial= '';
@@ -40,11 +39,6 @@ export class NavbarComponent implements OnInit {
     if (!this.isLoggedIn) return false;
     const roles = this.authService.getRoles();
     return roles.some(r => r !== 'ROLE_USER');
-  }
-
-  @HostListener('window:scroll',[])
-  onWindowScroll(){
-    this.isScrolled = window.scrollY > 50;
   }
 
   toggleMenuPerfil(): void {
