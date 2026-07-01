@@ -43,3 +43,5 @@ opencode.json
 .env.local
 .env.*.local
 Frontend/.env.production
+Backend/.dockerignore
+Backend/Dockerfile
