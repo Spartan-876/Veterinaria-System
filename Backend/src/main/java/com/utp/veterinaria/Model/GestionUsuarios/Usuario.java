@@ -2,6 +2,8 @@ package com.utp.veterinaria.Model.GestionUsuarios;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
@@ -15,9 +17,12 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El correo es obligatorio")
+    @Email(message = "El correo debe ser valido")
     @Column(unique = true, nullable = false)
     private String correo;
 
+    @NotBlank(message = "La contrasena es obligatoria")
     @Column(nullable = false)
     private String password;
 

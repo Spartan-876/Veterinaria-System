@@ -3,6 +3,7 @@ package com.utp.veterinaria.Controller.GUsuarios;
 import com.utp.veterinaria.DTO.ClienteDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Cliente;
 import com.utp.veterinaria.Service.GUsuarios.ClienteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping("/crearCliente")
-    public ResponseEntity<Cliente> crear(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> crear(@RequestBody @Valid Cliente cliente) {
         return ResponseEntity.ok(clienteService.guardar(cliente));
     }
 

@@ -2,6 +2,7 @@ package com.utp.veterinaria.Controller.GUsuarios;
 
 import com.utp.veterinaria.Model.GestionUsuarios.Horario;
 import com.utp.veterinaria.Service.GUsuarios.HorarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,12 @@ public class HorarioController {
     }
 
     @PostMapping
-    public Horario asignar(@RequestBody Horario horario) {
+    public Horario asignar(@RequestBody @Valid Horario horario) {
         return horarioService.guardar(horario);
     }
 
     @PutMapping("/{id}")
-    public Horario actualizar(@PathVariable Long id, @RequestBody Horario horario) {
+    public Horario actualizar(@PathVariable Long id, @RequestBody @Valid Horario horario) {
         horario.setId(id);
         return horarioService.guardar(horario);
     }

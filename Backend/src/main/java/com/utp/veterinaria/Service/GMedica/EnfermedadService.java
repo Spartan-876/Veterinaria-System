@@ -31,6 +31,13 @@ public class EnfermedadService {
     }
 
     public Enfermedad guardar (Enfermedad enfermedad){
+        // Verificar nombre unico
+        boolean existe = enfermedadRepository.findAll().stream()
+                .anyMatch(e -> e.getNombre().equalsIgnoreCase(enfermedad.getNombre())
+                        && (e.getId() == null || !e.getId().equals(enfermedad.getId())));
+        if (existe) {
+            throw new RuntimeException("Ya existe una enfermedad con el nombre: " + enfermedad.getNombre());
+        }
         return enfermedadRepository.save(enfermedad);
     }
 
@@ -48,6 +55,13 @@ public class EnfermedadService {
 
         Enfermedad enfermedad = enfermedadRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Enfermedad no encontrada"));
+
+        // Verificar nombre unico (excluyendo la自身)
+        boolean existe = enfermedadRepository.findAll().stream()
+                .anyMatch(e -> e.getNombre().equalsIgnoreCase(request.getNombre()) && !e.getId().equals(id));
+        if (existe) {
+            throw new RuntimeException("Ya existe una enfermedad con el nombre: " + request.getNombre());
+        }
 
         enfermedad.setNombre(request.getNombre());
         enfermedad.setDescripcion(request.getDescripcion());
@@ -75,6 +89,13 @@ public class EnfermedadService {
         return dto;
     }
     public EnfermedadDTO crear(EnfermedadRequestDTO request) {
+        // Verificar nombre unico
+        boolean existe = enfermedadRepository.findAll().stream()
+                .anyMatch(e -> e.getNombre().equalsIgnoreCase(request.getNombre()));
+        if (existe) {
+            throw new RuntimeException("Ya existe una enfermedad con el nombre: " + request.getNombre());
+        }
+
         Enfermedad enfermedad = new Enfermedad();
         logger.info("Nueva enfermedad registrada", enfermedad);
         enfermedad.setNombre(request.getNombre());

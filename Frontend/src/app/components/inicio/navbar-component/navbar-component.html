@@ -1,8 +1,5 @@
-<nav
-  class="fixed top-0 left-0 right-0 z-50 py-4 bg-white/95 shadow-sm text-on-surface"
->
+<nav class="fixed top-0 left-0 right-0 z-50 py-4 bg-white/95 shadow-sm text-on-surface">
   <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-
     <!-- Logo -->
     <a routerLink="/inicio" class="font-display text-2xl tracking-tighter cursor-pointer">
       Huellitas<span class="text-xs ml-1 opacity-50 italic">Vet</span>
@@ -10,30 +7,51 @@
 
     <!-- Links Desktop -->
     <div class="hidden md:flex items-center space-x-6">
-      <a routerLink="/sobre-nosotros"
-         class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">Sobre nosotros</a>
-      <a routerLink="/servicios"
-         class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">Servicios</a>
-      <a routerLink="/productos"
-         class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">Productos</a>
-      <a routerLink="/opiniones"
-         class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">Opiniones</a>
-      <a routerLink="/faq"
-         class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">FAQ</a>
-      <a routerLink="/contacto"
-         class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors">Contacto</a>
+      <a
+        routerLink="/sobre-nosotros"
+        class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors"
+        >Sobre nosotros</a
+      >
+      <a
+        routerLink="/servicios"
+        class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors"
+        >Servicios</a
+      >
+      <a
+        routerLink="/productos"
+        class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors"
+        >Productos</a
+      >
+      <a
+        routerLink="/opiniones"
+        class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors"
+        >Opiniones</a
+      >
+      <a
+        routerLink="/faq"
+        class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors"
+        >FAQ</a
+      >
+      <a
+        routerLink="/contacto"
+        class="cursor-pointer px-3 py-1.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-primary-hover hover:text-primary-dark transition-colors"
+        >Contacto</a
+      >
     </div>
 
     <!-- Acciones derecha -->
     <div class="flex items-center gap-3">
-
       @if (!isLoggedIn) {
-        <a routerLink="/login"
-           class="hidden md:flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg border border-outline text-on-surface-variant hover:border-primary hover:text-primary-dark transition-all">
+        <a
+          routerLink="/login"
+          class="hidden md:flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg border border-outline text-on-surface-variant hover:border-primary hover:text-primary-dark transition-all"
+        >
           Iniciar Sesión
         </a>
-        <a routerLink="/agendar-cit"
-           class="hidden md:flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-darker transition-all duration-300 shadow-sm">
+        <a
+          routerLink="/agendar-cit"
+          class="hidden md:flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-darker transition-all duration-300 shadow-sm"
+        >
           <span class="material-symbols-outlined text-base">calendar_today</span>
           Reservar Cita
         </a>
@@ -41,48 +59,72 @@
 
       @if (isLoggedIn) {
         <div class="relative hidden md:block">
-          <button (click)="toggleMenuPerfil()"
-                  class="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg border border-outline hover:border-primary transition-all duration-200">
-            <div class="w-7 h-7 rounded-full bg-primary-dark text-white flex items-center justify-center text-xs font-bold">
+          <button
+            (click)="toggleMenuPerfil()"
+            class="flex items-center cursor-pointer gap-2 px-3 py-2 rounded-lg border border-outline hover:border-primary transition-all duration-200"
+          >
+            <div
+              class="w-7 h-7 rounded-full bg-primary-dark text-white flex items-center justify-center text-xs font-bold"
+            >
               {{ inicial }}
             </div>
             <span class="text-sm font-medium">{{ nombre }}</span>
-            <span class="material-symbols-outlined text-base text-on-surface-variant">expand_more</span>
+            <span class="material-symbols-outlined text-base text-on-surface-variant"
+              >expand_more</span
+            >
           </button>
 
-@if (menuPerfil) {
-            <div class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-lg overflow-hidden shadow-lg floating">
+          @if (menuPerfil) {
+            <div
+              class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-lg overflow-hidden shadow-lg floating"
+            >
               @if (esSoloCliente) {
-                <a routerLink="/mis-mascotas"
-                   class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors">
-                   <span class="material-symbols-outlined text-base text-primary">pets</span>
+                <a
+                  routerLink="/mis-mascotas"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors"
+                >
+                  <span class="material-symbols-outlined text-base text-primary">pets</span>
                   Mis mascotas
                 </a>
-                <a routerLink="/agendar-cit"
-                   class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors">
-                  <span class="material-symbols-outlined text-base text-primary">calendar_month</span>
+                <a
+                  routerLink="/agendar-cit"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors"
+                >
+                  <span class="material-symbols-outlined text-base text-primary"
+                    >calendar_month</span
+                  >
                   Agendar cita
                 </a>
-                <a routerLink="/mis-citas"
-                   class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors">
+                <a
+                  routerLink="/mis-citas"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors"
+                >
                   <span class="material-symbols-outlined text-base text-primary">event</span>
                   Mis citas
                 </a>
-                <a routerLink="/mis-compras"
-                   class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors">
+                <a
+                  routerLink="/mis-compras"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors"
+                >
                   <span class="material-symbols-outlined text-base text-primary">shopping_bag</span>
                   Mis compras
                 </a>
               }
               @if (esUsuarioConRol) {
-                <a routerLink="/admin"
-                   class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors">
-                  <span class="material-symbols-outlined text-base text-primary">admin_panel_settings</span>
+                <a
+                  routerLink="/admin"
+                  class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface-variant hover:bg-primary-hover hover:text-on-surface transition-colors"
+                >
+                  <span class="material-symbols-outlined text-base text-primary"
+                    >admin_panel_settings</span
+                  >
                   Panel Admin
                 </a>
               }
-              <button (click)="cerrarSesion()"
-                      class="w-full flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-red-50 transition-colors">
+              <button
+                (click)="cerrarSesion()"
+                class="w-full flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-red-50 transition-colors"
+              >
                 <span class="material-symbols-outlined text-base">logout</span>
                 Cerrar sesión
               </button>
@@ -95,87 +137,136 @@
       <button class="md:hidden p-2" (click)="toggleMenuMobile()">
         <span class="material-symbols-outlined text-2xl">{{ menuMobile ? 'close' : 'menu' }}</span>
       </button>
-
     </div>
   </div>
 
   <!-- Menú Mobile -->
   @if (menuMobile) {
-    <div class="md:hidden bg-white border-t border-outline-variant px-6 py-6 flex flex-col gap-4 shadow-lg">
+    <div
+      class="md:hidden bg-white border-t border-outline-variant px-6 py-6 flex flex-col gap-4 shadow-lg"
+    >
+      <a
+        routerLink="/sobre-nosotros"
+        (click)="menuMobile = false"
+        class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors"
+        >Sobre nosotros</a
+      >
+      <a
+        routerLink="/servicios"
+        (click)="menuMobile = false"
+        class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors"
+        >Servicios</a
+      >
+      <a
+        routerLink="/productos"
+        (click)="menuMobile = false"
+        class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors"
+        >Productos</a
+      >
+      <a
+        routerLink="/opiniones"
+        (click)="menuMobile = false"
+        class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors"
+        >Opiniones</a
+      >
+      <a
+        routerLink="/faq"
+        (click)="menuMobile = false"
+        class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors"
+        >FAQ</a
+      >
+      <a
+        routerLink="/contacto"
+        (click)="menuMobile = false"
+        class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors"
+        >Contacto</a
+      >
 
-      <a routerLink="/sobre-nosotros" (click)="menuMobile=false"
-         class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors">Sobre nosotros</a>
-      <a routerLink="/servicios" (click)="menuMobile=false"
-         class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors">Servicios</a>
-      <a routerLink="/productos" (click)="menuMobile=false"
-         class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors">Productos</a>
-      <a routerLink="/opiniones" (click)="menuMobile=false"
-         class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors">Opiniones</a>
-      <a routerLink="/faq" (click)="menuMobile=false"
-         class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors">FAQ</a>
-      <a routerLink="/contacto" (click)="menuMobile=false"
-         class="text-sm font-medium text-on-surface-variant hover:text-primary-dark transition-colors">Contacto</a>
-
-      <hr class="border-outline-variant">
+      <hr class="border-outline-variant" />
 
       @if (!isLoggedIn) {
         <div class="flex flex-col gap-3 pt-2">
-          <a routerLink="/login" (click)="menuMobile=false"
-             class="flex items-center justify-center gap-2 text-sm font-semibold px-5 py-3 rounded-lg border border-outline text-on-surface-variant hover:border-primary hover:text-primary-dark transition-all">
+          <a
+            routerLink="/login"
+            (click)="menuMobile = false"
+            class="flex items-center justify-center gap-2 text-sm font-semibold px-5 py-3 rounded-lg border border-outline text-on-surface-variant hover:border-primary hover:text-primary-dark transition-all"
+          >
             Iniciar Sesión
           </a>
-          <a routerLink="/agendar-cit" (click)="menuMobile=false"
-             class="flex items-center justify-center gap-2 text-sm font-semibold px-5 py-3 rounded-lg bg-primary text-white hover:bg-primary-darker transition-all">
+          <a
+            routerLink="/agendar-cit"
+            (click)="menuMobile = false"
+            class="flex items-center justify-center gap-2 text-sm font-semibold px-5 py-3 rounded-lg bg-primary text-white hover:bg-primary-darker transition-all"
+          >
             <span class="material-symbols-outlined text-base">calendar_today</span>
             Reservar Cita
           </a>
         </div>
       }
 
-@if (isLoggedIn) {
+      @if (isLoggedIn) {
         <div class="flex items-center gap-3 mb-2 pt-2">
-          <div class="w-8 h-8 rounded-full bg-primary-dark text-white flex items-center justify-center text-sm font-bold">
+          <div
+            class="w-8 h-8 rounded-full bg-primary-dark text-white flex items-center justify-center text-sm font-bold"
+          >
             {{ inicial }}
           </div>
           <span class="text-sm font-medium text-on-surface">{{ nombre }}</span>
         </div>
         @if (esSoloCliente) {
-          <a routerLink="/mis-mascotas" (click)="menuMobile=false"
-             class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors">
+          <a
+            routerLink="/mis-mascotas"
+            (click)="menuMobile = false"
+            class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors"
+          >
             <span class="material-symbols-outlined text-base text-primary">pets</span>
             Mis mascotas
           </a>
-          <a routerLink="/agendar-cit" (click)="menuMobile=false"
-             class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors">
+          <a
+            routerLink="/agendar-cit"
+            (click)="menuMobile = false"
+            class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors"
+          >
             <span class="material-symbols-outlined text-base text-primary">calendar_month</span>
             Agendar cita
           </a>
-          <a routerLink="/mis-citas" (click)="menuMobile=false"
-             class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors">
+          <a
+            routerLink="/mis-citas"
+            (click)="menuMobile = false"
+            class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors"
+          >
             <span class="material-symbols-outlined text-base text-primary">event</span>
             Mis citas
           </a>
-          <a routerLink="/mis-compras" (click)="menuMobile=false"
-             class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors">
+          <a
+            routerLink="/mis-compras"
+            (click)="menuMobile = false"
+            class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors"
+          >
             <span class="material-symbols-outlined text-base text-primary">shopping_bag</span>
             Mis compras
           </a>
         }
         @if (esUsuarioConRol) {
-          <a routerLink="/admin" (click)="menuMobile=false"
-             class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors">
-            <span class="material-symbols-outlined text-base text-primary">admin_panel_settings</span>
+          <a
+            routerLink="/admin"
+            (click)="menuMobile = false"
+            class="flex items-center gap-3 text-sm text-on-surface-variant hover:text-primary-dark transition-colors"
+          >
+            <span class="material-symbols-outlined text-base text-primary"
+              >admin_panel_settings</span
+            >
             Panel Admin
           </a>
         }
-        <button (click)="cerrarSesion(); menuMobile=false"
-                class="flex items-center gap-3 text-sm text-red-400 hover:text-red-600 transition-colors pt-2">
+        <button
+          (click)="cerrarSesion(); menuMobile = false"
+          class="flex items-center gap-3 text-sm text-red-400 hover:text-red-600 transition-colors pt-2"
+        >
           <span class="material-symbols-outlined text-base">logout</span>
           Cerrar sesión
         </button>
       }
-
     </div>
   }
-
 </nav>

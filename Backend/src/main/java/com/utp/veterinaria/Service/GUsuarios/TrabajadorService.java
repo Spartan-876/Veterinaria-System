@@ -31,6 +31,13 @@ public class TrabajadorService {
     }
 
     public Trabajador crear(TrabajadorRequestDTO dto) {
+        // Verificar correo unico
+        boolean correoExiste = trabajadorRepository.findAll().stream()
+                .anyMatch(t -> t.getCorreo() != null && t.getCorreo().equalsIgnoreCase(dto.getCorreo()));
+        if (correoExiste) {
+            throw new RuntimeException("Ya existe un trabajador con el correo: " + dto.getCorreo());
+        }
+
         Trabajador t = new Trabajador();
         t.setDni(dto.getDni());
         t.setNombres(dto.getNombres());
@@ -45,6 +52,17 @@ public class TrabajadorService {
     public Trabajador actualizar(Long id, TrabajadorRequestDTO dto) {
         Trabajador t = trabajadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Trabajador no encontrado: " + id));
+
+        // Verificar correo unico (excluyendo al propio)
+        if (dto.getCorreo() != null) {
+            boolean correoExiste = trabajadorRepository.findAll().stream()
+                    .anyMatch(tr -> tr.getCorreo() != null
+                            && tr.getCorreo().equalsIgnoreCase(dto.getCorreo())
+                            && !tr.getId().equals(id));
+            if (correoExiste) {
+                throw new RuntimeException("Ya existe un trabajador con el correo: " + dto.getCorreo());
+            }
+        }
 
         if (dto.getNombres() != null)   t.setNombres(dto.getNombres());
         if (dto.getApellidos() != null) t.setApellidos(dto.getApellidos());

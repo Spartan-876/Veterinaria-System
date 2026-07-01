@@ -3,6 +3,7 @@ package com.utp.veterinaria.Controller.GVentas;
 import com.utp.veterinaria.DTO.VentaRequestDTO;
 import com.utp.veterinaria.Model.GestionVentas.Venta;
 import com.utp.veterinaria.Service.GVentas.VentaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class VentaController {
     private final VentaService ventaService;
 
     @PostMapping
-    public ResponseEntity<Venta> realizarVenta(@RequestBody VentaRequestDTO dto) {
+    public ResponseEntity<Venta> realizarVenta(@RequestBody @Valid VentaRequestDTO dto) {
         return ResponseEntity.ok(ventaService.realizarVentaDTO(dto));
     }
 

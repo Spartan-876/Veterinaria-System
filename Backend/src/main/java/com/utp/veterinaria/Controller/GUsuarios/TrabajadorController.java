@@ -3,6 +3,7 @@ package com.utp.veterinaria.Controller.GUsuarios;
 import com.utp.veterinaria.DTO.TrabajadorRequestDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
 import com.utp.veterinaria.Service.GUsuarios.TrabajadorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,13 @@ public class TrabajadorController {
     }
 
     @PostMapping
-    public ResponseEntity<Trabajador> crear(@RequestBody TrabajadorRequestDTO dto) {
+    public ResponseEntity<Trabajador> crear(@RequestBody @Valid TrabajadorRequestDTO dto) {
         Trabajador nuevo = trabajadorService.crear(dto);
         return ResponseEntity.ok(nuevo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Trabajador> actualizar(@PathVariable Long id, @RequestBody TrabajadorRequestDTO dto) {
+    public ResponseEntity<Trabajador> actualizar(@PathVariable Long id, @RequestBody @Valid TrabajadorRequestDTO dto) {
         Trabajador actualizado = trabajadorService.actualizar(id, dto);
         return ResponseEntity.ok(actualizado);
     }

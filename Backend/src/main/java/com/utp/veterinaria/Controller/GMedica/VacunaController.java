@@ -4,6 +4,7 @@ import com.utp.veterinaria.Model.GestionMedica.HistorialVacunacion;
 import com.utp.veterinaria.Model.GestionMedica.VacunaCatalogo;
 import com.utp.veterinaria.Service.GMedica.HistorialVacunacionService;
 import com.utp.veterinaria.Service.GMedica.VacunaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,18 +33,18 @@ public class VacunaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VacunaCatalogo> actualizar(@PathVariable Long id, @RequestBody VacunaCatalogo vacuna) {
+    public ResponseEntity<VacunaCatalogo> actualizar(@PathVariable Long id, @RequestBody @Valid VacunaCatalogo vacuna) {
         return ResponseEntity.ok(vacunaService.actualizar(id, vacuna));
     }
 
     @PostMapping("/guardar")
-    public VacunaCatalogo guardarVacuna(@RequestBody VacunaCatalogo vacuna) {
+    public VacunaCatalogo guardarVacuna(@RequestBody @Valid VacunaCatalogo vacuna) {
         return vacunaService.guardar(vacuna);
     }
 
     // Registrar aplicación de vacuna
     @PostMapping("/aplicar")
-    public HistorialVacunacion aplicarVacuna(@RequestBody HistorialVacunacion historial) {
+    public HistorialVacunacion aplicarVacuna(@RequestBody @Valid HistorialVacunacion historial) {
         return historialVacunacionService.guardar(historial);
     }
 

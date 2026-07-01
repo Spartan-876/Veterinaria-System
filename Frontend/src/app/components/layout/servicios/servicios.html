@@ -147,7 +147,7 @@
           <i class="pi pi-tag text-primary-dark"></i>
           Nombre del Servicio
         </label>
-        <input pInputText [(ngModel)]="selectedServicio.nombre"
+        <input pInputText [(ngModel)]="selectedServicio.nombre" required minlength="2"
                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"
                placeholder="Ej: Consulta General"/>
       </div>
@@ -158,7 +158,7 @@
           <i class="pi pi-file-edit text-primary-dark"></i>
           Descripción
         </label>
-        <textarea [(ngModel)]="selectedServicio.descripcion" rows="3"
+        <textarea [(ngModel)]="selectedServicio.descripcion" rows="3" required minlength="2"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none resize-none"
                   placeholder="Describe el servicio en detalle..."></textarea>
       </div>
@@ -170,7 +170,7 @@
             <i class="pi pi-money-bill text-primary-dark"></i>
             Precio (S/)
           </label>
-          <input pInputText type="number" [(ngModel)]="selectedServicio.precio"
+          <input pInputText type="number" [(ngModel)]="selectedServicio.precio" required min="0"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"/>
         </div>
         <div class="field">
@@ -243,7 +243,7 @@
           <i class="pi pi-tag text-primary-dark"></i>
           Nombre del Servicio
         </label>
-        <input pInputText [(ngModel)]="selectedServicio.nombre"
+        <input pInputText [(ngModel)]="selectedServicio.nombre" required minlength="2"
                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"
                placeholder="Ej: Consulta General"/>
       </div>
@@ -254,7 +254,7 @@
           <i class="pi pi-file-edit text-primary-dark"></i>
           Descripción
         </label>
-        <textarea [(ngModel)]="selectedServicio.descripcion" rows="3"
+        <textarea [(ngModel)]="selectedServicio.descripcion" rows="3" required minlength="2"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none resize-none"
                   placeholder="Describe el servicio en detalle..."></textarea>
       </div>
@@ -266,7 +266,7 @@
             <i class="pi pi-money-bill text-primary-dark"></i>
             Precio (S/)
           </label>
-          <input pInputText type="number" [(ngModel)]="selectedServicio.precio"
+          <input pInputText type="number" [(ngModel)]="selectedServicio.precio" required min="0"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"/>
         </div>
         <div class="field">

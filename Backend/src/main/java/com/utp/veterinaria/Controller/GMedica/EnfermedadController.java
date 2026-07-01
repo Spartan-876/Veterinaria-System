@@ -4,6 +4,7 @@ import com.utp.veterinaria.DTO.EnfermedadDTO;
 import com.utp.veterinaria.DTO.EnfermedadRequestDTO;
 import com.utp.veterinaria.Model.GestionMedica.Enfermedad;
 import com.utp.veterinaria.Service.GMedica.EnfermedadService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class EnfermedadController {
     }
 
     @PostMapping
-    public ResponseEntity<EnfermedadDTO> crearEnfermedad(@RequestBody EnfermedadRequestDTO request){
+    public ResponseEntity<EnfermedadDTO> crearEnfermedad(@RequestBody @Valid EnfermedadRequestDTO request){
         return ResponseEntity.ok(enfermedadService.crear(request));
     }
 
@@ -43,7 +44,7 @@ public class EnfermedadController {
     @PutMapping("/{id}")
     public ResponseEntity<EnfermedadDTO> actualizar(
             @PathVariable Long id,
-            @RequestBody EnfermedadRequestDTO request) {
+            @RequestBody @Valid EnfermedadRequestDTO request) {
         return ResponseEntity.ok(enfermedadService.actualizar(id, request));
     }
 }

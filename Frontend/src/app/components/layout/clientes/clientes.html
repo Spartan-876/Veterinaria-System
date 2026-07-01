@@ -101,32 +101,32 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombres *</label>
-          <input pInputText [(ngModel)]="selectedCliente.nombres"
+          <input pInputText [(ngModel)]="selectedCliente.nombres" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Nombres"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Apellidos *</label>
-          <input pInputText [(ngModel)]="selectedCliente.apellidos"
+          <input pInputText [(ngModel)]="selectedCliente.apellidos" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Apellidos"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">DNI *</label>
-          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8"
+          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8" required pattern="\d{8}"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="12345678"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Teléfono *</label>
-          <input pInputText [(ngModel)]="selectedCliente.telefono" maxlength="9"
+          <input pInputText [(ngModel)]="selectedCliente.telefono" maxlength="9" required pattern="\d{9}"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="987654321"/>
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Correo *</label>
-          <input pInputText [(ngModel)]="selectedCliente.correo" type="email"
+          <input pInputText [(ngModel)]="selectedCliente.correo" type="email" required
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="correo@email.com"/>
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Dirección *</label>
-          <input pInputText [(ngModel)]="selectedCliente.direccion"
+          <input pInputText [(ngModel)]="selectedCliente.direccion" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Av. Principal 123"/>
         </div>
       </div>
@@ -148,32 +148,32 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombres *</label>
-          <input pInputText [(ngModel)]="selectedCliente.nombres"
+          <input pInputText [(ngModel)]="selectedCliente.nombres" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Apellidos *</label>
-          <input pInputText [(ngModel)]="selectedCliente.apellidos"
+          <input pInputText [(ngModel)]="selectedCliente.apellidos" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">DNI *</label>
-          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8"
+          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8" required pattern="\d{8}"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Teléfono *</label>
-          <input pInputText [(ngModel)]="selectedCliente.telefono" maxlength="9"
+          <input pInputText [(ngModel)]="selectedCliente.telefono" maxlength="9" required pattern="\d{9}"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Correo *</label>
-          <input pInputText [(ngModel)]="selectedCliente.correo" type="email"
+          <input pInputText [(ngModel)]="selectedCliente.correo" type="email" required
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Dirección *</label>
-          <input pInputText [(ngModel)]="selectedCliente.direccion"
+          <input pInputText [(ngModel)]="selectedCliente.direccion" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
       </div>

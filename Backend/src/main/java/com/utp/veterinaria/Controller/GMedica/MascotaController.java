@@ -2,6 +2,7 @@ package com.utp.veterinaria.Controller.GMedica;
 
 import com.utp.veterinaria.Model.GestionMedica.Mascota;
 import com.utp.veterinaria.Service.GMedica.MascotaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class MascotaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Mascota mascota) {
+    public ResponseEntity<?> crear(@RequestBody @Valid Mascota mascota) {
         System.out.println("DATOS RECIBIDOS: " + mascota.getNombre());
         if (mascota.getCliente() != null) {
             System.out.println("ID DEL CLIENTE: " + mascota.getCliente().getId());
@@ -50,7 +51,7 @@ public class MascotaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mascota> actualizar(@PathVariable Long id, @RequestBody Mascota mascota) {
+    public ResponseEntity<Mascota> actualizar(@PathVariable Long id, @RequestBody @Valid Mascota mascota) {
         mascota.setId(id);
         return ResponseEntity.ok(mascotaService.guardar(mascota));
     }

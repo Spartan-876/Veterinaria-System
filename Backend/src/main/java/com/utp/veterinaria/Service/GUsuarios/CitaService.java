@@ -87,6 +87,14 @@ public class CitaService {
 
     public CitaDTO crearCita(CitaRequestDTO request) {
 
+        // 0. Validar que la fecha sea futura
+        if (request.getFechaHora() == null) {
+            throw new RuntimeException("La fecha y hora son obligatorias");
+        }
+        if (request.getFechaHora().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("La fecha de la cita debe ser en el futuro");
+        }
+
         // 1. Validar que la mascota existe
         Mascota mascota = mascotaRepository.findById(request.getMascotaId())
                 .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
@@ -118,7 +126,18 @@ public class CitaService {
             throw new RuntimeException("El trabajador no ofrece este servicio");
         }
 
-        // 5. Crear y guardar la cita
+        // 5. Verificar que no haya otra cita en el mismo horario para el mismo trabajador
+        LocalDateTime fin = request.getFechaHora().plusHours(1);
+        List<Cita> citasSolapadas = citaRepository
+                .findByTrabajadorIdAndFechaHoraBetween(
+                        request.getTrabajadorId(), request.getFechaHora(), fin);
+        boolean haySolapamiento = citasSolapadas.stream()
+                .anyMatch(c -> c.getEstado() != Cita.EstadoCita.CANCELADA);
+        if (haySolapamiento) {
+            throw new RuntimeException("El trabajador ya tiene una cita programada en ese horario");
+        }
+
+        // 6. Crear y guardar la cita
         Cita cita = new Cita();
         cita.setMascota(mascota);
         cita.setServicio(servicio);
@@ -191,7 +210,29 @@ public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
     public CitaDTO cambiarEstado(Long id, String estado) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
-        cita.setEstado(Cita.EstadoCita.valueOf(estado));
+
+        Cita.EstadoCita nuevoEstado;
+        try {
+            nuevoEstado = Cita.EstadoCita.valueOf(estado);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado invalido: " + estado);
+        }
+
+        // Validar transiciones de estado validas
+        Cita.EstadoCita actual = cita.getEstado();
+        boolean transicionValida = switch (actual) {
+            case PENDIENTE -> nuevoEstado == Cita.EstadoCita.CONFIRMADA
+                    || nuevoEstado == Cita.EstadoCita.CANCELADA;
+            case CONFIRMADA -> nuevoEstado == Cita.EstadoCita.REALIZADA
+                    || nuevoEstado == Cita.EstadoCita.CANCELADA;
+            case REALIZADA, CANCELADA -> false;
+        };
+
+        if (!transicionValida) {
+            throw new RuntimeException("No se puede cambiar de " + actual + " a " + nuevoEstado);
+        }
+
+        cita.setEstado(nuevoEstado);
         return toDTO(citaRepository.save(cita));
     }
 

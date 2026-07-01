@@ -2,6 +2,7 @@ package com.utp.veterinaria.Controller.GVentas;
 
 import com.utp.veterinaria.Model.GestionVentas.Producto;
 import com.utp.veterinaria.Service.GVentas.ProductoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<Producto> guardar(@RequestBody Producto producto) {
+    public ResponseEntity<Producto> guardar(@RequestBody @Valid Producto producto) {
         return ResponseEntity.ok(productoService.guardar(producto));
     }
 
@@ -32,7 +33,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
+    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody @Valid Producto producto) {
         producto.setId(id);
         return ResponseEntity.ok(productoService.guardar(producto));
     }

@@ -129,12 +129,12 @@
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Edad *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.edad"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: 2 años"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Peso (kg) *</label>
-          <input type="number" [(ngModel)]="mascotaSeleccionada.peso"
+          <input type="number" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: 5.5"/>
         </div>
       </div>
@@ -142,7 +142,7 @@
       <!-- Cliente responsable -->
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Cliente Responsable *</label>
-        <select [(ngModel)]="clienteIdSeleccionado"
+        <select [(ngModel)]="clienteIdSeleccionado" required
                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
           <option [ngValue]="null">— Seleccionar cliente —</option>
           @for (c of clientes; track c.id) {
@@ -168,42 +168,42 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombre *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: Rex"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Especie *</label>
-          <select [(ngModel)]="mascotaSeleccionada.especie"
+          <select [(ngModel)]="mascotaSeleccionada.especie" required
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
           </select>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Raza *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.raza"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: Labrador"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Sexo *</label>
-          <select [(ngModel)]="mascotaSeleccionada.sexo"
+          <select [(ngModel)]="mascotaSeleccionada.sexo" required
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
           </select>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Edad *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.edad"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: 2 años"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Peso (kg) *</label>
-          <input type="number" [(ngModel)]="mascotaSeleccionada.peso"
+          <input type="number" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Cliente Responsable *</label>
-        <select [(ngModel)]="clienteIdSeleccionado"
+        <select [(ngModel)]="clienteIdSeleccionado" required
                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
           <option [ngValue]="null">— Seleccionar cliente —</option>
           @for (c of clientes; track c.id) {
@@ -236,42 +236,42 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombre *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Especie *</label>
-          <select [(ngModel)]="mascotaSeleccionada.especie"
+          <select [(ngModel)]="mascotaSeleccionada.especie" required
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
           </select>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Raza *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.raza"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Sexo *</label>
-          <select [(ngModel)]="mascotaSeleccionada.sexo"
+          <select [(ngModel)]="mascotaSeleccionada.sexo" required
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
           </select>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Edad *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.edad"
+          <input pInputText [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Peso (kg) *</label>
-          <input type="number" [(ngModel)]="mascotaSeleccionada.peso"
+          <input type="number" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
         </div>
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Cliente Responsable *</label>
-        <select [(ngModel)]="clienteIdSeleccionado"
+        <select [(ngModel)]="clienteIdSeleccionado" required
                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
           <option [ngValue]="null">— Seleccionar cliente —</option>
           @for (c of clientes; track c.id) {

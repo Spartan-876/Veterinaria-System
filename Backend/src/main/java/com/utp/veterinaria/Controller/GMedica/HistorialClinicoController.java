@@ -2,6 +2,7 @@ package com.utp.veterinaria.Controller.GMedica;
 
 import com.utp.veterinaria.Model.GestionMedica.HistorialClinico;
 import com.utp.veterinaria.Service.GMedica.HistorialClinicoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class HistorialClinicoController {
     private final HistorialClinicoService service;
 
     @PostMapping
-    public ResponseEntity<HistorialClinico> registrar(@RequestBody HistorialClinico historial) {
+    public ResponseEntity<HistorialClinico> registrar(@RequestBody @Valid HistorialClinico historial) {
         return ResponseEntity.ok(service.guardar(historial));
     }
 

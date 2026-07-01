@@ -3,6 +3,7 @@ package com.utp.veterinaria.Controller.GVentas;
 import com.utp.veterinaria.DTO.ServicioRequestDTO;
 import com.utp.veterinaria.Model.GestionVentas.Servicio;
 import com.utp.veterinaria.Service.GVentas.ServicioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class ServicioController {
     }
 
     @PostMapping
-    public ResponseEntity<Servicio> crear(@RequestBody ServicioRequestDTO dto) {
+    public ResponseEntity<Servicio> crear(@RequestBody @Valid ServicioRequestDTO dto) {
         return ResponseEntity.ok(servicioService.crear(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Servicio> actualizar(@PathVariable Long id, @RequestBody ServicioRequestDTO dto) {
+    public ResponseEntity<Servicio> actualizar(@PathVariable Long id, @RequestBody @Valid ServicioRequestDTO dto) {
         return ResponseEntity.ok(servicioService.actualizar(id, dto));
     }
 

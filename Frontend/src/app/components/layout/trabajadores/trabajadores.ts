@@ -110,10 +110,10 @@ export class Trabajadores implements OnInit {
             this.listarTrabajadores();
             this.cdr.detectChanges();
           }, 0);
+          this.toast.success("Trabajador actualizado");
         },
-        error: (err) => console.error(err)
+        error: (err) => this.toast.error("Error al actualizar el trabajador")
       });
-    this.toast.success("Trabajador actualizado")
   }
 
   toggleEstado(trabajador: Trabajador): void {

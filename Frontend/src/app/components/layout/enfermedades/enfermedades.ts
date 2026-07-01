@@ -156,7 +156,7 @@ export class Enfermedades implements OnInit {
           }, 0);
           this.toast.success('Enfermedad guardada correctamente');
         },
-        error: (err) => this.toast.error(err)
+        error: (err) => this.toast.error("Error al guardar la enfermedad")
       });
   }
 
@@ -180,7 +180,6 @@ export class Enfermedades implements OnInit {
       gravedad: this.selectedEnfermedad.gravedad.toUpperCase(),
       especiesIds: this.selectedEspeciesIds
     };
-    this.toast.success('Enfermedad guardada correctamente');
     this.http.put(`${environment.apiUrl}/api/enfermedades/${this.selectedEnfermedad.id}`, request)
       .subscribe({
         next: () => {
@@ -189,8 +188,9 @@ export class Enfermedades implements OnInit {
             this.cargarEnfermedades();
             this.cdr.detectChanges();
           }, 0);
+          this.toast.success('Enfermedad actualizada correctamente');
         },
-        error: (err) => this.toast.error(err)
+        error: (err) => this.toast.error("Error al actualizar la enfermedad")
       });
   }
 
