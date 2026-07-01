@@ -122,172 +122,303 @@
   <!--EDITAR TRABAJADOR-->
   <p-dialog header="Editar Trabajador" [(visible)]="displayEdit" [modal]="true" [style]="{width: '500px'}"
             [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-4 mt-4">
-      <div class="grid grid-cols-2 gap-3">
+    <form #fEdit="ngForm">
+      <div class="flex flex-col gap-4 mt-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombres: </label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.nombres"
+                   name="nombresE"
+                   #nombresE="ngModel"
+                   required minlength="2"
+                   pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                   placeholder="JUAN FERNANDO" step="0.01"/>
+            @if (nombresE.invalid && (nombresE.dirty || nombresE.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (nombresE.errors?.['required']) { Nombres requeridos. }
+                @else if (nombresE.errors?.['minlength']) { Mínimo 2 caracteres. }
+                @else if (nombresE.errors?.['pattern']) { Solo letras y espacios. }
+              </small>
+            }
+          </div>
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Apellidos:</label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.apellidos"
+                   name="apellidosE"
+                   #apellidosE="ngModel"
+                   required minlength="2"
+                   pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                   placeholder="TORRES PAZ" step="0.01"/>
+            @if (apellidosE.invalid && (apellidosE.dirty || apellidosE.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (apellidosE.errors?.['required']) { Apellidos requeridos. }
+                @else if (apellidosE.errors?.['minlength']) { Mínimo 2 caracteres. }
+                @else if (apellidosE.errors?.['pattern']) { Solo letras y espacios. }
+              </small>
+            }
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Cargo:</label>
+            <select name="cargoE"
+                    #cargoE="ngModel"
+                    [(ngModel)]="selectedTrabajador.cargo"
+                    required minlength="2"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
+              <option value="VETERINARIO">VETERINARIO</option>
+              <option value="ESTILISTA">ESTILISTA</option>
+              <option value="RECEPCIONISTA">RECEPCIONISTA</option>
+              <option value="CIRUJANO">CIRUJANO</option>
+            </select>
+            @if (cargoE.invalid && (cargoE.dirty || cargoE.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (cargoE.errors?.['required']) { Cargo requerido. }
+                @else if (cargoE.errors?.['minlength']) { Mínimo 2 caracteres. }
+              </small>
+            }
+          </div>
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+              <i class="pi pi-circle text-primary-dark"></i>
+              Estado
+            </label>
+            <select id="estado" [(ngModel)]="selectedTrabajador.estado"
+                    name="estadoE"
+                    #estadoE="ngModel"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
+              <option value="ACTIVO">Activo</option>
+              <option value="INACTIVO">Inactivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">DNI:</label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.dni"
+                   name="dniE"
+                   #dniE="ngModel"
+                   required
+                   pattern="\d{8}"
+                   maxlength="8"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                   placeholder="12345678"/>
+            @if (dniE.invalid && (dniE.dirty || dniE.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (dniE.errors?.['required']) { DNI requerido. }
+                @else if (dniE.errors?.['pattern']) { 8 dígitos numéricos. }
+              </small>
+            }
+          </div>
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono:</label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.telefono"
+                   name="telefonoE"
+                   #telefonoE="ngModel"
+                   required
+                   pattern="\d{9}"
+                   maxlength="9"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                   placeholder="999999999"/>
+            @if (telefonoE.invalid && (telefonoE.dirty || telefonoE.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (telefonoE.errors?.['required']) { Teléfono requerido. }
+                @else if (telefonoE.errors?.['pattern']) { 9 dígitos numéricos. }
+              </small>
+            }
+          </div>
+        </div>
         <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombres: </label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.nombres"
+          <label class="font-semibold text-gray-700 block mb-2 text-sm">Correo</label>
+          <input pInputText type="email" [(ngModel)]="selectedTrabajador.correo"
+                 name="correoE"
+                 #correoE="ngModel"
+                 required
+                 pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
                  class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                 placeholder="JUAN FERNANDO" step="0.01"/>
-        </div>
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Apellidos:</label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.apellidos"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                 placeholder="TORRES PAZ" step="0.01"/>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Cargo:</label>
-          <select id="cargo" [(ngModel)]="selectedTrabajador.cargo"
-                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
-            <option value="VETERINARIO">VETERINARIO</option>
-            <option value="ESTILISTA">ESTILISTA</option>
-            <option value="RECEPCIONISTA">RECEPCIONISTA</option>
-            <option value="CIRUJANO">CIRUJANO</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-            <i class="pi pi-circle text-primary-dark"></i>
-            Estado
-          </label>
-          <select id="estado" [(ngModel)]="selectedTrabajador.estado"
-                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
-            <option value="ACTIVO">Activo</option>
-            <option value="INACTIVO">Inactivo</option>
-          </select>
+                 placeholder="email@vethuellitas.com" step="0.01"/>
+          @if (correoE.invalid && (correoE.dirty || correoE.touched)) {
+            <small class="text-red-500 text-xs mt-1 block">
+              @if (correoE.errors?.['required']) { Correo requerido. }
+              @else if (correoE.errors?.['pattern']) { Formato: correo&#64;dominio.com }
+            </small>
+          }
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">DNI:</label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.dni"
-                 maxlength="8"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                 placeholder="12345678"/>
+      <ng-template pTemplate="footer">
+        <div class="flex gap-2 justify-end pt-4">
+          <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                  class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
+          <button pButton label="Guardar" icon="pi pi-check"
+                  class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                  [disabled]="fEdit.invalid"
+                  (click)="guardarCambios()"></button>
         </div>
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono:</label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.telefono"
-                 maxlength="9"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                 placeholder="999999999"/>
-        </div>
-      </div>
-      <div class="field">
-        <label class="font-semibold text-gray-700 block mb-2 text-sm">Correo</label>
-        <input pInputText type="text" [(ngModel)]="selectedTrabajador.correo"
-               class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-               placeholder="email@vethuellitas.com" step="0.01"/>
-
-      </div>
-    </div>
-    <ng-template pTemplate="footer">
-      <div class="flex gap-2 justify-end pt-4">
-        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
-                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
-        <button pButton label="Guardar" icon="pi pi-check"
-                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
-                (click)="guardarCambios()"></button>
-      </div>
-    </ng-template>
+      </ng-template>
+    </form>
   </p-dialog>
 
   <!--NUEVO TRABAJADOR-->
   <p-dialog header="Nuevo Trabajador" [(visible)]="displayNew" [modal]="true" [style]="{width: '500px'}"
             [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-4 mt-4">
-      <div class="grid grid-cols-2 gap-3">
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombres: </label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.nombres"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-          />
-        </div>
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Apellidos:</label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.apellidos"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-          />
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3">
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Cargo:</label>
-          <select id="cargo" [(ngModel)]="selectedTrabajador.cargo"
-                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
-            <option value="VETERINARIO">VETERINARIO</option>
-            <option value="ESTILISTA">ESTILISTA</option>
-            <option value="RECEPCIONISTA">RECEPCIONISTA</option>
-            <option value="CIRUJANO">CIRUJANO</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
-            <i class="pi pi-circle text-primary-dark"></i>
-            Estado
-          </label>
-          <select id="estado" [(ngModel)]="selectedTrabajador.estado"
-                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
-            <option value="ACTIVO">Activo</option>
-            <option value="INACTIVO">Inactivo</option>
-          </select>
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">DNI:</label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.dni"
-                 maxlength="8"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                 placeholder="12345678"/>
-        </div>
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono:</label>
-          <input pInputText type="text" [(ngModel)]="selectedTrabajador.telefono"
-                 maxlength="9"
-                 class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                 placeholder="999999999"/>
-        </div>
-      </div>
-      <div class="space-y-4">
-
-        <!-- EMAIL -->
-        <div class="field">
-          <label class="font-semibold text-gray-700 block mb-2 text-sm">E-mail:</label>
-          <div class="flex gap-2">
-            <div class="flex-grow">
-              <input pInputText type="email"
-                     [(ngModel)]="selectedTrabajador.correo"
-                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
-                     placeholder="example@vethuellitas.com"/>
-            </div>
-            <!-- Botón auto-generar username -->
-            <button type="button"
-                    (click)="generarCorreo()"
-                    title="Generar usuario automáticamente"
-                    class="flex items-center justify-center px-4 bg-primary hover:bg-primary-darker text-white rounded-lg transition-colors">
-              <span class="material-symbols-outlined">auto_fix_high</span>
-            </button>
+    <form #fNew="ngForm">
+      <div class="flex flex-col gap-4 mt-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombres: </label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.nombres"
+                   name="nombresN"
+                   #nombresN="ngModel"
+                   required minlength="2"
+                   pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+            />
+            @if (nombresN.invalid && (nombresN.dirty || nombresN.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (nombresN.errors?.['required']) { Nombres requeridos. }
+                @else if (nombresN.errors?.['minlength']) { Mínimo 2 caracteres. }
+                @else if (nombresN.errors?.['pattern']) { Solo letras y espacios. }
+              </small>
+            }
+          </div>
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Apellidos:</label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.apellidos"
+                   name="apellidosN"
+                   #apellidosN="ngModel"
+                   required minlength="2"
+                   pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+            />
+            @if (apellidosN.invalid && (apellidosN.dirty || apellidosN.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (apellidosN.errors?.['required']) { Apellidos requeridos. }
+                @else if (apellidosN.errors?.['minlength']) { Mínimo 2 caracteres. }
+                @else if (apellidosN.errors?.['pattern']) { Solo letras y espacios. }
+              </small>
+            }
           </div>
         </div>
 
-      </div>
-    </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Cargo:</label>
+            <select name="cargoN"
+                    #cargoN="ngModel"
+                    [(ngModel)]="selectedTrabajador.cargo"
+                    required minlength="2"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
+              <option value="VETERINARIO">VETERINARIO</option>
+              <option value="ESTILISTA">ESTILISTA</option>
+              <option value="RECEPCIONISTA">RECEPCIONISTA</option>
+              <option value="CIRUJANO">CIRUJANO</option>
+            </select>
+            @if (cargoN.invalid && (cargoN.dirty || cargoN.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (cargoN.errors?.['required']) { Cargo requerido. }
+                @else if (cargoN.errors?.['minlength']) { Mínimo 2 caracteres. }
+              </small>
+            }
+          </div>
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
+              <i class="pi pi-circle text-primary-dark"></i>
+              Estado
+            </label>
+            <select name="estadoN"
+                    #estadoN="ngModel"
+                    [(ngModel)]="selectedTrabajador.estado"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
+              <option value="ACTIVO">Activo</option>
+              <option value="INACTIVO">Inactivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">DNI:</label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.dni"
+                   name="dniN"
+                   #dniN="ngModel"
+                   required
+                   pattern="\d{8}"
+                   maxlength="8"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                   placeholder="12345678"/>
+            @if (dniN.invalid && (dniN.dirty || dniN.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (dniN.errors?.['required']) { DNI requerido. }
+                @else if (dniN.errors?.['pattern']) { 8 dígitos numéricos. }
+              </small>
+            }
+          </div>
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono:</label>
+            <input pInputText type="text" [(ngModel)]="selectedTrabajador.telefono"
+                   name="telefonoN"
+                   #telefonoN="ngModel"
+                   required
+                   pattern="\d{9}"
+                   maxlength="9"
+                   class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                   placeholder="999999999"/>
+            @if (telefonoN.invalid && (telefonoN.dirty || telefonoN.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (telefonoN.errors?.['required']) { Teléfono requerido. }
+                @else if (telefonoN.errors?.['pattern']) { 9 dígitos numéricos. }
+              </small>
+            }
+          </div>
+        </div>
+        <div class="space-y-4">
 
-    <ng-template pTemplate="footer">
-      <div class="flex gap-2 justify-end pt-4">
-        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
-                class="p-button-text !text-gray-600 hover:!bg-gray-200"
-                (click)="displayNew=false"></button>
-        <button pButton label="Guardar" icon="pi pi-check"
-                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
-                (click)="guardarNuevo()"></button>
+          <!-- EMAIL -->
+          <div class="field">
+            <label class="font-semibold text-gray-700 block mb-2 text-sm">E-mail:</label>
+            <div class="flex gap-2">
+              <div class="flex-grow">
+                <input pInputText type="email"
+                       [(ngModel)]="selectedTrabajador.correo"
+                       name="correoN"
+                       #correoN="ngModel"
+                       required
+                       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                       class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
+                       placeholder="example@vethuellitas.com"/>
+              </div>
+              <!-- Botón auto-generar username -->
+              <button type="button"
+                      (click)="generarCorreo()"
+                      title="Generar usuario automáticamente"
+                      class="flex items-center justify-center px-4 bg-primary hover:bg-primary-darker text-white rounded-lg transition-colors">
+                <span class="material-symbols-outlined">auto_fix_high</span>
+              </button>
+            </div>
+            @if (correoN.invalid && (correoN.dirty || correoN.touched)) {
+              <small class="text-red-500 text-xs mt-1 block">
+                @if (correoN.errors?.['required']) { Correo requerido. }
+                @else if (correoN.errors?.['pattern']) { Formato: correo&#64;dominio.com }
+              </small>
+            }
+          </div>
+
+        </div>
       </div>
-    </ng-template>
+
+      <ng-template pTemplate="footer">
+        <div class="flex gap-2 justify-end pt-4">
+          <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                  class="p-button-text !text-gray-600 hover:!bg-gray-200"
+                  (click)="displayNew=false"></button>
+          <button pButton label="Guardar" icon="pi pi-check"
+                  class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                  [disabled]="fNew.invalid"
+                  (click)="guardarNuevo()"></button>
+        </div>
+      </ng-template>
+    </form>
   </p-dialog>
 
 </div>

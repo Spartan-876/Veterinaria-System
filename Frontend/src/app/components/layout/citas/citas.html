@@ -257,12 +257,13 @@
   <!-- Modal crear cita -->
   <p-dialog header="Nueva Cita" [(visible)]="displayCrear" [modal]="true"
             [style]="{width: '640px'}" [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-5 mt-4">
+    <form #fCita="ngForm" class="flex flex-col gap-5 mt-4">
 
       <!-- Cliente -->
       <div>
         <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Cliente *</label>
-        <p-select [options]="clientes" [(ngModel)]="clienteSel"
+        <p-select [options]="clientes" [(ngModel)]="clienteSel" name="clienteId"
+                  #clienteIdC="ngModel" required
                   optionLabel="nombres"
                   placeholder="Seleccionar cliente" [filter]="true" [filterBy]="'nombres,apellidos,dni'"
                   [showClear]="true" styleClass="w-full"
@@ -274,6 +275,9 @@
             <span>{{ c.nombres }} {{ c.apellidos }} - {{ c.dni }}</span>
           </ng-template>
         </p-select>
+        @if (clienteIdC.invalid && (clienteIdC.dirty || clienteIdC.touched)) {
+          <p class="text-xs text-red-500 mt-1">El cliente es requerido</p>
+        }
       </div>
 
       <!-- Mascota -->
@@ -283,7 +287,8 @@
           @if (mascotas.length === 0) {
             <p class="text-sm text-gray-400 italic">Este cliente no tiene mascotas registradas</p>
           } @else {
-            <p-select [options]="mascotas" [(ngModel)]="mascotaSel"
+            <p-select [options]="mascotas" [(ngModel)]="mascotaSel" name="mascotaId"
+                      #mascotaIdC="ngModel" required
                       optionLabel="nombre"
                       placeholder="Seleccionar mascota" [showClear]="true" styleClass="w-full">
               <ng-template let-m pTemplate="item">
@@ -293,6 +298,9 @@
                 <span>{{ m.nombre }} - {{ m.especie }} · {{ m.raza }}</span>
               </ng-template>
             </p-select>
+            @if (mascotaIdC.invalid && (mascotaIdC.dirty || mascotaIdC.touched)) {
+              <p class="text-xs text-red-500 mt-1">La mascota es requerida</p>
+            }
           }
         } @else {
           <p class="text-sm text-gray-400 italic">Selecciona un cliente primero</p>
@@ -302,7 +310,8 @@
       <!-- Servicio -->
       <div>
         <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Servicio *</label>
-        <p-select [options]="servicios" [(ngModel)]="servicioSel"
+        <p-select [options]="servicios" [(ngModel)]="servicioSel" name="servicioId"
+                  #servicioIdC="ngModel" required
                   optionLabel="nombre"
                   placeholder="Seleccionar servicio" [showClear]="true" styleClass="w-full"
                   (onChange)="onFechaOServicioChange()">
@@ -313,14 +322,21 @@
             <span>{{ s.nombre }} - S/ {{ s.precio }}</span>
           </ng-template>
         </p-select>
+        @if (servicioIdC.invalid && (servicioIdC.dirty || servicioIdC.touched)) {
+          <p class="text-xs text-red-500 mt-1">El servicio es requerido</p>
+        }
       </div>
 
       <!-- Fecha y hora -->
       <div>
         <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Fecha y hora *</label>
-        <input type="datetime-local" [(ngModel)]="fechaHora" [min]="fechaMin"
+        <input type="datetime-local" [(ngModel)]="fechaHora" name="fechaHora"
+               #fechaHoraC="ngModel" required [min]="fechaMin"
                (change)="onFechaOServicioChange()"
                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-all"/>
+        @if (fechaHoraC.invalid && (fechaHoraC.dirty || fechaHoraC.touched)) {
+          <p class="text-xs text-red-500 mt-1">La fecha y hora son requeridas</p>
+        }
       </div>
 
       <!-- Profesional -->
@@ -335,7 +351,8 @@
           } @else if (trabajadoresDisponibles.length === 0) {
             <p class="text-sm text-gray-400 italic">No hay profesionales disponibles en este horario</p>
           } @else {
-            <p-select [options]="trabajadoresDisponibles" [(ngModel)]="trabajadorSel"
+            <p-select [options]="trabajadoresDisponibles" [(ngModel)]="trabajadorSel" name="trabajadorId"
+                      #trabajadorIdC="ngModel" required
                       optionLabel="nombres"
                       placeholder="Seleccionar profesional" [showClear]="true" styleClass="w-full">
               <ng-template let-t pTemplate="item">
@@ -345,6 +362,9 @@
                 <span>{{ t.nombres }} {{ t.apellidos }} - {{ t.cargo }}</span>
               </ng-template>
             </p-select>
+            @if (trabajadorIdC.invalid && (trabajadorIdC.dirty || trabajadorIdC.touched)) {
+              <p class="text-xs text-red-500 mt-1">El profesional es requerido</p>
+            }
           }
         } @else {
           <p class="text-sm text-gray-400 italic">Selecciona servicio y fecha primero</p>
@@ -354,21 +374,24 @@
       <!-- Motivo -->
       <div>
         <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Motivo *</label>
-        <textarea [(ngModel)]="motivo" rows="3"
+        <textarea [(ngModel)]="motivo" name="motivo" #motivoC="ngModel" required minlength="2" rows="3"
                   placeholder="Describe brevemente el motivo de la cita..."
                   class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-all resize-none placeholder:text-gray-400">
         </textarea>
+        @if (motivoC.invalid && (motivoC.dirty || motivoC.touched)) {
+          <p class="text-xs text-red-500 mt-1">El motivo es requerido (mínimo 2 caracteres)</p>
+        }
       </div>
-    </div>
+    </form>
 
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-2">
         <button pButton severity="secondary" label="Cancelar"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayCrear = false"></button>
-        <button pButton label="Guardar" icon="pi pi-check" [disabled]="!formularioValido || creando"
+        <button pButton label="Guardar" icon="pi pi-check" [disabled]="fCita.invalid || creando"
                 (click)="crearCita()"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
-                [ngClass]="{'opacity-50 cursor-not-allowed': !formularioValido || creando}">
+                [ngClass]="{'opacity-50 cursor-not-allowed': fCita.invalid || creando}">
         </button>
       </div>
     </ng-template>

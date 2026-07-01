@@ -86,38 +86,72 @@
 
     <p-dialog header="Editar Producto" [(visible)]="displayEdit" [modal]="true" [style]="{width: '500px'}"
         [draggable]="false" [resizable]="false">
-        <div class="flex flex-col gap-4 mt-4">
+        <form #fEdit="ngForm" class="flex flex-col gap-4 mt-4">
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre del Producto</label>
-                <input pInputText [(ngModel)]="selectedProducto.nombre" required minlength="2"
+                <input pInputText [(ngModel)]="selectedProducto.nombre" name="nombreE" required minlength="2"
+                    pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
+                    #nombreE="ngModel"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
+                @if (nombreE.invalid && (nombreE.dirty || nombreE.touched)) {
+                <small class="text-red-500 text-xs mt-1 block">
+                    @if (nombreE.errors?.['required']) { El nombre es requerido }
+                    @else if (nombreE.errors?.['minlength']) { Mínimo 2 caracteres }
+                    @else if (nombreE.errors?.['pattern']) { Solo letras y espacios }
+                </small>
+                }
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
-                <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" rows="3" required minlength="2"
+                <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" name="descripcionE" rows="3" required
+                    minlength="2"
+                    #descripcionE="ngModel"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none resize-none"></textarea>
+                @if (descripcionE.invalid && (descripcionE.dirty || descripcionE.touched)) {
+                <small class="text-red-500 text-xs mt-1 block">
+                    @if (descripcionE.errors?.['required']) { La descripción es requerida }
+                    @else if (descripcionE.errors?.['minlength']) { Mínimo 2 caracteres }
+                </small>
+                }
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Precio (S/)</label>
-                    <input pInputText type="number" [(ngModel)]="selectedProducto.precio" required min="0"
+                    <input pInputText type="number" [(ngModel)]="selectedProducto.precio" name="precioE" required
+                        min="0"
+                        #precioE="ngModel"
                         class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
+                    @if (precioE.invalid && (precioE.dirty || precioE.touched)) {
+                    <small class="text-red-500 text-xs mt-1 block">
+                        @if (precioE.errors?.['required']) { El precio es requerido }
+                        @else if (precioE.errors?.['min']) { Valor mínimo: 0 }
+                    </small>
+                    }
                 </div>
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Stock</label>
-                    <input pInputText type="number" [(ngModel)]="selectedProducto.stock" required min="0"
+                    <input pInputText type="number" [(ngModel)]="selectedProducto.stock" name="stockE" required
+                        min="0"
+                        #stockE="ngModel"
                         class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
+                    @if (stockE.invalid && (stockE.dirty || stockE.touched)) {
+                    <small class="text-red-500 text-xs mt-1 block">
+                        @if (stockE.errors?.['required']) { El stock es requerido }
+                        @else if (stockE.errors?.['min']) { Valor mínimo: 0 }
+                    </small>
+                    }
                 </div>
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">URL de la Imagen</label>
-                <input pInputText [(ngModel)]="selectedProducto.imagen_url"
+                <input pInputText [(ngModel)]="selectedProducto.imagen_url" name="imagen_urlE"
+                    #imagen_urlE="ngModel"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
             </div>
-        </div>
+        </form>
 
         <ng-template pTemplate="footer">
             <div class="flex gap-2 justify-end pt-4">
@@ -125,6 +159,7 @@
                     class="p-button-text text-gray-600 hover:bg-gray-50" (click)="displayEdit=false"></button>
                 <button pButton label="Guardar" icon="pi pi-check"
                     class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                    [disabled]="fEdit.invalid"
                     (click)="guardarCambios()"></button>
             </div>
         </ng-template>
@@ -158,38 +193,72 @@
 
     <p-dialog header="Nuevo Producto" [(visible)]="displayNew" [modal]="true" [style]="{width: '500px'}"
         [draggable]="false" [resizable]="false">
-        <div class="flex flex-col gap-4 mt-4">
+        <form #fNew="ngForm" class="flex flex-col gap-4 mt-4">
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre del Producto</label>
-                <input pInputText [(ngModel)]="selectedProducto.nombre" required minlength="2"
+                <input pInputText [(ngModel)]="selectedProducto.nombre" name="nombreN" required minlength="2"
+                    pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
+                    #nombreN="ngModel"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
+                @if (nombreN.invalid && (nombreN.dirty || nombreN.touched)) {
+                <small class="text-red-500 text-xs mt-1 block">
+                    @if (nombreN.errors?.['required']) { El nombre es requerido }
+                    @else if (nombreN.errors?.['minlength']) { Mínimo 2 caracteres }
+                    @else if (nombreN.errors?.['pattern']) { Solo letras y espacios }
+                </small>
+                }
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
-                <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" rows="3" required minlength="2"
+                <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" name="descripcionN" rows="3" required
+                    minlength="2"
+                    #descripcionN="ngModel"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none resize-none"></textarea>
+                @if (descripcionN.invalid && (descripcionN.dirty || descripcionN.touched)) {
+                <small class="text-red-500 text-xs mt-1 block">
+                    @if (descripcionN.errors?.['required']) { La descripción es requerida }
+                    @else if (descripcionN.errors?.['minlength']) { Mínimo 2 caracteres }
+                </small>
+                }
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Precio (S/)</label>
-                    <input pInputText type="number" [(ngModel)]="selectedProducto.precio" required min="0"
+                    <input pInputText type="number" [(ngModel)]="selectedProducto.precio" name="precioN" required
+                        min="0"
+                        #precioN="ngModel"
                         class="w-full px-3 py-2 rounded-lg border border-gray-300 !focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
+                    @if (precioN.invalid && (precioN.dirty || precioN.touched)) {
+                    <small class="text-red-500 text-xs mt-1 block">
+                        @if (precioN.errors?.['required']) { El precio es requerido }
+                        @else if (precioN.errors?.['min']) { Valor mínimo: 0 }
+                    </small>
+                    }
                 </div>
                 <div class="field">
                     <label class="font-semibold text-gray-700 block mb-2 text-sm">Stock</label>
-                    <input pInputText type="number" [(ngModel)]="selectedProducto.stock" required min="0"
+                    <input pInputText type="number" [(ngModel)]="selectedProducto.stock" name="stockN" required
+                        min="0"
+                        #stockN="ngModel"
                         class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
+                    @if (stockN.invalid && (stockN.dirty || stockN.touched)) {
+                    <small class="text-red-500 text-xs mt-1 block">
+                        @if (stockN.errors?.['required']) { El stock es requerido }
+                        @else if (stockN.errors?.['min']) { Valor mínimo: 0 }
+                    </small>
+                    }
                 </div>
             </div>
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">URL de la Imagen</label>
-                <input pInputText [(ngModel)]="selectedProducto.imagen_url"
+                <input pInputText [(ngModel)]="selectedProducto.imagen_url" name="imagen_urlN"
+                    #imagen_urlN="ngModel"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none" />
             </div>
-        </div>
+        </form>
 
         <ng-template pTemplate="footer">
             <div class="flex gap-2 justify-end pt-4">
@@ -197,6 +266,7 @@
                     class="p-button-text text-gray-600 hover:bg-primary-hover" (click)="displayNew=false"></button>
                 <button pButton label="Guardar" icon="pi pi-check"
                     class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                    [disabled]="fNew.invalid"
                     (click)="guardarNuevo()"></button>
             </div>
         </ng-template>

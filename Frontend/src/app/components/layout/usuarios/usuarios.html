@@ -210,7 +210,7 @@
     [resizable]="false"
     styleClass="modern-dialog"
   >
-    <div class="flex flex-col gap-5 mt-4">
+    <form #fNew="ngForm" class="flex flex-col gap-5 mt-4">
       <!-- Correo -->
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
@@ -219,10 +219,24 @@
         </label>
         <input
           pInputText
+          name="correoN"
           [(ngModel)]="nuevoUsuario.correo"
+          #correoN="ngModel"
+          required
+          type="email"
+          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"
           placeholder="correo@ejemplo.com"
         />
+        @if (correoN.invalid && (correoN.dirty || correoN.touched)) {
+          <p class="text-red-500 text-xs mt-1">
+            @if (correoN.errors?.['required']) {
+              El correo es obligatorio.
+            } @else if (correoN.errors?.['pattern']) {
+              Formato: correo&#64;dominio.com
+            }
+          </p>
+        }
       </div>
 
       <!-- Contraseña -->
@@ -233,10 +247,23 @@
         </label>
         <input
           pInputText
+          name="passwordN"
           type="password"
           [(ngModel)]="nuevoUsuario.password"
+          #passwordN="ngModel"
+          required
+          minlength="6"
           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none"
         />
+        @if (passwordN.invalid && (passwordN.dirty || passwordN.touched)) {
+          <p class="text-red-500 text-xs mt-1">
+            @if (passwordN.errors?.['required']) {
+              La contraseña es obligatoria.
+            } @else if (passwordN.errors?.['minlength']) {
+              Mínimo 6 caracteres.
+            }
+          </p>
+        }
       </div>
 
       <!-- Estado -->
@@ -246,7 +273,9 @@
           Estado
         </label>
         <select
+          name="estadoN"
           [(ngModel)]="nuevoUsuario.estado"
+          #estadoN="ngModel"
           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white"
         >
           <option value="ACTIVO">Activo</option>
@@ -258,10 +287,12 @@
       <div class="field">
         <label class="flex items-center gap-2 cursor-pointer mb-3">
           <input type="checkbox" [(ngModel)]="esTrabajador"
+                 name="esTrabajadorN"
                  class="w-4 h-4 accent-primary-dark rounded">
           <span class="text-sm text-on-surface-variant">Asignar a un trabajador</span>
         </label>
         <p-select [options]="personasFiltradas" [(ngModel)]="personaId"
+                  name="personaN"
                   optionLabel="nombreCompleto" optionValue="id"
                   [filter]="true" [showClear]="true"
                   [placeholder]="esTrabajador ? 'Buscar trabajador...' : 'Buscar cliente...'"
@@ -306,7 +337,7 @@
           {{ nuevoUsuario.roles?.length || 0 }} rol(es) seleccionado(s)
         </p>
       </div>
-    </div>
+    </form>
 
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
@@ -323,6 +354,7 @@
           label="Guardar"
           icon="pi pi-check"
           class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+          [disabled]="fNew.invalid"
           (click)="guardarNuevo()"
         ></button>
       </div>
@@ -341,7 +373,7 @@
     [resizable]="false"
     styleClass="modern-dialog"
   >
-    <div class="flex flex-col gap-5 mt-4">
+    <form #fEdit="ngForm" class="flex flex-col gap-5 mt-4">
       <!-- Correo (readonly) -->
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm flex items-center gap-2">
@@ -350,10 +382,24 @@
         </label>
         <input
           pInputText
+          name="correoE"
           [(ngModel)]="selectedUsuario.correo"
+          #correoE="ngModel"
+          required
+          type="email"
+          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
           readonly
           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-100 text-gray-500"
         />
+        @if (correoE.invalid && (correoE.dirty || correoE.touched)) {
+          <p class="text-red-500 text-xs mt-1">
+            @if (correoE.errors?.['required']) {
+              El correo es obligatorio.
+            } @else if (correoE.errors?.['pattern']) {
+              Formato: correo&#64;dominio.com
+            }
+          </p>
+        }
       </div>
 
       <!-- Estado -->
@@ -363,7 +409,10 @@
           Estado
         </label>
         <select
+          name="estadoE"
           [(ngModel)]="selectedUsuario.estado"
+          #estadoE="ngModel"
+          required
           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white"
         >
           <option value="ACTIVO">Activo</option>
@@ -375,10 +424,12 @@
       <div class="field">
         <label class="flex items-center gap-2 cursor-pointer mb-3">
           <input type="checkbox" [(ngModel)]="esTrabajador"
+                 name="esTrabajadorE"
                  class="w-4 h-4 accent-primary-dark rounded">
           <span class="text-sm text-on-surface-variant">Asignar a un trabajador</span>
         </label>
         <p-select [options]="personasFiltradas" [(ngModel)]="personaId"
+                  name="personaE"
                   optionLabel="nombreCompleto" optionValue="id"
                   [filter]="true" [showClear]="true"
                   [placeholder]="esTrabajador ? 'Buscar trabajador...' : 'Buscar cliente...'"
@@ -423,7 +474,7 @@
           {{ selectedUsuario.roles?.length || 0 }} rol(es) seleccionado(s)
         </p>
       </div>
-    </div>
+    </form>
 
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
@@ -440,6 +491,7 @@
           label="Guardar"
           icon="pi pi-check"
           class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+          [disabled]="fEdit.invalid"
           (click)="guardarCambios()"
         ></button>
       </div>

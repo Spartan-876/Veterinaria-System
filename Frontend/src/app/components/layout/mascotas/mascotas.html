@@ -101,54 +101,83 @@
   </div>
 
   <ng-template #formMascota>
-    <div class="flex flex-col gap-4 mt-4">
+    <form #fMascota="ngForm" class="flex flex-col gap-4 mt-4">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombre *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre"
+          <input pInputText name="nombre" [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #nombreM="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: Rex"/>
+          @if (nombreM.invalid && (nombreM.dirty || nombreM.touched)) {
+            @if (nombreM.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Especie *</label>
-          <select [(ngModel)]="mascotaSeleccionada.especie"
+          <select name="especie" [(ngModel)]="mascotaSeleccionada.especie" required #especieM="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
           </select>
+          @if (especieM.invalid && (especieM.dirty || especieM.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Raza *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.raza"
+          <input pInputText name="raza" [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
+                 #razaM="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: Labrador"/>
+          @if (razaM.invalid && (razaM.dirty || razaM.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Sexo *</label>
-          <select [(ngModel)]="mascotaSeleccionada.sexo"
+          <select name="sexo" [(ngModel)]="mascotaSeleccionada.sexo" required #sexoM="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
           </select>
+          @if (sexoM.invalid && (sexoM.dirty || sexoM.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Edad *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
+          <input pInputText name="edad" [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
+                 #edadM="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: 2 años"/>
+          @if (edadM.invalid && (edadM.dirty || edadM.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Peso (kg) *</label>
-          <input type="number" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
+          <input type="number" name="peso" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
+                 #pesoM="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: 5.5"/>
+          @if (pesoM.invalid && (pesoM.dirty || pesoM.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
       </div>
 
       <!-- Cliente responsable -->
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Cliente Responsable *</label>
-        <select [(ngModel)]="clienteIdSeleccionado" required
+        <select name="clienteId" [(ngModel)]="clienteIdSeleccionado" required #clienteIdM="ngModel"
                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
           <option [ngValue]="null">— Seleccionar cliente —</option>
           @for (c of clientes; track c.id) {
             <option [ngValue]="c.id">{{ c.nombres }} {{ c.apellidos }} · DNI {{ c.dni }}</option>
           }
         </select>
+        @if (clienteIdM.invalid && (clienteIdM.dirty || clienteIdM.touched)) {
+          <small class="text-red-500 text-xs mt-1">Seleccioná un cliente</small>
+        }
       </div>
 
       <!-- Observaciones -->
@@ -158,58 +187,87 @@
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none resize-none"
                   placeholder="Notas médicas, alergias, etc."></textarea>
       </div>
-    </div>
+    </form>
   </ng-template>
 
   <!-- MODAL NUEVA MASCOTA -->
   <p-dialog header="Nueva Mascota" [(visible)]="displayNew" [modal]="true"
             [style]="{width:'560px'}" [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-4 mt-4">
+    <form #fNew="ngForm" class="flex flex-col gap-4 mt-4">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombre *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
+          <input pInputText name="nombre" [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #nombreN="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: Rex"/>
+          @if (nombreN.invalid && (nombreN.dirty || nombreN.touched)) {
+            @if (nombreN.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Especie *</label>
-          <select [(ngModel)]="mascotaSeleccionada.especie" required
+          <select name="especie" [(ngModel)]="mascotaSeleccionada.especie" required #especieN="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
           </select>
+          @if (especieN.invalid && (especieN.dirty || especieN.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Raza *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
+          <input pInputText name="raza" [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
+                 #razaN="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: Labrador"/>
+          @if (razaN.invalid && (razaN.dirty || razaN.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Sexo *</label>
-          <select [(ngModel)]="mascotaSeleccionada.sexo" required
+          <select name="sexo" [(ngModel)]="mascotaSeleccionada.sexo" required #sexoN="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
           </select>
+          @if (sexoN.invalid && (sexoN.dirty || sexoN.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Edad *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
+          <input pInputText name="edad" [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
+                 #edadN="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Ej: 2 años"/>
+          @if (edadN.invalid && (edadN.dirty || edadN.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Peso (kg) *</label>
-          <input type="number" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
+          <input type="number" name="peso" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
+                 #pesoN="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (pesoN.invalid && (pesoN.dirty || pesoN.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Cliente Responsable *</label>
-        <select [(ngModel)]="clienteIdSeleccionado" required
+        <select name="clienteId" [(ngModel)]="clienteIdSeleccionado" required #clienteIdN="ngModel"
                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
           <option [ngValue]="null">— Seleccionar cliente —</option>
           @for (c of clientes; track c.id) {
             <option [ngValue]="c.id">{{ c.nombres }} {{ c.apellidos }} · DNI {{ c.dni }}</option>
           }
         </select>
+        @if (clienteIdN.invalid && (clienteIdN.dirty || clienteIdN.touched)) {
+          <small class="text-red-500 text-xs mt-1">Seleccioná un cliente</small>
+        }
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Observaciones</label>
@@ -217,12 +275,12 @@
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none resize-none"
                   placeholder="Notas médicas, alergias, etc."></textarea>
       </div>
-    </div>
+    </form>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
         <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayNew = false"></button>
-        <button pButton label="Guardar" icon="pi pi-check"
+        <button pButton label="Guardar" icon="pi pi-check" [disabled]="fNew.invalid"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarNuevo()"></button>
       </div>
@@ -232,64 +290,93 @@
   <!-- MODAL EDITAR MASCOTA -->
   <p-dialog header="Editar Mascota" [(visible)]="displayEdit" [modal]="true"
             [style]="{width:'560px'}" [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-4 mt-4">
+    <form #fEdit="ngForm" class="flex flex-col gap-4 mt-4">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombre *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
+          <input pInputText name="nombre" [(ngModel)]="mascotaSeleccionada.nombre" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #nombreE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (nombreE.invalid && (nombreE.dirty || nombreE.touched)) {
+            @if (nombreE.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Especie *</label>
-          <select [(ngModel)]="mascotaSeleccionada.especie" required
+          <select name="especie" [(ngModel)]="mascotaSeleccionada.especie" required #especieE="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
           </select>
+          @if (especieE.invalid && (especieE.dirty || especieE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Raza *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
+          <input pInputText name="raza" [(ngModel)]="mascotaSeleccionada.raza" required minlength="2"
+                 #razaE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (razaE.invalid && (razaE.dirty || razaE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Sexo *</label>
-          <select [(ngModel)]="mascotaSeleccionada.sexo" required
+          <select name="sexo" [(ngModel)]="mascotaSeleccionada.sexo" required #sexoE="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
             @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
           </select>
+          @if (sexoE.invalid && (sexoE.dirty || sexoE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Edad *</label>
-          <input pInputText [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
+          <input pInputText name="edad" [(ngModel)]="mascotaSeleccionada.edad" required minlength="2"
+                 #edadE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (edadE.invalid && (edadE.dirty || edadE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Peso (kg) *</label>
-          <input type="number" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
+          <input type="number" name="peso" [(ngModel)]="mascotaSeleccionada.peso" required min="0"
+                 #pesoE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (pesoE.invalid && (pesoE.dirty || pesoE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Requerido</small>
+          }
         </div>
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Cliente Responsable *</label>
-        <select [(ngModel)]="clienteIdSeleccionado" required
+        <select name="clienteId" [(ngModel)]="clienteIdSeleccionado" required #clienteIdE="ngModel"
                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none bg-white">
           <option [ngValue]="null">— Seleccionar cliente —</option>
           @for (c of clientes; track c.id) {
             <option [ngValue]="c.id">{{ c.nombres }} {{ c.apellidos }} · DNI {{ c.dni }}</option>
           }
         </select>
+        @if (clienteIdE.invalid && (clienteIdE.dirty || clienteIdE.touched)) {
+          <small class="text-red-500 text-xs mt-1">Seleccioná un cliente</small>
+        }
       </div>
       <div>
         <label class="text-xs font-semibold text-gray-600 block mb-1">Observaciones</label>
         <textarea [(ngModel)]="mascotaSeleccionada.observaciones" rows="2"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none resize-none"></textarea>
       </div>
-    </div>
+    </form>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
         <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit = false"></button>
-        <button pButton label="Guardar" icon="pi pi-check"
+        <button pButton label="Guardar" icon="pi pi-check" [disabled]="fEdit.invalid"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarEdicion()"></button>
       </div>

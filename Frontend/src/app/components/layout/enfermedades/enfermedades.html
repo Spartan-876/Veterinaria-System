@@ -175,12 +175,21 @@
   <!--EDITAR-->
   <p-dialog header="Editar Enfermedad" [(visible)]="displayEdit" [modal]="true" [style]="{width: '500px'}"
             [draggable]="false" [resizable]="false">
+    <form #fEdit="ngForm">
     <div class="flex flex-col gap-4 mt-4">
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre de la Vacuna</label>
-        <input pInputText [(ngModel)]="selectedEnfermedad.nombre" required minlength="2"
+        <input pInputText [(ngModel)]="selectedEnfermedad.nombre" name="nombreE" #nombreE="ngModel"
+               required minlength="2" pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
                placeholder="Ej: Nombre de la Vacuna" />
+        @if (nombreE.invalid && (nombreE.dirty || nombreE.touched)) {
+          <small class="text-red-500 text-xs mt-1 block">
+            @if (nombreE.errors?.['required']) { El nombre es requerido }
+            @else if (nombreE.errors?.['minlength']) { Mínimo 2 caracteres }
+            @else if (nombreE.errors?.['pattern']) { Solo letras y espacios }
+          </small>
+        }
       </div>
       <div class="grid grid-cols-2 gap-3">
         <div class="field">
@@ -188,6 +197,7 @@
           <p-multiSelect
             [options]="especies"
             [(ngModel)]="selectedEspeciesIds"
+            name="especiesE" #especiesE="ngModel"
             optionLabel="nombre"
             optionValue="id"
             placeholder="Seleccionar especies"
@@ -196,7 +206,7 @@
         </div>
         <div class="field">
           <label class="font-semibold text-gray-700 block mb-2 text-sm">Gravedad</label>
-          <select id="estado" [(ngModel)]="selectedEnfermedad.gravedad"
+          <select [(ngModel)]="selectedEnfermedad.gravedad" name="gravedadE" #gravedadE="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
             <option value="ALTA">Alta</option>
             <option value="MEDIA">Media</option>
@@ -206,9 +216,16 @@
       </div>
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
-        <textarea pInputTextarea id="descripcion" [(ngModel)]="selectedEnfermedad.descripcion" rows="2" required minlength="2"
+        <textarea pInputTextarea [(ngModel)]="selectedEnfermedad.descripcion" name="descripcionE" #descripcionE="ngModel"
+                  rows="2" required minlength="2"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none resize-none"
-                  placeholder="0.00" step="0.01"></textarea>
+                  placeholder="Descripción de la enfermedad"></textarea>
+        @if (descripcionE.invalid && (descripcionE.dirty || descripcionE.touched)) {
+          <small class="text-red-500 text-xs mt-1 block">
+            @if (descripcionE.errors?.['required']) { La descripción es requerida }
+            @else if (descripcionE.errors?.['minlength']) { Mínimo 2 caracteres }
+          </small>
+        }
       </div>
 
     </div>
@@ -218,19 +235,30 @@
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
         <button pButton label="Guardar" icon="pi pi-check"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                [disabled]="fEdit.invalid"
                 (click)="guardarCambios()"></button>
       </div>
     </ng-template>
+    </form>
   </p-dialog>
   <!--NUEVO-->
   <p-dialog header="Nueva Enfermedad" [(visible)]="displayNew" [modal]="true" [style]="{width: '500px'}"
             [draggable]="false" [resizable]="false">
+    <form #fNew="ngForm">
     <div class="flex flex-col gap-4 mt-4">
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre de la Enfermedad</label>
-        <input pInputText [(ngModel)]="selectedEnfermedad.nombre" required minlength="2"
+        <input pInputText [(ngModel)]="selectedEnfermedad.nombre" name="nombreN" #nombreN="ngModel"
+               required minlength="2" pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+"
                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-container transition-all outline-none"
                placeholder="Ej: Parasito contagiosos" />
+        @if (nombreN.invalid && (nombreN.dirty || nombreN.touched)) {
+          <small class="text-red-500 text-xs mt-1 block">
+            @if (nombreN.errors?.['required']) { El nombre es requerido }
+            @else if (nombreN.errors?.['minlength']) { Mínimo 2 caracteres }
+            @else if (nombreN.errors?.['pattern']) { Solo letras y espacios }
+          </small>
+        }
       </div>
       <div class="grid grid-cols-2 gap-3">
         <div class="field">
@@ -238,6 +266,7 @@
           <p-multiSelect
             [options]="especies"
             [(ngModel)]="selectedEspeciesIds"
+            name="especiesN" #especiesN="ngModel"
             optionLabel="nombre"
             optionValue="id"
             placeholder="Seleccionar..."
@@ -246,7 +275,7 @@
         </div>
         <div class="field">
           <label class="font-semibold text-gray-700 block mb-2 text-sm">Gravedad</label>
-          <select id="estado" [(ngModel)]="selectedEnfermedad.gravedad"
+          <select [(ngModel)]="selectedEnfermedad.gravedad" name="gravedadN" #gravedadN="ngModel"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none bg-white">
             <option value="ALTA">Alta</option>
             <option value="MEDIA">Media</option>
@@ -256,9 +285,16 @@
       </div>
       <div class="field">
         <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
-        <textarea pInputTextarea id="descripcion" [(ngModel)]="selectedEnfermedad.descripcion" rows="2" required minlength="2"
+        <textarea pInputTextarea [(ngModel)]="selectedEnfermedad.descripcion" name="descripcionN" #descripcionN="ngModel"
+                  rows="2" required minlength="2"
                   class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none resize-none"
-                  placeholder="Descripcion de la enfermedad" step="0.01"></textarea>
+                  placeholder="Descripción de la enfermedad"></textarea>
+        @if (descripcionN.invalid && (descripcionN.dirty || descripcionN.touched)) {
+          <small class="text-red-500 text-xs mt-1 block">
+            @if (descripcionN.errors?.['required']) { La descripción es requerida }
+            @else if (descripcionN.errors?.['minlength']) { Mínimo 2 caracteres }
+          </small>
+        }
       </div>
 
     </div>
@@ -268,9 +304,11 @@
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayNew=false"></button>
         <button pButton label="Guardar" icon="pi pi-check"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                [disabled]="fNew.invalid"
                 (click)="guardarNuevo()"></button>
       </div>
     </ng-template>
+    </form>
   </p-dialog>
   <!--DESACTIVAR-->
   <p-dialog header="Confirmar Desactivación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
