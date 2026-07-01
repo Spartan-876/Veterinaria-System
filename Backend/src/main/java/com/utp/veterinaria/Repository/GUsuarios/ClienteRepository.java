@@ -14,7 +14,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT new com.utp.veterinaria.DTO.ClienteDTO(" +
             "c.id, c.dni, c.nombres, c.apellidos, c.direccion, c.telefono, c.correo, " +
             "size(c.mascotas)) " +
-            "FROM Cliente c")
+            "FROM Cliente c WHERE c.activo = true")
     List<ClienteDTO> findAllClientesConContador();
 
     boolean existsByDni(String dni);

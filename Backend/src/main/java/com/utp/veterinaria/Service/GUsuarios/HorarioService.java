@@ -17,7 +17,9 @@ public class HorarioService {
     private final TrabajadorRepository trabajadorRepository;
 
     public List<Horario> buscarPorTrabajador(Long trabajadorId) {
-        return horarioRepository.findByTrabajadorId(trabajadorId);
+        return horarioRepository.findByTrabajadorId(trabajadorId).stream()
+                .filter(Horario::isActivo)
+                .toList();
     }
 
     public Horario guardar(Horario horario) {
@@ -48,6 +50,9 @@ public class HorarioService {
     }
 
     public void eliminar(Long id) {
-        horarioRepository.deleteById(id);
+        Horario horario = horarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Horario no encontrado"));
+        horario.setActivo(false);
+        horarioRepository.save(horario);
     }
 }

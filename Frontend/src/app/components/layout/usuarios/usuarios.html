@@ -162,9 +162,9 @@
                 </button>
                 <button
                   (click)="abrirEliminar(usuario)"
-                  class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                  class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
                 >
-                  <span class="material-symbols-outlined text-lg">delete</span>
+                  <span class="material-symbols-outlined text-lg">block</span>
                 </button>
               </div>
             </td>
@@ -312,10 +312,10 @@
       <div class="flex gap-3 justify-end pt-4">
         <button
           pButton
+          severity="secondary"
           label="Cancelar"
           icon="pi pi-times"
-          severity="secondary"
-          class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+          class="p-button-text !text-gray-600 hover:!bg-gray-200"
           (click)="displayNew = false"
         ></button>
         <button
@@ -429,15 +429,15 @@
       <div class="flex gap-3 justify-end pt-4">
         <button
           pButton
+          severity="secondary"
           label="Cancelar"
           icon="pi pi-times"
-          severity="secondary"
-          class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+          class="p-button-text !text-gray-600 hover:!bg-gray-200"
           (click)="displayEdit = false"
         ></button>
         <button
           pButton
-          label="Guardar Cambios"
+          label="Guardar"
           icon="pi pi-check"
           class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
           (click)="guardarCambios()"
@@ -447,10 +447,10 @@
   </p-dialog>
 
   <!-- ═══════════════════════════════════════════════ -->
-  <!--              MODAL ELIMINAR USUARIO              -->
+  <!--              MODAL DESACTIVAR USUARIO           -->
   <!-- ═══════════════════════════════════════════════ -->
   <p-dialog
-    header="Confirmar Eliminación"
+    header="Confirmar Desactivación"
     [(visible)]="displayDelete"
     [modal]="true"
     [style]="{ width: '400px' }"
@@ -459,30 +459,30 @@
     styleClass="modern-dialog"
   >
     <div class="flex flex-col items-center py-4">
-      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-        <span class="material-symbols-outlined text-red-600 text-4xl">warning</span>
+      <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-amber-600 text-4xl">block</span>
       </div>
       <p class="text-gray-700 text-center">
-        ¿Está seguro de eliminar el usuario <strong>{{ selectedUsuario.correo }}</strong
+        ¿Está seguro de desactivar el usuario <strong>{{ selectedUsuario.correo }}</strong
         >?
       </p>
-      <p class="text-gray-500 text-sm text-center mt-2">Esta acción no se puede deshacer.</p>
+      <p class="text-gray-500 text-sm text-center mt-2">El registro se marcará como inactivo.</p>
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-center pt-4">
         <button
           pButton
+          severity="secondary"
           label="Cancelar"
           icon="pi pi-times"
-          severity="secondary"
-          class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+          class="p-button-text !text-gray-600 hover:!bg-gray-200"
           (click)="displayDelete = false"
         ></button>
         <button
           pButton
-          label="Eliminar"
-          icon="pi pi-trash"
-          class="!bg-red-600 hover:!bg-red-700 px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-red-200 transition-all font-semibold border-none"
+          label="Desactivar"
+          icon="pi pi-ban"
+          class="!bg-amber-500 hover:!bg-amber-600 px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-amber-200 transition-all font-semibold border-none"
           (click)="confirmarEliminar()"
         ></button>
       </div>

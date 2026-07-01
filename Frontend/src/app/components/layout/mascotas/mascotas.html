@@ -15,11 +15,11 @@
           <input type="text" placeholder="Buscar por mascota o dueño..." [(ngModel)]="terminoBusqueda" (input)="filtrar()"
                  class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none text-sm"/>
         </div>
-        <button (click)="abrirNuevo()"
-                class="bg-primary text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 whitespace-nowrap cursor-pointer">
-          <span class="material-symbols-outlined text-lg">pets</span>
-          Nueva Mascota
-        </button>
+            <button (click)="abrirNuevo()"
+                    class="bg-primary text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+              <span class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
+              Nueva Mascota
+            </button>
       </div>
     </div>
   </div>
@@ -78,8 +78,8 @@
               <button (click)="abrirEditar(m)" class="p-2 text-primary hover:bg-primary-hover rounded-lg transition-colors cursor-pointer" title="Editar">
                 <span class="material-symbols-outlined text-lg">edit</span>
               </button>
-              <button (click)="abrirEliminar(m)" class="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Eliminar">
-                <span class="material-symbols-outlined text-lg">delete</span>
+              <button (click)="abrirEliminar(m)" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer" title="Desactivar">
+                <span class="material-symbols-outlined text-lg">block</span>
               </button>
             </div>
           </td>
@@ -220,10 +220,10 @@
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
-        <button pButton label="Cancelar" (click)="displayNew = false"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
-        <button pButton label="Registrar Mascota" icon="pi pi-check"
-                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white font-semibold border-none"
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayNew = false"></button>
+        <button pButton label="Guardar" icon="pi pi-check"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarNuevo()"></button>
       </div>
     </ng-template>
@@ -287,34 +287,164 @@
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
-        <button pButton label="Cancelar" (click)="displayEdit = false"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
-        <button pButton label="Guardar Cambios" icon="pi pi-check"
-                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white font-semibold border-none"
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit = false"></button>
+        <button pButton label="Guardar" icon="pi pi-check"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarEdicion()"></button>
       </div>
     </ng-template>
   </p-dialog>
 
-  <!-- MODAL ELIMINAR -->
-  <p-dialog header="Confirmar eliminación" [(visible)]="displayDelete" [modal]="true"
+  <!-- MODAL DESACTIVAR -->
+  <p-dialog header="Confirmar desactivación" [(visible)]="displayDelete" [modal]="true"
             [style]="{width:'400px'}" [draggable]="false">
     <div class="flex flex-col items-center gap-4 py-4">
-      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-        <i class="pi pi-trash text-red-500 text-2xl"></i>
+      <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
+        <i class="pi pi-ban text-amber-500 text-2xl"></i>
       </div>
       <p class="text-gray-700 text-center">
-        ¿Eliminar a <strong>{{ mascotaSeleccionada.nombre }}</strong>? Esta acción no se puede deshacer.
+        ¿Desactivar a <strong>{{ mascotaSeleccionada.nombre }}</strong>?
+        El registro se marcará como inactivo.
       </p>
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end">
-        <button pButton label="Cancelar" (click)="displayDelete = false"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
-        <button pButton label="Eliminar" icon="pi pi-trash"
-                class="!bg-red-500 hover:!bg-red-600 px-6 py-2.5 rounded-xl text-white font-semibold border-none"
+        <button pButton severity="secondary" label="Cancelar"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayDelete = false"></button>
+        <button pButton label="Desactivar" icon="pi pi-ban"
+                class="!bg-amber-500 hover:!bg-amber-600 px-6 py-2.5 rounded-xl text-white font-semibold border-none"
                 (click)="eliminar()"></button>
       </div>
+    </ng-template>
+  </p-dialog>
+
+  <!-- ═══ MODAL HISTORIAL MÉDICO ═══ -->
+  <p-dialog [header]="'Historial de ' + mascotaSeleccionada.nombre" [(visible)]="displayHistorial"
+            [modal]="true" [style]="{width:'700px'}" [draggable]="false" [resizable]="false">
+    <div class="mt-4">
+      <!-- Info mascota -->
+      <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl mb-6">
+        <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-primary-dark flex-shrink-0">
+          <span class="material-symbols-outlined">{{ mascotaSeleccionada.especie === 'Canina' ? 'sound_detection_dog_barking' : 'pets' }}</span>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-gray-900">{{ mascotaSeleccionada.nombre }}</p>
+          <p class="text-xs text-gray-500">{{ mascotaSeleccionada.especie }} · {{ mascotaSeleccionada.raza }} · {{ mascotaSeleccionada.edad }}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-gray-400">Peso actual</p>
+          <p class="text-sm font-bold text-gray-700">{{ mascotaSeleccionada.peso }} kg</p>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      @if (historialCargando) {
+        <div class="flex flex-col items-center py-12">
+          <div class="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+          <p class="text-gray-500 text-sm">Cargando historial...</p>
+        </div>
+      } @else if (eventosHistorial.length === 0) {
+        <!-- Empty state -->
+        <div class="text-center py-12">
+          <span class="material-symbols-outlined text-gray-300 text-5xl block mb-3">medical_information</span>
+          <p class="text-gray-500">Sin registros médicos</p>
+          <p class="text-gray-400 text-xs mt-1">El historial se actualizará con cada consulta y vacunación</p>
+        </div>
+      } @else {
+        <!-- Timeline -->
+        <div class="relative">
+          <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+          <div class="flex flex-col gap-5">
+            @for (evento of eventosHistorial; track evento.fecha + evento.titulo) {
+              <div class="relative pl-12">
+                <!-- Icono -->
+                <div class="absolute left-0 w-10 h-10 rounded-full flex items-center justify-center z-10"
+                     [ngClass]="evento.bgClass">
+                  <span class="material-symbols-outlined text-lg" [ngClass]="evento.colorClass">{{ evento.icono }}</span>
+                </div>
+                <!-- Card -->
+                <div class="bg-white border border-gray-100 rounded-2xl p-4 hover:shadow-md transition-shadow">
+                  <div class="flex items-start justify-between gap-3 mb-1">
+                    <h4 class="text-sm font-bold text-gray-900">{{ evento.titulo }}</h4>
+                    <span class="text-[10px] text-gray-400 whitespace-nowrap flex-shrink-0">{{ formatFecha(evento.fecha) }}</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-2">{{ evento.descripcion }}</p>
+
+                  <!-- Detalles expandibles -->
+                  @if (evento.detalles) {
+                    <details class="group">
+                      <summary class="text-[11px] text-primary font-semibold cursor-pointer hover:text-primary-darker transition-colors select-none">
+                        Ver detalles
+                      </summary>
+                      <div class="mt-2 pt-2 border-t border-gray-100 grid grid-cols-2 gap-x-4 gap-y-1.5">
+                        @if (evento.detalles.diagnostico) {
+                          <div>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Diagnóstico</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.diagnostico }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.tratamiento) {
+                          <div class="col-span-2">
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Tratamiento</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.tratamiento }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.enfermedad) {
+                          <div>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Enfermedad</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.enfermedad }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.peso) {
+                          <div>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Peso</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.peso }} kg</p>
+                          </div>
+                        }
+                        @if (evento.detalles.servicio) {
+                          <div>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Servicio</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.servicio }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.profesional) {
+                          <div>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Profesional</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.profesional }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.motivo) {
+                          <div class="col-span-2">
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Motivo</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.motivo }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.lote) {
+                          <div>
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Lote</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.lote }}</p>
+                          </div>
+                        }
+                        @if (evento.detalles.reacciones) {
+                          <div class="col-span-2">
+                            <span class="text-[10px] text-gray-400 uppercase font-bold">Reacciones</span>
+                            <p class="text-xs text-gray-700">{{ evento.detalles.reacciones }}</p>
+                          </div>
+                        }
+                      </div>
+                    </details>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton severity="secondary" label="Cerrar"
+              class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayHistorial = false"></button>
     </ng-template>
   </p-dialog>
 

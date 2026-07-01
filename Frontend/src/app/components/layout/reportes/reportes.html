@@ -1,0 +1,24 @@
+@if (cargando) {
+  <div class="flex flex-col items-center py-32 gap-3">
+    <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+    <p class="text-on-surface-variant text-sm">Cargando reportes...</p>
+  </div>
+} @else {
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <app-chart-card titulo="Ingresos Mensuales" tipo="bar"
+      [labels]="chartIngresosLabels" [datasets]="chartIngresosDatasets" [height]="280">
+    </app-chart-card>
+
+    <app-chart-card titulo="Citas por Estado" tipo="doughnut"
+      [labels]="chartEstadoLabels" [datasets]="chartEstadoDatasets" [height]="280">
+    </app-chart-card>
+
+    <app-chart-card titulo="Mascotas por Especie" tipo="doughnut"
+      [labels]="chartEspecieLabels" [datasets]="chartEspecieDatasets" [height]="280">
+    </app-chart-card>
+
+    <app-chart-card titulo="Servicios Más Solicitados" tipo="horizontalBar"
+      [labels]="chartServiciosLabels" [datasets]="chartServiciosDatasets" [height]="280">
+    </app-chart-card>
+  </div>
+}

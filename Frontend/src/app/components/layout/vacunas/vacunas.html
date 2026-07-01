@@ -31,8 +31,8 @@
             <div
                 class="bg-white p-6 rounded-xl border border-gray-200 flex flex-col hover:shadow-lg transition-all relative group">
                 <button (click)="confirmarEliminar(v)"
-                    class="absolute top-3 right-3 text-red-500 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                    <span class="material-symbols-outlined text-base">delete</span>
+                    class="absolute top-3 right-3 text-amber-500 hover:text-amber-600 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                    <span class="material-symbols-outlined text-base">block</span>
                 </button>
 
                 <div class="flex items-center gap-4 mb-4">
@@ -135,24 +135,25 @@
             <div class="flex gap-2 justify-end pt-4">
                 <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
                     class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
-                <button pButton label="Guardar Cambios" icon="pi pi-check"
-                    class="!bg-primary hover:bg-primary-darker text-white !border-none" (click)="guardarCambios()"></button>
+                <button pButton label="Guardar" icon="pi pi-check"
+                    class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                    (click)="guardarCambios()"></button>
             </div>
         </ng-template>
     </p-dialog>
 
     <!-- Delete Confirmation Dialog -->
-    <p-dialog header="Confirmar Eliminación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
+    <p-dialog header="Confirmar Desactivación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
         [draggable]="false" [resizable]="false">
         <div class="flex flex-col items-center text-center gap-4 py-3">
-            <div class="p-4 bg-red-50 rounded-full">
-                <i class="pi pi-exclamation-triangle text-red-500 text-4xl"></i>
+            <div class="p-4 bg-amber-50 rounded-full">
+                <i class="pi pi-ban text-amber-500 text-4xl"></i>
             </div>
             <div>
                 <h4 class="text-base font-bold text-gray-800 mb-2">¿Estás seguro?</h4>
                 <p class="text-gray-600 text-sm">
-                    Se eliminará <span class="font-semibold text-gray-800">{{selectedVacuna.nombre}}</span> del
-                    inventario permanentemente.
+                    Se desactivará <span class="font-semibold text-gray-800">{{selectedVacuna.nombre}}</span> del
+                    inventario.
                 </p>
             </div>
         </div>
@@ -161,8 +162,8 @@
             <div class="flex gap-2 justify-center pt-4">
                 <button pButton severity="secondary" label="Cancelar"
                     class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayDelete=false"></button>
-                <button pButton severity="secondary" label="Sí, eliminar"
-                    class="!bg-red-500 hover:!bg-red-600 !text-white border-none" (click)="eliminarVacuna()"></button>
+                <button pButton severity="secondary" label="Sí, desactivar"
+                    class="!bg-amber-500 hover:!bg-amber-600 !text-white border-none" (click)="eliminarVacuna()"></button>
             </div>
         </ng-template>
     </p-dialog>
@@ -221,8 +222,9 @@
             <div class="flex gap-2 justify-end pt-4">
                 <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
                     class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayNew=false"></button>
-                <button pButton label="Crear Vacuna" icon="pi pi-check"
-                    class="!bg-primary hover:bg-primary-darker text-white !border-none" (click)="guardarNuevo()"></button>
+                <button pButton label="Guardar" icon="pi pi-check"
+                    class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                    (click)="guardarNuevo()"></button>
             </div>
         </ng-template>
     </p-dialog>

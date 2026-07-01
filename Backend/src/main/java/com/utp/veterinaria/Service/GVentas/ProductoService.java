@@ -19,7 +19,9 @@ public class ProductoService {
 
     public List<Producto> listar() {
         logger.info("Productos Listados");
-        return productoRepository.findAll();
+        return productoRepository.findAll().stream()
+                .filter(Producto::isActivo)
+                .toList();
     }
 
     public Producto guardar(Producto p) {
@@ -28,7 +30,10 @@ public class ProductoService {
     }
 
     public void eliminar(Long id) {
-        logger.info("Producto Eliminado");
-        productoRepository.deleteById(id);
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        producto.setActivo(false);
+        productoRepository.save(producto);
+        logger.info("Producto desactivado: {}", id);
     }
 }

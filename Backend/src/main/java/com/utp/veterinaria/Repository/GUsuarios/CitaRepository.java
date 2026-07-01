@@ -13,6 +13,7 @@ import java.util.List;
 public interface CitaRepository extends JpaRepository<Cita,Long> {
     List<Cita> findByFechaHoraBetween(LocalDateTime inicio, LocalDateTime fin);
     List<Cita> findByMascotaClienteId(Long clienteId);
+    List<Cita> findByMascotaIdOrderByFechaHoraDesc(Long mascotaId);
     List<Cita> findByTrabajadorIdAndFechaHoraBetween(Long trabajadorId, LocalDateTime inicio, LocalDateTime fin);
 
     @Query("SELECT COUNT(c) FROM Cita c WHERE c.fechaHora BETWEEN :inicio AND :fin")

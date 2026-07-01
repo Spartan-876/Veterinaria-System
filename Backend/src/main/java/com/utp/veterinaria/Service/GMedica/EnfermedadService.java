@@ -27,12 +27,15 @@ public class EnfermedadService {
 
     public List<Enfermedad> listarTodas(){
         logger.info("Listado de las enfermedades");
-        return enfermedadRepository.findAll();
+        return enfermedadRepository.findAll().stream()
+                .filter(Enfermedad::isActivo)
+                .toList();
     }
 
     public Enfermedad guardar (Enfermedad enfermedad){
         // Verificar nombre unico
         boolean existe = enfermedadRepository.findAll().stream()
+                .filter(Enfermedad::isActivo)
                 .anyMatch(e -> e.getNombre().equalsIgnoreCase(enfermedad.getNombre())
                         && (e.getId() == null || !e.getId().equals(enfermedad.getId())));
         if (existe) {
@@ -47,8 +50,11 @@ public class EnfermedadService {
     }
 
     public void eliminar(Long id) {
-        logger.info("Enfermedad guardada en el sistema", id);
-        enfermedadRepository.deleteById(id);
+        Enfermedad enfermedad = enfermedadRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Enfermedad no encontrada"));
+        enfermedad.setActivo(false);
+        enfermedadRepository.save(enfermedad);
+        logger.info("Enfermedad desactivada: {}", id);
     }
 
     public EnfermedadDTO actualizar(Long id, EnfermedadRequestDTO request) {
@@ -56,8 +62,9 @@ public class EnfermedadService {
         Enfermedad enfermedad = enfermedadRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Enfermedad no encontrada"));
 
-        // Verificar nombre unico (excluyendo la自身)
+        // Verificar nombre unico (excluyendo la自身, solo activos)
         boolean existe = enfermedadRepository.findAll().stream()
+                .filter(Enfermedad::isActivo)
                 .anyMatch(e -> e.getNombre().equalsIgnoreCase(request.getNombre()) && !e.getId().equals(id));
         if (existe) {
             throw new RuntimeException("Ya existe una enfermedad con el nombre: " + request.getNombre());
@@ -89,8 +96,9 @@ public class EnfermedadService {
         return dto;
     }
     public EnfermedadDTO crear(EnfermedadRequestDTO request) {
-        // Verificar nombre unico
+        // Verificar nombre unico (solo activos)
         boolean existe = enfermedadRepository.findAll().stream()
+                .filter(Enfermedad::isActivo)
                 .anyMatch(e -> e.getNombre().equalsIgnoreCase(request.getNombre()));
         if (existe) {
             throw new RuntimeException("Ya existe una enfermedad con el nombre: " + request.getNombre());

@@ -26,6 +26,12 @@
           <option value="REALIZADA">Realizada</option>
           <option value="CANCELADA">Cancelada</option>
         </select>
+        <!-- Nueva cita -->
+        <button (click)="abrirCrear()"
+                class="bg-primary text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+          <span class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
+          Nueva Cita
+        </button>
       </div>
     </div>
   </div>
@@ -119,23 +125,31 @@
             <p class="text-sm text-gray-700">{{ cita.trabajadorNombre }}</p>
           </td>
 
-          <!-- Estado (editable) -->
+          <!-- Estado -->
           <td class="px-4 py-4">
-            <select [ngModel]="cita.estado"
-                    (ngModelChange)="cambiarEstado(cita, $event)"
-                    (click)="$event.stopPropagation()"
-                    class="text-xs font-semibold px-3 py-1.5 rounded-full border outline-none cursor-pointer transition-all"
+            @if (getNextEstados(cita.estado).length > 0) {
+              <select [ngModel]="cita.estado"
+                      (ngModelChange)="cambiarEstado(cita, $event)"
+                      (click)="$event.stopPropagation()"
+                      class="text-xs font-semibold px-3 py-1.5 rounded-full border outline-none cursor-pointer transition-all"
+                      [ngClass]="{
+                        'bg-yellow-50 text-yellow-700 border-yellow-200': cita.estado === 'PENDIENTE',
+                        'bg-primary-container text-primary-dark border-primary-container': cita.estado === 'CONFIRMADA'
+                      }">
+                <option [value]="cita.estado" disabled>{{ cita.estado }}</option>
+                @for (e of getNextEstados(cita.estado); track e) {
+                  <option [value]="e">{{ e }}</option>
+                }
+              </select>
+            } @else {
+              <span class="text-xs font-semibold px-3 py-1.5 rounded-full border inline-block"
                     [ngClass]="{
-                      'bg-yellow-50 text-yellow-700 border-yellow-200': cita.estado === 'PENDIENTE',
-                      'bg-primary-container text-primary-dark border-primary-container': cita.estado === 'CONFIRMADA',
                       'bg-green-50 text-green-700 border-green-200': cita.estado === 'REALIZADA',
                       'bg-red-50 text-red-600 border-red-200': cita.estado === 'CANCELADA'
                     }">
-              <option value="PENDIENTE">PENDIENTE</option>
-              <option value="CONFIRMADA">CONFIRMADA</option>
-              <option value="REALIZADA">REALIZADA</option>
-              <option value="CANCELADA">CANCELADA</option>
-            </select>
+                {{ cita.estado }}
+              </span>
+            }
           </td>
 
           <!-- Ver detalle -->
@@ -215,23 +229,148 @@
         </div>
 
         <!-- Cambiar estado desde modal -->
-        <div class="flex gap-2 flex-wrap">
-          @for (e of estados; track e) {
-            <button (click)="cambiarEstado(citaDetalle, e)"
-                    [disabled]="citaDetalle.estado === e"
-                    class="flex-1 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer"
-                    [ngClass]="citaDetalle.estado === e
-                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                      : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-200 hover:border-primary hover:text-primary-dark'">
-              {{ e }}
-            </button>
-          }
-        </div>
+        @if (getNextEstados(citaDetalle.estado).length > 0) {
+          <div class="flex gap-2 flex-wrap">
+            @for (e of getNextEstados(citaDetalle.estado); track e) {
+              <button (click)="cambiarEstado(citaDetalle, e)"
+                      class="flex-1 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer"
+                      [ngClass]="{
+                        'bg-primary-container text-primary-dark border-primary': e === 'CONFIRMADA',
+                        'bg-green-50 text-green-700 border-green-200': e === 'REALIZADA',
+                        'bg-red-50 text-red-600 border-red-200': e === 'CANCELADA'
+                      }">
+                {{ e }}
+              </button>
+            }
+          </div>
+        } @else {
+          <p class="text-xs text-gray-400 text-center font-mono uppercase tracking-widest">Estado final</p>
+        }
       </div>
     }
     <ng-template pTemplate="footer">
-      <button pButton label="Cerrar" (click)="displayDetalle = false"
-              class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
+      <button pButton severity="secondary" label="Cerrar"
+              class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayDetalle = false"></button>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Modal crear cita -->
+  <p-dialog header="Nueva Cita" [(visible)]="displayCrear" [modal]="true"
+            [style]="{width: '640px'}" [draggable]="false" [resizable]="false">
+    <div class="flex flex-col gap-5 mt-4">
+
+      <!-- Cliente -->
+      <div>
+        <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Cliente *</label>
+        <p-select [options]="clientes" [(ngModel)]="clienteSel"
+                  optionLabel="nombres"
+                  placeholder="Seleccionar cliente" [filter]="true" [filterBy]="'nombres,apellidos,dni'"
+                  [showClear]="true" styleClass="w-full"
+                  (onChange)="onClienteChange()">
+          <ng-template let-c pTemplate="item">
+            <span>{{ c.nombres }} {{ c.apellidos }} - {{ c.dni }}</span>
+          </ng-template>
+          <ng-template let-c pTemplate="selectedItem">
+            <span>{{ c.nombres }} {{ c.apellidos }} - {{ c.dni }}</span>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <!-- Mascota -->
+      <div>
+        <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Mascota *</label>
+        @if (clienteSel) {
+          @if (mascotas.length === 0) {
+            <p class="text-sm text-gray-400 italic">Este cliente no tiene mascotas registradas</p>
+          } @else {
+            <p-select [options]="mascotas" [(ngModel)]="mascotaSel"
+                      optionLabel="nombre"
+                      placeholder="Seleccionar mascota" [showClear]="true" styleClass="w-full">
+              <ng-template let-m pTemplate="item">
+                <span>{{ m.nombre }} - {{ m.especie }} · {{ m.raza }}</span>
+              </ng-template>
+              <ng-template let-m pTemplate="selectedItem">
+                <span>{{ m.nombre }} - {{ m.especie }} · {{ m.raza }}</span>
+              </ng-template>
+            </p-select>
+          }
+        } @else {
+          <p class="text-sm text-gray-400 italic">Selecciona un cliente primero</p>
+        }
+      </div>
+
+      <!-- Servicio -->
+      <div>
+        <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Servicio *</label>
+        <p-select [options]="servicios" [(ngModel)]="servicioSel"
+                  optionLabel="nombre"
+                  placeholder="Seleccionar servicio" [showClear]="true" styleClass="w-full"
+                  (onChange)="onFechaOServicioChange()">
+          <ng-template let-s pTemplate="item">
+            <span>{{ s.nombre }} - S/ {{ s.precio }}</span>
+          </ng-template>
+          <ng-template let-s pTemplate="selectedItem">
+            <span>{{ s.nombre }} - S/ {{ s.precio }}</span>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <!-- Fecha y hora -->
+      <div>
+        <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Fecha y hora *</label>
+        <input type="datetime-local" [(ngModel)]="fechaHora" [min]="fechaMin"
+               (change)="onFechaOServicioChange()"
+               class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-all"/>
+      </div>
+
+      <!-- Profesional -->
+      <div>
+        <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Profesional *</label>
+        @if (servicioSel && fechaHora) {
+          @if (cargandoTrabajadores) {
+            <div class="flex items-center gap-2 py-2 text-gray-400">
+              <i class="pi pi-spin pi-spinner text-xs"></i>
+              <span class="text-xs">Buscando disponibilidad...</span>
+            </div>
+          } @else if (trabajadoresDisponibles.length === 0) {
+            <p class="text-sm text-gray-400 italic">No hay profesionales disponibles en este horario</p>
+          } @else {
+            <p-select [options]="trabajadoresDisponibles" [(ngModel)]="trabajadorSel"
+                      optionLabel="nombres"
+                      placeholder="Seleccionar profesional" [showClear]="true" styleClass="w-full">
+              <ng-template let-t pTemplate="item">
+                <span>{{ t.nombres }} {{ t.apellidos }} - {{ t.cargo }}</span>
+              </ng-template>
+              <ng-template let-t pTemplate="selectedItem">
+                <span>{{ t.nombres }} {{ t.apellidos }} - {{ t.cargo }}</span>
+              </ng-template>
+            </p-select>
+          }
+        } @else {
+          <p class="text-sm text-gray-400 italic">Selecciona servicio y fecha primero</p>
+        }
+      </div>
+
+      <!-- Motivo -->
+      <div>
+        <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2">Motivo *</label>
+        <textarea [(ngModel)]="motivo" rows="3"
+                  placeholder="Describe brevemente el motivo de la cita..."
+                  class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition-all resize-none placeholder:text-gray-400">
+        </textarea>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3 justify-end pt-2">
+        <button pButton severity="secondary" label="Cancelar"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayCrear = false"></button>
+        <button pButton label="Guardar" icon="pi pi-check" [disabled]="!formularioValido || creando"
+                (click)="crearCita()"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                [ngClass]="{'opacity-50 cursor-not-allowed': !formularioValido || creando}">
+        </button>
+      </div>
     </ng-template>
   </p-dialog>
 

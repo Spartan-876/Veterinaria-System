@@ -198,9 +198,9 @@ export class Usuarios implements OnInit {
       next: () => {
         this.displayDelete = false;
         this.listarUsuarios();
-        this.toast.success('Usuario eliminado correctamente');
+        this.toast.success('Usuario desactivado correctamente');
       },
-      error: (err: any) => this.toast.error('Error al eliminar usuario')
+      error: (err: any) => this.toast.error('Error al desactivar usuario')
     });
   }
 

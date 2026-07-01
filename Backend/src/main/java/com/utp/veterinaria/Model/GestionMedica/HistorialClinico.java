@@ -35,4 +35,7 @@ public class HistorialClinico {
     @Column(columnDefinition = "TEXT")
     private String tratamiento;
     private Double peso;
+
+    @Column(nullable = false)
+    private boolean activo = true;
 }

@@ -90,7 +90,7 @@ export class Vacunas implements OnInit {
   eliminarVacuna(): void {
     this.vacunaService.eliminarVacuna(this.selectedVacuna.id).subscribe(() => {
       console.log('Vacuna eliminada:', this.selectedVacuna);
-      this.toast.success("Vacuna eliminada");
+      this.toast.success("Vacuna desactivada");
       setTimeout(() => {
         this.displayDelete = false;
         this.cargarVacunas();

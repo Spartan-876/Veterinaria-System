@@ -118,7 +118,7 @@ class CitaServiceTest {
 
     @Test
     @DisplayName("Debe cancelar una cita pendiente correctamente")
-    void cancelarCitaExito() {
+    void cancelarCitaPendiente() {
 
         Cita citaExistente = new Cita();
         citaExistente.setId(1L);
@@ -128,7 +128,7 @@ class CitaServiceTest {
         when(citaRepository.save(any(Cita.class))).thenReturn(citaExistente);
 
 
-        CitaDTO resultado = citaService.cancelarCita(1L);
+        CitaDTO resultado = citaService.cambiarEstado(1L, "CANCELADA");
 
 
         assertThat(resultado.getEstado()).isEqualTo("CANCELADA");
@@ -146,8 +146,8 @@ class CitaServiceTest {
         when(citaRepository.findById(1L)).thenReturn(Optional.of(citaRealizada));
 
 
-        assertThatThrownBy(() -> citaService.cancelarCita(1L))
+        assertThatThrownBy(() -> citaService.cambiarEstado(1L, "CANCELADA"))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessage("No se puede cancelar una cita realizada");
+                .hasMessage("No se puede cambiar de REALIZADA a CANCELADA");
     }
 }

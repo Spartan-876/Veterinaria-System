@@ -15,11 +15,11 @@
           <input type="text" placeholder="Buscar cliente..." [(ngModel)]="terminoBusqueda" (input)="filtrar()"
                  class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none text-sm"/>
         </div>
-        <button (click)="abrirNuevo()"
-                class="bg-primary text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm shadow-lg hover:-translate-y-0.5 transition-all whitespace-nowrap cursor-pointer">
-          <span class="material-symbols-outlined text-lg">add</span>
-          Nuevo Cliente
-        </button>
+            <button (click)="abrirNuevo()"
+                    class="bg-primary text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+              <span class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
+              Nuevo Cliente
+            </button>
       </div>
     </div>
   </div>
@@ -71,8 +71,8 @@
                 <span class="material-symbols-outlined text-lg">edit</span>
               </button>
               <button (click)="confirmarEliminar(cliente)"
-                      class="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
-                <span class="material-symbols-outlined text-lg">delete</span>
+                      class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-lg">block</span>
               </button>
             </div>
           </td>
@@ -97,46 +97,75 @@
   <!-- ═══ MODAL NUEVO CLIENTE ═══ -->
   <p-dialog header="Nuevo Cliente" [(visible)]="displayNew" [modal]="true"
             [style]="{width:'520px'}" [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-4 mt-4">
+    <form #f="ngForm" class="flex flex-col gap-4 mt-4">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombres *</label>
-          <input pInputText [(ngModel)]="selectedCliente.nombres" required minlength="2"
+          <input pInputText name="nombres" [(ngModel)]="selectedCliente.nombres" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #nombres="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Nombres"/>
+          @if (nombres.invalid && (nombres.dirty || nombres.touched)) {
+            @if (nombres.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Apellidos *</label>
-          <input pInputText [(ngModel)]="selectedCliente.apellidos" required minlength="2"
+          <input pInputText name="apellidos" [(ngModel)]="selectedCliente.apellidos" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #apellidos="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Apellidos"/>
+          @if (apellidos.invalid && (apellidos.dirty || apellidos.touched)) {
+            @if (apellidos.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">DNI *</label>
-          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8" required pattern="\d{8}"
+          <input pInputText name="dni" [(ngModel)]="selectedCliente.dni" maxlength="8" required pattern="\d{8}" #dni="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="12345678"/>
+          @if (dni.invalid && (dni.dirty || dni.touched)) {
+            <small class="text-red-500 text-xs mt-1">8 dígitos numéricos</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Teléfono *</label>
-          <input pInputText [(ngModel)]="selectedCliente.telefono" maxlength="9" required pattern="\d{9}"
+          <input pInputText name="telefono" [(ngModel)]="selectedCliente.telefono" maxlength="9" required pattern="\d{9}" #telefono="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="987654321"/>
+          @if (telefono.invalid && (telefono.dirty || telefono.touched)) {
+            <small class="text-red-500 text-xs mt-1">9 dígitos numéricos</small>
+          }
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Correo *</label>
-          <input pInputText [(ngModel)]="selectedCliente.correo" type="email" required
+          <input pInputText name="correo" [(ngModel)]="selectedCliente.correo" type="email" required
+                 pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" #correo="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="correo@email.com"/>
+          @if (correo.invalid && (correo.dirty || correo.touched)) {
+            <small class="text-red-500 text-xs mt-1">Formato: correo@dominio.com</small>
+          }
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Dirección *</label>
-          <input pInputText [(ngModel)]="selectedCliente.direccion" required minlength="2"
+          <input pInputText name="direccion" [(ngModel)]="selectedCliente.direccion" required minlength="2" #direccion="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none" placeholder="Av. Principal 123"/>
+          @if (direccion.invalid && (direccion.dirty || direccion.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
       </div>
-    </div>
+    </form>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
-        <button pButton label="Cancelar" (click)="displayNew = false"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
-        <button pButton label="Registrar" icon="pi pi-check"
-                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white font-semibold border-none"
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayNew = false"></button>
+        <button pButton label="Guardar" icon="pi pi-check" [disabled]="f.invalid"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarNuevo()"></button>
       </div>
     </ng-template>
@@ -144,69 +173,98 @@
 
   <p-dialog header="Editar Cliente" [(visible)]="displayEdit" [modal]="true"
             [style]="{width:'520px'}" [draggable]="false" [resizable]="false">
-    <div class="flex flex-col gap-4 mt-4">
+    <form #fEdit="ngForm" class="flex flex-col gap-4 mt-4">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Nombres *</label>
-          <input pInputText [(ngModel)]="selectedCliente.nombres" required minlength="2"
+          <input pInputText name="nombres" [(ngModel)]="selectedCliente.nombres" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #nombresE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (nombresE.invalid && (nombresE.dirty || nombresE.touched)) {
+            @if (nombresE.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Apellidos *</label>
-          <input pInputText [(ngModel)]="selectedCliente.apellidos" required minlength="2"
+          <input pInputText name="apellidos" [(ngModel)]="selectedCliente.apellidos" required minlength="2"
+                 pattern="[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+" #apellidosE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (apellidosE.invalid && (apellidosE.dirty || apellidosE.touched)) {
+            @if (apellidosE.errors?.['pattern']) {
+              <small class="text-red-500 text-xs mt-1">Solo letras y espacios</small>
+            } @else {
+              <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+            }
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">DNI *</label>
-          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8" required pattern="\d{8}"
+          <input pInputText name="dni" [(ngModel)]="selectedCliente.dni" maxlength="8" required pattern="\d{8}" #dniE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (dniE.invalid && (dniE.dirty || dniE.touched)) {
+            <small class="text-red-500 text-xs mt-1">8 dígitos numéricos</small>
+          }
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-600 block mb-1">Teléfono *</label>
-          <input pInputText [(ngModel)]="selectedCliente.telefono" maxlength="9" required pattern="\d{9}"
+          <input pInputText name="telefono" [(ngModel)]="selectedCliente.telefono" maxlength="9" required pattern="\d{9}" #telefonoE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (telefonoE.invalid && (telefonoE.dirty || telefonoE.touched)) {
+            <small class="text-red-500 text-xs mt-1">9 dígitos numéricos</small>
+          }
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Correo *</label>
-          <input pInputText [(ngModel)]="selectedCliente.correo" type="email" required
+          <input pInputText name="correo" [(ngModel)]="selectedCliente.correo" type="email" required
+                 pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" #correoE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (correoE.invalid && (correoE.dirty || correoE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Formato: correo@dominio.com</small>
+          }
         </div>
         <div class="col-span-2">
           <label class="text-xs font-semibold text-gray-600 block mb-1">Dirección *</label>
-          <input pInputText [(ngModel)]="selectedCliente.direccion" required minlength="2"
+          <input pInputText name="direccion" [(ngModel)]="selectedCliente.direccion" required minlength="2" #direccionE="ngModel"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none"/>
+          @if (direccionE.invalid && (direccionE.dirty || direccionE.touched)) {
+            <small class="text-red-500 text-xs mt-1">Mínimo 2 caracteres</small>
+          }
         </div>
       </div>
-    </div>
+    </form>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
-        <button pButton label="Cancelar" (click)="displayEdit = false"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
-        <button pButton label="Guardar Cambios" icon="pi pi-check"
-                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white font-semibold border-none"
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit = false"></button>
+        <button pButton label="Guardar" icon="pi pi-check" [disabled]="fEdit.invalid"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarEdicion()"></button>
       </div>
     </ng-template>
   </p-dialog>
 
-  <!-- ═══ MODAL ELIMINAR ═══ -->
-  <p-dialog header="Confirmar eliminación" [(visible)]="displayDelete" [modal]="true"
+  <!-- ═══ MODAL DESACTIVAR ═══ -->
+  <p-dialog header="Confirmar desactivación" [(visible)]="displayDelete" [modal]="true"
             [style]="{width:'400px'}" [draggable]="false">
     <div class="flex flex-col items-center gap-4 py-4">
-      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-        <i class="pi pi-trash text-red-500 text-2xl"></i>
+      <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
+        <i class="pi pi-ban text-amber-500 text-2xl"></i>
       </div>
       <p class="text-gray-700 text-center">
-        ¿Eliminar a <strong>{{ selectedCliente.nombres }} {{ selectedCliente.apellidos }}</strong>?
-        Esta acción eliminará también sus mascotas asociadas.
+        ¿Desactivar a <strong>{{ selectedCliente.nombres }} {{ selectedCliente.apellidos }}</strong>?
+        El registro se marcará como inactivo.
       </p>
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end">
-        <button pButton label="Cancelar" (click)="displayDelete = false"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
-        <button pButton label="Eliminar" icon="pi pi-trash"
-                class="!bg-red-500 hover:!bg-red-600 px-6 py-2.5 rounded-xl text-white font-semibold border-none"
+        <button pButton severity="secondary" label="Cancelar"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayDelete = false"></button>
+        <button pButton label="Desactivar" icon="pi pi-ban"
+                class="!bg-amber-500 hover:!bg-amber-600 px-6 py-2.5 rounded-xl text-white font-semibold border-none"
                 (click)="eliminar()"></button>
       </div>
     </ng-template>
@@ -241,8 +299,8 @@
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <button pButton label="Cerrar" (click)="displayMascotas = false"
-              class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold"></button>
+      <button pButton severity="secondary" label="Cerrar"
+              class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayMascotas = false"></button>
     </ng-template>
   </p-dialog>
 

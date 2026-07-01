@@ -19,6 +19,9 @@ public class Rol {
     @Column(unique = true, nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "roles_modulos",

@@ -47,9 +47,10 @@ public class Cliente {
     @JsonIgnore
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     @ToString.Exclude
     private List<Mascota> mascotas = new ArrayList<>();
 
+    private boolean activo = true;
 }

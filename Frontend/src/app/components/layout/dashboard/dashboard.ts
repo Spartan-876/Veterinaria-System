@@ -98,21 +98,6 @@ export class Dashboard implements OnInit {
     });
   }
 
-  get citasPorEstado(): { label: string; count: number; color: string }[] {
-    const estados = ['PENDIENTE', 'CONFIRMADA', 'REALIZADA', 'CANCELADA'];
-    const colores: Record<string, string> = {
-      PENDIENTE:  'bg-yellow-400',
-      CONFIRMADA: 'bg-primary',
-      REALIZADA:  'bg-green-500',
-      CANCELADA:  'bg-red-400',
-    };
-    return estados.map(e => ({
-      label: e,
-      count: this.data.citasDeHoy.filter(c => c.estado === e).length,
-      color: colores[e]
-    })).filter(e => e.count > 0);
-  }
-
   contarEstado(estado: string): number {
     return this.data.citasDeHoy.filter(c => c.estado === estado).length;
   }

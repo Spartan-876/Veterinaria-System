@@ -14,11 +14,15 @@ public class HistorialClinicoService {
     private final HistorialClinicoRepository historialClinicoRepository;
 
     public List<HistorialClinico> listarTodos() {
-        return historialClinicoRepository.findAll();
+        return historialClinicoRepository.findAll().stream()
+                .filter(HistorialClinico::isActivo)
+                .toList();
     }
 
     public List<HistorialClinico> buscarPorMascota(Long mascotaId) {
-        return historialClinicoRepository.findByMascotaId(mascotaId);
+        return historialClinicoRepository.findByMascotaId(mascotaId).stream()
+                .filter(HistorialClinico::isActivo)
+                .toList();
     }
 
     public HistorialClinico guardar(HistorialClinico historial) {
@@ -26,6 +30,9 @@ public class HistorialClinicoService {
     }
 
     public void eliminar(Long id) {
-        historialClinicoRepository.deleteById(id);
+        HistorialClinico historial = historialClinicoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Historial clinico no encontrado"));
+        historial.setActivo(false);
+        historialClinicoRepository.save(historial);
     }
 }

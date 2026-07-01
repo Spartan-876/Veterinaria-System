@@ -6,14 +6,20 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
 import { Cita } from '../../../models/cita';
 import { CitasService } from '../../../services/citas-service';
+import { ClienteService } from '../../../services/cliente-service';
+import { ServiciosService } from '../../../services/servicios';
+import { Cliente } from '../../../models/cliente';
+import { Servicio } from '../../../models/servicios';
+import { Mascota, TrabajadorDisponible } from '../../../models/cita';
 import { GToast } from '../../../services/gtoast';
 
 @Component({
   selector: 'app-citas',
   standalone: true,
-  imports: [FormsModule, CommonModule, DialogModule, ButtonModule, InputTextModule, TableModule],
+  imports: [FormsModule, CommonModule, DialogModule, ButtonModule, InputTextModule, TableModule, SelectModule],
   templateUrl: './citas.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -26,11 +32,41 @@ export class Citas implements OnInit {
 
   readonly estados = ['PENDIENTE', 'CONFIRMADA', 'REALIZADA', 'CANCELADA'];
 
+  private readonly transicionesValidas: Record<string, string[]> = {
+    PENDIENTE: ['CONFIRMADA', 'CANCELADA'],
+    CONFIRMADA: ['REALIZADA'],
+    REALIZADA: [],
+    CANCELADA: [],
+  };
+
+  // Crear cita
+  displayCrear = false;
+  clientes: Cliente[] = [];
+  servicios: Servicio[] = [];
+  mascotas: Mascota[] = [];
+  trabajadoresDisponibles: TrabajadorDisponible[] = [];
+  cargandoTrabajadores = false;
+  creando = false;
+  clienteSel: Cliente | null = null;
+  mascotaSel: Mascota | null = null;
+  servicioSel: Servicio | null = null;
+  trabajadorSel: TrabajadorDisponible | null = null;
+  fechaHora = '';
+  motivo = '';
+
+  readonly fechaMin: string;
+
   constructor(
     private citaService: CitasService,
+    private clienteService: ClienteService,
+    private servicioService: ServiciosService,
     private toast: GToast,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    const min = new Date();
+    min.setHours(min.getHours() + 1, 0, 0, 0);
+    this.fechaMin = min.toISOString().slice(0, 16);
+  }
 
   ngOnInit(): void {
     this.listarCitas();
@@ -94,5 +130,114 @@ export class Citas implements OnInit {
 
   get citasConfirmadas(): number {
     return this.citas.filter(c => c.estado === 'CONFIRMADA').length;
+  }
+
+  getNextEstados(actual: string): string[] {
+    return this.transicionesValidas[actual] ?? [];
+  }
+
+  // ── Crear cita ──────────────────────────────────────
+
+  abrirCrear(): void {
+    this.resetForm();
+    this.displayCrear = true;
+    this.clienteService.listarClientes().subscribe({
+      next: (data) => {
+        this.clientes = data;
+        this.cdr.markForCheck();
+      }
+    });
+    this.servicioService.listarActivos().subscribe({
+      next: (data) => {
+        this.servicios = data;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  onClienteChange(): void {
+    this.mascotaSel = null;
+    this.mascotas = [];
+    if (this.clienteSel) {
+      this.citaService.mascotasPorCliente(this.clienteSel.id!).subscribe({
+        next: (data) => {
+          this.mascotas = data;
+          this.cdr.markForCheck();
+        }
+      });
+    }
+  }
+
+  onFechaOServicioChange(): void {
+    this.trabajadorSel = null;
+    this.trabajadoresDisponibles = [];
+    if (!this.servicioSel || !this.fechaHora) return;
+
+    this.cargandoTrabajadores = true;
+    this.cdr.markForCheck();
+
+    this.citaService.trabajadoresDisponibles(this.servicioSel.id!, this.fechaHora).subscribe({
+      next: (data) => {
+        this.trabajadoresDisponibles = data;
+        this.cargandoTrabajadores = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.cargandoTrabajadores = false;
+        this.toast.error('Error al buscar disponibilidad');
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  get formularioValido(): boolean {
+    return !!(this.clienteSel && this.mascotaSel && this.servicioSel &&
+              this.trabajadorSel && this.fechaHora && this.motivo.trim());
+  }
+
+  crearCita(): void {
+    if (!this.formularioValido) {
+      this.toast.warn('Completa todos los campos');
+      return;
+    }
+
+    this.creando = true;
+    this.cdr.markForCheck();
+
+    const dto = {
+      mascotaId: this.mascotaSel!.id,
+      servicioId: this.servicioSel!.id!,
+      trabajadorId: this.trabajadorSel!.id,
+      fechaHora: this.fechaHora,
+      motivo: this.motivo,
+    };
+
+    this.citaService.crearCita(dto).subscribe({
+      next: () => {
+        this.creando = false;
+        this.displayCrear = false;
+        this.toast.success('Cita creada correctamente');
+        this.listarCitas();
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.creando = false;
+        this.toast.error(err.error?.message ?? 'Error al crear la cita');
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  private resetForm(): void {
+    this.clienteSel = null;
+    this.mascotaSel = null;
+    this.servicioSel = null;
+    this.trabajadorSel = null;
+    this.mascotas = [];
+    this.trabajadoresDisponibles = [];
+    this.fechaHora = '';
+    this.motivo = '';
+    this.creando = false;
+    this.cargandoTrabajadores = false;
   }
 }

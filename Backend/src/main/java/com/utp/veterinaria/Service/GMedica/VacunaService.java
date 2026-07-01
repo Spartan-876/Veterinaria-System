@@ -19,7 +19,9 @@ public class VacunaService {
 
     public List<VacunaCatalogo> listarTodas() {
         logger.info("VACUNAS LISTADAS");
-        return vacunaRepository.findAll();
+        return vacunaRepository.findAll().stream()
+                .filter(VacunaCatalogo::isActivo)
+                .toList();
     }
 
     public VacunaCatalogo guardar(VacunaCatalogo vacuna) {
@@ -33,8 +35,11 @@ public class VacunaService {
     }
 
     public void eliminar(Long id) {
-        logger.info("VACUNA ELIMINADAS");
-        vacunaRepository.deleteById(id);
+        VacunaCatalogo vacuna = vacunaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vacuna no encontrada"));
+        vacuna.setActivo(false);
+        vacunaRepository.save(vacuna);
+        logger.info("Vacuna desactivada: {}", id);
     }
 
     public VacunaCatalogo actualizar(Long id, VacunaCatalogo vacuna) {

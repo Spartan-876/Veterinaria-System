@@ -58,8 +58,8 @@
                             Editar
                         </button>
                         <button (click)="confirmarEliminar(p)"
-                            class="px-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all cursor-pointer border-none">
-                            <i class="pi pi-trash text-sm"></i>
+                            class="px-3 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all cursor-pointer border-none">
+                            <i class="pi pi-ban text-sm"></i>
                         </button>
                     </div>
                 </div>
@@ -123,23 +123,23 @@
             <div class="flex gap-2 justify-end pt-4">
                 <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
                     class="p-button-text text-gray-600 hover:bg-gray-50" (click)="displayEdit=false"></button>
-                <button pButton label="Guardar Cambios" icon="pi pi-check"
-                    class="!bg-primary hover:!bg-primary-darker text-white !border-none"
+                <button pButton label="Guardar" icon="pi pi-check"
+                    class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                     (click)="guardarCambios()"></button>
             </div>
         </ng-template>
     </p-dialog>
 
-    <p-dialog header="Confirmar Eliminación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
+    <p-dialog header="Confirmar Desactivación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
         [draggable]="false" [resizable]="false">
         <div class="flex flex-col items-center text-center gap-4 py-3">
-            <div class="p-4 bg-red-50 rounded-full">
-                <i class="pi pi-exclamation-triangle text-red-500 text-4xl"></i>
+            <div class="p-4 bg-amber-50 rounded-full">
+                <i class="pi pi-ban text-amber-500 text-4xl"></i>
             </div>
             <div>
                 <h4 class="text-base font-bold text-gray-800 mb-2">¿Estás seguro?</h4>
                 <p class="text-gray-600 text-sm">
-                    Se eliminará <span class="font-semibold text-gray-800">{{selectedProducto.nombre}}</span> del
+                    Se desactivará <span class="font-semibold text-gray-800">{{selectedProducto.nombre}}</span> del
                     inventario.
                 </p>
             </div>
@@ -150,7 +150,7 @@
                 <button pButton label="Cancelar" severity="secondary"
                     class="p-button-text text-gray-600 bg-gray-100 hover:bg-gray-300"
                     (click)="displayDelete=false"></button>
-                <button pButton label="Sí, eliminar" class="!bg-red-500 hover:!bg-red-600 text-white !border-none"
+                <button pButton label="Sí, desactivar" class="!bg-amber-500 hover:!bg-amber-600 text-white !border-none"
                     (click)="eliminarProducto()"></button>
             </div>
         </ng-template>
@@ -195,8 +195,9 @@
             <div class="flex gap-2 justify-end pt-4">
                 <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
                     class="p-button-text text-gray-600 hover:bg-primary-hover" (click)="displayNew=false"></button>
-                <button pButton label="Crear Producto" icon="pi pi-check"
-                    class="!bg-primary hover:!bg-primary-darker text-white !border-none" (click)="guardarNuevo()"></button>
+                <button pButton label="Guardar" icon="pi pi-check"
+                    class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                    (click)="guardarNuevo()"></button>
             </div>
         </ng-template>
     </p-dialog>

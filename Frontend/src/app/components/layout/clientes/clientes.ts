@@ -139,11 +139,11 @@ export class Clientes implements OnInit {
   eliminar(): void {
     this.clienteService.eliminarCliente(this.selectedCliente.id!).subscribe({
       next: () => {
-        this.toast.success('Cliente eliminado');
+        this.toast.success('Cliente desactivado');
         this.displayDelete = false;
         this.cargarClientes();
       },
-      error: () => this.toast.error('Error al eliminar cliente')
+      error: () => this.toast.error('Error al desactivar cliente')
     });
   }
 }

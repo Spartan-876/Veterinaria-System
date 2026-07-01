@@ -50,7 +50,7 @@ export class MisCitas implements OnInit {
   cancelar(cita: Cita): void {
     if (!confirm(`¿Cancelar la cita del ${new Date(cita.fechaHora).toLocaleDateString()}?`)) return;
 
-    this.citaService.cancelarCita(cita.id!).subscribe({
+    this.citaService.cambiarEstado(cita.id!, 'CANCELADA').subscribe({
       next: (actualizada) => {
         const idx = this.citas.findIndex(c => c.id === cita.id);
         if (idx >= 0) this.citas[idx] = actualizada;
@@ -63,7 +63,7 @@ export class MisCitas implements OnInit {
   }
 
   puedeCancelar(cita: Cita): boolean {
-    return cita.estado === 'PENDIENTE' || cita.estado === 'CONFIRMADA';
+    return cita.estado === 'PENDIENTE';
   }
   get proximasCitas(): number {
     return this.citas.filter(c =>

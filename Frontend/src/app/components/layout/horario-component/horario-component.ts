@@ -182,13 +182,13 @@ export class HorarioComponent implements OnInit {
   }
 
   eliminarTurno(horario: Horario): void {
-    if (!confirm('¿Eliminar este turno?')) return;
+    if (!confirm('¿Desactivar este turno?')) return;
     this.horarioService.eliminar(horario.id!).subscribe({
       next: () => {
-        this.toast.success('Turno eliminado');
+        this.toast.success('Turno desactivado');
         this.recargarHorariosTrabajador(horario.trabajadorId);
       },
-      error: () => this.toast.error('Error al eliminar'),
+      error: () => this.toast.error('Error al desactivar'),
     });
   }
 

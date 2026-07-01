@@ -89,7 +89,7 @@
                 </button>
                 <button (click)="toggleEstado(t)"
                         [class]="t.estado === 'ACTIVO'
-        ? 'p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors cursor-pointer'
+        ? 'p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer'
         : 'p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors cursor-pointer'"
                         [title]="t.estado === 'ACTIVO' ? 'Desactivar' : 'Activar'">
     <span class="material-symbols-outlined text-lg">
@@ -188,8 +188,9 @@
       <div class="flex gap-2 justify-end pt-4">
         <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
-        <button pButton label="Guardar Cambios" icon="pi pi-check"
-                class="!bg-primary hover:bg-primary-darker text-white !border-none" (click)="guardarCambios()"></button>
+        <button pButton label="Guardar" icon="pi pi-check"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                (click)="guardarCambios()"></button>
       </div>
     </ng-template>
   </p-dialog>
@@ -283,7 +284,7 @@
                 class="p-button-text !text-gray-600 hover:!bg-gray-200"
                 (click)="displayNew=false"></button>
         <button pButton label="Guardar" icon="pi pi-check"
-                class="!bg-primary hover:bg-primary-darker text-white !border-none"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarNuevo()"></button>
       </div>
     </ng-template>

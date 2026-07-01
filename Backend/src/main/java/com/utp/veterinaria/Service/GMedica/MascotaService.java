@@ -19,7 +19,9 @@ public class MascotaService {
 
     public List<Mascota> listarTodas(){
         logger.info("MASCOTAS LISTADAS");
-        return  mascotaRepository.findAll();
+        return mascotaRepository.findAll().stream()
+                .filter(Mascota::isActivo)
+                .toList();
     }
 
     public Mascota guardar(Mascota mascota){
@@ -33,11 +35,16 @@ public class MascotaService {
     }
 
     public void eliminar(Long id){
-        logger.info("MASCOTA ELIMINADA" + id);
-        mascotaRepository.deleteById(id);
+        Mascota mascota = mascotaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
+        mascota.setActivo(false);
+        mascotaRepository.save(mascota);
+        logger.info("Mascota desactivada: {}", id);
     }
 
     public List<Mascota> listarPorCliente(Long clienteId) {
-        return mascotaRepository.findByClienteId(clienteId);
+        return mascotaRepository.findByClienteId(clienteId).stream()
+                .filter(Mascota::isActivo)
+                .toList();
     }
 }

@@ -22,10 +22,6 @@ export class CitasService {
     return this.http.post<Cita>(this.url, dto);
   }
 
-  cancelarCita(id: number): Observable<Cita> {
-    return this.http.patch<Cita>(`${this.url}/${id}/cancelar`, {});
-  }
-
   cambiarEstado(id: number, estado: string): Observable<Cita> {
     return this.http.patch<Cita>(`${this.url}/${id}/estado?estado=${estado}`, {});
   }

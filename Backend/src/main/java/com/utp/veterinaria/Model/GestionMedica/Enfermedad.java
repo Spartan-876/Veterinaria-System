@@ -36,4 +36,7 @@ public class Enfermedad {
     @Size(min = 2, max = 100, message = "La gravedad debe tener entre 2 y 100 caracteres")
     @Column(nullable = false, length = 100)
     private String gravedad;
+
+    @Column(nullable = false)
+    private boolean activo = true;
 }

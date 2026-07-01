@@ -40,4 +40,7 @@ public class Producto {
     @Column(columnDefinition = "TEXT")
     @JsonProperty("imagen_url")
     private String imagenUrl;
+
+    @Column(nullable = false)
+    private boolean activo = true;
 }

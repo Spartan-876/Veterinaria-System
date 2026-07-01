@@ -103,8 +103,8 @@
                 <button (click)="abrirEditar(servicio)" class="p-2 text-primary hover:bg-primary-hover rounded-lg transition-colors cursor-pointer">
                   <span class="material-symbols-outlined text-lg">edit</span>
                 </button>
-                <button class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
-                  <span class="material-symbols-outlined text-lg">delete</span>
+                <button class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer">
+                  <span class="material-symbols-outlined text-lg">block</span>
                 </button>
               </div>
             </td>
@@ -218,10 +218,10 @@
 
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
-        <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200"
                 (click)="displayEdit = false"></button>  <!-- ✅ cierra displayEdit -->
-        <button pButton label="Guardar Cambios" icon="pi pi-check"
+        <button pButton label="Guardar" icon="pi pi-check"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarCambios()"></button>      <!-- ✅ guardarCambios -->
       </div>
@@ -314,10 +314,10 @@
 
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-4">
-        <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
-                class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all font-semibold"
+        <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200"
                 (click)="displayNew = false"></button>   <!-- ✅ cierra displayNew -->
-        <button pButton label="Guardar Servicio" icon="pi pi-check"
+        <button pButton label="Guardar" icon="pi pi-check"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
                 (click)="guardarNuevo()"></button>        <!-- ✅ guardarNuevo -->
       </div>

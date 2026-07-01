@@ -32,6 +32,7 @@ public class UsuarioService {
 
     public List<UsuarioDTO> listarTodos() {
         return usuarioRepository.findAll().stream()
+                .filter(u -> u.getEstado() == Usuario.estadoUsuario.ACTIVO)
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
@@ -125,10 +126,10 @@ public class UsuarioService {
     }
 
     public void eliminar(Long id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrado: " + id);
-        }
-        usuarioRepository.deleteById(id);
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + id));
+        usuario.setEstado(Usuario.estadoUsuario.INACTIVO);
+        usuarioRepository.save(usuario);
     }
 
     @Transactional

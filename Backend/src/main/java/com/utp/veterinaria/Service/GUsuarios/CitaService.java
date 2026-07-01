@@ -197,14 +197,9 @@ public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    public CitaDTO cancelarCita(Long id) {
-        Cita cita = citaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
-        if (cita.getEstado() == Cita.EstadoCita.REALIZADA) {
-            throw new RuntimeException("No se puede cancelar una cita realizada");
-        }
-        cita.setEstado(Cita.EstadoCita.CANCELADA);
-        return toDTO(citaRepository.save(cita));
+    public List<CitaDTO> listarPorMascota(Long mascotaId) {
+        return citaRepository.findByMascotaIdOrderByFechaHoraDesc(mascotaId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public CitaDTO cambiarEstado(Long id, String estado) {
@@ -218,13 +213,12 @@ public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
             throw new RuntimeException("Estado invalido: " + estado);
         }
 
-        // Validar transiciones de estado validas
+        // Validar transiciones consecutivas (sin retroceso)
         Cita.EstadoCita actual = cita.getEstado();
         boolean transicionValida = switch (actual) {
             case PENDIENTE -> nuevoEstado == Cita.EstadoCita.CONFIRMADA
                     || nuevoEstado == Cita.EstadoCita.CANCELADA;
-            case CONFIRMADA -> nuevoEstado == Cita.EstadoCita.REALIZADA
-                    || nuevoEstado == Cita.EstadoCita.CANCELADA;
+            case CONFIRMADA -> nuevoEstado == Cita.EstadoCita.REALIZADA;
             case REALIZADA, CANCELADA -> false;
         };
 

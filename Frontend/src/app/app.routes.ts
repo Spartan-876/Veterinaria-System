@@ -24,6 +24,7 @@ import {Roles} from './components/layout/roles/roles';
 import {Usuarios} from './components/layout/usuarios/usuarios';
 import { RedirectToFirst } from './components/redirect-to-first';
 import { Agenda } from './components/layout/agenda/agenda';
+import { Reportes } from './components/layout/reportes/reportes';
 import { SobreNosotrosPage } from './components/inicio/pages/sobre-nosotros';
 import { ServiciosPage } from './components/inicio/pages/servicios-page';
 import { ProductosPage } from './components/inicio/pages/productos-page';
@@ -74,6 +75,7 @@ export const routes: Routes = [
       { path: 'servicios', component: Servicios, data: { title: 'Servicios' } },
       { path: 'roles', component: Roles, data: { title: 'Roles' } },
       { path: 'usuarios', component: Usuarios, data: { title: 'Usuarios' } },
+      { path: 'reportes', component: Reportes, data: { title: 'Reportes' } },
       { path: '', component: RedirectToFirst }
     ]
   },

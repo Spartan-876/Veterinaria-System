@@ -132,7 +132,7 @@ export class Enfermedades implements OnInit {
         this.cargarEnfermedades();
         this.cdr.detectChanges();
       },0);
-      this.toast.success("Enfermedad eliminada");
+      this.toast.success("Enfermedad desactivada");
     })
   }
 

@@ -56,17 +56,20 @@ public class Mascota {
     @Column(columnDefinition = "TEXT")
     private String observaciones;
 
+    @Column(nullable = false)
+    private boolean activo = true;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id", nullable = false)
     @JsonIgnoreProperties("mascotas")
     @ToString.Exclude
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mascota", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List<HistorialClinico> historialesClinicos;
 
-    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mascota", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List<Cita> citas;
 }

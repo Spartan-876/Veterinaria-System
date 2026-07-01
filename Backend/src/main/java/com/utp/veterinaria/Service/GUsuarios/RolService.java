@@ -23,6 +23,7 @@ public class RolService {
 
     public List<RolDTO> listarTodos() {
         return rolRepository.findAll().stream()
+                .filter(Rol::isActivo)
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
@@ -76,10 +77,10 @@ public class RolService {
     }
 
     public void eliminar(Long id) {
-        if (!rolRepository.existsById(id)) {
-            throw new RuntimeException("Rol no encontrado: " + id);
-        }
-        rolRepository.deleteById(id);
+        Rol rol = rolRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + id));
+        rol.setActivo(false);
+        rolRepository.save(rol);
     }
 
     private RolDTO toDTO(Rol rol) {

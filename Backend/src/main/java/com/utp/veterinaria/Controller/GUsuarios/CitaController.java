@@ -52,11 +52,6 @@ public class CitaController {
         return ResponseEntity.ok(citaService.listarPorCliente(clienteId));
     }
 
-    @PatchMapping("/{id}/cancelar")
-    public ResponseEntity<CitaDTO> cancelar(@PathVariable Long id) {
-        return ResponseEntity.ok(citaService.cancelarCita(id));
-    }
-
     @PatchMapping("/{id}/estado")
     public ResponseEntity<CitaDTO> cambiarEstado(
             @PathVariable Long id,
@@ -70,6 +65,11 @@ public class CitaController {
             @RequestParam String fechaHora) {
         LocalDateTime fecha = LocalDateTime.parse(fechaHora);
         return ResponseEntity.ok(citaService.trabajadoresDisponibles(servicioId, fecha));
+    }
+
+    @GetMapping("/mascota/{mascotaId}")
+    public ResponseEntity<List<CitaDTO>> porMascota(@PathVariable Long mascotaId) {
+        return ResponseEntity.ok(citaService.listarPorMascota(mascotaId));
     }
 
     @GetMapping("/mascotas/cliente/{clienteId}")

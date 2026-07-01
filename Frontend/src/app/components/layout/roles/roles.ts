@@ -147,9 +147,9 @@ export class Roles implements OnInit {
       next: () => {
         this.displayDelete = false;
         this.listarRoles();
-        this.toast.success('Rol eliminado correctamente');
+        this.toast.success('Rol desactivado correctamente');
       },
-      error: (err: any) => this.toast.error('Error al eliminar rol')
+      error: (err: any) => this.toast.error('Error al desactivar rol')
     });
   }
 }

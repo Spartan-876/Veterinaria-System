@@ -145,8 +145,8 @@
                                 <span class="material-symbols-outlined text-lg">edit</span>
                               </button>
                               <button (click)="confirmarEliminar(e)"
-                                class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
-                                <span class="material-symbols-outlined text-lg">delete</span>
+                                class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer">
+                                <span class="material-symbols-outlined text-lg">block</span>
                               </button>
                             </div>
                         </td>
@@ -216,8 +216,9 @@
       <div class="flex gap-2 justify-end pt-4">
         <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayEdit=false"></button>
-        <button pButton label="Guardar Cambios" icon="pi pi-check"
-                class="!bg-primary hover:bg-primary-darker text-white !border-none" (click)="guardarCambios()"></button>
+        <button pButton label="Guardar" icon="pi pi-check"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                (click)="guardarCambios()"></button>
       </div>
     </ng-template>
   </p-dialog>
@@ -265,23 +266,24 @@
       <div class="flex gap-2 justify-end pt-4">
         <button pButton severity="secondary" label="Cancelar" icon="pi pi-times"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayNew=false"></button>
-        <button pButton label="Guardar Cambios" icon="pi pi-check"
-                class="!bg-primary hover:bg-primary-darker text-white !border-none" (click)="guardarNuevo()"></button>
+        <button pButton label="Guardar" icon="pi pi-check"
+                class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                (click)="guardarNuevo()"></button>
       </div>
     </ng-template>
   </p-dialog>
-  <!--BORRAR-->
-  <p-dialog header="Confirmar Eliminación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
+  <!--DESACTIVAR-->
+  <p-dialog header="Confirmar Desactivación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
             [draggable]="false" [resizable]="false">
     <div class="flex flex-col items-center text-center gap-4 py-3">
-      <div class="p-4 bg-red-50 rounded-full">
-        <i class="pi pi-exclamation-triangle text-red-500 text-4xl"></i>
+      <div class="p-4 bg-amber-50 rounded-full">
+        <i class="pi pi-ban text-amber-500 text-4xl"></i>
       </div>
       <div>
         <h4 class="text-base font-bold text-gray-800 mb-2">¿Estás seguro?</h4>
         <p class="text-gray-600 text-sm">
-          Se eliminará <span class="font-semibold text-gray-800">{{selectedEnfermedad.nombre}}</span> del
-          inventario permanentemente.
+          Se desactivará <span class="font-semibold text-gray-800">{{selectedEnfermedad.nombre}}</span> del
+          inventario.
         </p>
       </div>
     </div>
@@ -290,8 +292,8 @@
       <div class="flex gap-2 justify-center pt-4">
         <button pButton severity="secondary" label="Cancelar"
                 class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayDelete=false"></button>
-        <button pButton severity="secondary" label="Sí, eliminar"
-                class="!bg-red-500 hover:!bg-red-600 !text-white border-none" (click)="eliminarEnfermedad()"></button>
+        <button pButton severity="secondary" label="Sí, desactivar"
+                class="!bg-amber-500 hover:!bg-amber-600 !text-white border-none" (click)="eliminarEnfermedad()"></button>
       </div>
     </ng-template>
   </p-dialog>

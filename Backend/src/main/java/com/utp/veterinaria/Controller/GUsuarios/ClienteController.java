@@ -34,4 +34,10 @@ public class ClienteController {
         return clienteService.listarTodosConContador();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        clienteService.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

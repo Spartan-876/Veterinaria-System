@@ -37,3 +37,9 @@ AGENTS.md
 .agents
 **/skills-lock.json
 opencode.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+Frontend/.env.production

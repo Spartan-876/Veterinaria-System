@@ -8,8 +8,10 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { MascotasService } from '../../../services/mascotas-service';
 import { ClienteService } from '../../../services/cliente-service';
+import { HistorialMascotaService } from '../../../services/historial-mascota.service';
 import { Mascota } from '../../../models/mascota';
 import { Cliente } from '../../../models/cliente';
+import { TimelineEvent } from '../../../models/historial-mascota';
 import { GToast } from '../../../services/gtoast';
 
 @Component({
@@ -37,6 +39,9 @@ export class Mascotas implements OnInit {
   mascotaSeleccionada: Mascota = this.mascotaVacia();
   clienteIdSeleccionado: number | null = null;
 
+  eventosHistorial: TimelineEvent[] = [];
+  historialCargando = false;
+
   first = 0;
   rows = 8;
 
@@ -46,6 +51,7 @@ export class Mascotas implements OnInit {
   constructor(
     private mascotasService: MascotasService,
     private clienteService: ClienteService,
+    private historialService: HistorialMascotaService,
     private toast: GToast,
     private cdr: ChangeDetectorRef
   ) {}
@@ -122,7 +128,22 @@ export class Mascotas implements OnInit {
 
   verHistorial(mascota: Mascota): void {
     this.mascotaSeleccionada = { ...mascota };
+    this.eventosHistorial = [];
+    this.historialCargando = true;
     this.displayHistorial = true;
+    this.historialService.obtenerHistorial(mascota.id!).subscribe({
+      next: (eventos) => {
+        Promise.resolve().then(() => {
+          this.eventosHistorial = eventos;
+          this.historialCargando = false;
+          this.cdr.markForCheck();
+        });
+      },
+      error: () => {
+        this.historialCargando = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   guardarNuevo(): void {
@@ -168,12 +189,21 @@ export class Mascotas implements OnInit {
   eliminar(): void {
     this.mascotasService.eliminarMascota(this.mascotaSeleccionada.id!).subscribe({
       next: () => {
-        this.toast.success('Mascota eliminada');
+        this.toast.success('Mascota desactivada');
         this.displayDelete = false;
         this.cargarMascotas();
         this.cdr.markForCheck();
       },
-      error: () => this.toast.error('Error al eliminar')
+      error: () => this.toast.error('Error al desactivar')
+    });
+  }
+
+  formatFecha(fecha: string): string {
+    if (!fecha) return '';
+    const f = new Date(fecha);
+    return f.toLocaleDateString('es-PE', {
+      day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
   }
 }

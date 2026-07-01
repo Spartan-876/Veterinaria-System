@@ -32,4 +32,11 @@ public class ClienteService {
         return clienteRepository.findById(id).orElse(null);
     }
 
+    public Cliente eliminar(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con id: " + id));
+        cliente.setActivo(false);
+        return clienteRepository.save(cliente);
+    }
+
 }

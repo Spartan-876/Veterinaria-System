@@ -45,4 +45,7 @@ public class VacunaCatalogo {
     @Min(value = 0, message = "El precio debe ser mayor o igual a 0")
     @Column(nullable = false)
     private Double precio;
+
+    @Column(nullable = false)
+    private boolean activo = true;
 }
