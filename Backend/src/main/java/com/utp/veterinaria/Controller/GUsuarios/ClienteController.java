@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -27,6 +28,13 @@ public class ClienteController {
     public ResponseEntity<Cliente> obtenerPorId(@PathVariable Long id) {
         Cliente cliente = clienteService.buscarPorId(id);
         return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/dni/{dni}")
+    public ResponseEntity<Cliente> obtenerPorDni(@PathVariable String dni) {
+        return clienteService.buscarPorDni(dni)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping

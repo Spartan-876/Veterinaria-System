@@ -39,4 +39,8 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    public java.util.Optional<Cliente> buscarPorDni(String dni) {
+        return clienteRepository.findByDni(dni);
+    }
+
 }

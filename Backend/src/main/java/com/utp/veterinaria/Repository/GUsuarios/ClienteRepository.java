@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
@@ -18,4 +19,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     List<ClienteDTO> findAllClientesConContador();
 
     boolean existsByDni(String dni);
+
+    Optional<Cliente> findByDni(String dni);
 }

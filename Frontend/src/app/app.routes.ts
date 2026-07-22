@@ -9,6 +9,7 @@ import { Enfermedades } from './components/layout/enfermedades/enfermedades';
 import { Trabajadores } from './components/layout/trabajadores/trabajadores';
 import { Productos as ProductosAdmin } from './components/layout/productos/productos';
 import { Ventas } from './components/layout/ventas/ventas';
+import { Histventas } from './components/layout/histventas/histventas';
 import { Citas } from './components/layout/citas/citas';
 import { Servicios } from './components/layout/servicios/servicios';
 import { Inicio } from './components/inicio/inicio';
@@ -70,7 +71,8 @@ export const routes: Routes = [
       { path: 'enfermedades', component: Enfermedades, data: { title: 'Enfermedades' } },
       { path: 'trabajadores', component: Trabajadores, data: { title: 'Trabajadores' } },
       { path: 'productos', component: ProductosAdmin, data: { title: 'Productos' } },
-      { path: 'ventas', component: Ventas, data: { title: 'Ventas' } },
+      { path: 'ventas', component: Ventas, data: { title: 'Nueva Venta' } },
+      { path: 'histventas', component: Histventas, data: { title: 'Historial de Ventas' } },
       { path: 'citas', component: Citas, data: { title: 'Citas' } },
       { path: 'servicios', component: Servicios, data: { title: 'Servicios' } },
       { path: 'roles', component: Roles, data: { title: 'Roles' } },

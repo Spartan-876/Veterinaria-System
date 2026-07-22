@@ -42,7 +42,7 @@ public class VentaService {
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         venta.setCliente(cliente);
-        venta.setEstado(Venta.Estadoventa.COMPLETADA);
+        venta.setEstado(Venta.Estadoventa.PENDIENTE);
 
         List<DetalleVenta> detalles = dto.getDetalles().stream().map(d -> {
             if (d.getCantidad() == null || d.getCantidad() <= 0) {

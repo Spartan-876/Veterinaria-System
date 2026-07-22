@@ -1,12 +1,16 @@
 package com.utp.veterinaria.Service.GVentas;
 
 import com.utp.veterinaria.DTO.PagosResumenDTO;
+import com.utp.veterinaria.DTO.PagoRequestDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Cita;
+import com.utp.veterinaria.Model.GestionVentas.Pago;
 import com.utp.veterinaria.Model.GestionVentas.Venta;
 import com.utp.veterinaria.Repository.GUsuarios.CitaRepository;
+import com.utp.veterinaria.Repository.GVentas.PagoRepository;
 import com.utp.veterinaria.Repository.GVentas.VentaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +22,47 @@ public class PagosService {
 
     private final VentaRepository ventaRepository;
     private final CitaRepository citaRepository;
+    private final PagoRepository pagoRepository;
+
+    @Transactional
+    public Pago registrarPago(PagoRequestDTO dto) {
+        if (dto.getVentaId() == null && dto.getCitaId() == null) {
+            throw new RuntimeException("Debe especificar una venta o una cita");
+        }
+        if (dto.getMonto() == null || dto.getMonto() <= 0) {
+            throw new RuntimeException("El monto debe ser mayor a 0");
+        }
+
+        Pago pago = new Pago();
+        pago.setMonto(dto.getMonto());
+        pago.setMetodoPago(dto.getMetodoPago());
+        pago.setComentario(dto.getComentario());
+
+        if (dto.getVentaId() != null) {
+            Venta venta = ventaRepository.findById(dto.getVentaId())
+                    .orElseThrow(() -> new RuntimeException("Venta no encontrada"));
+            pago.setVenta(venta);
+            venta.setEstado(Venta.Estadoventa.COMPLETADA);
+            venta.setMetodoPago(dto.getMetodoPago());
+            ventaRepository.save(venta);
+        }
+
+        if (dto.getCitaId() != null) {
+            Cita cita = citaRepository.findById(dto.getCitaId())
+                    .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+            pago.setCita(cita);
+        }
+
+        return pagoRepository.save(pago);
+    }
+
+    public List<Pago> listarPorVenta(Long ventaId) {
+        return pagoRepository.findByVentaId(ventaId);
+    }
+
+    public List<Pago> listarPorCita(Long citaId) {
+        return pagoRepository.findByCitaId(citaId);
+    }
 
     public PagosResumenDTO getResumen() {
         PagosResumenDTO dto = new PagosResumenDTO();
