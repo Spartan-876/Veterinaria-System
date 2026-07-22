@@ -1,0 +1,28 @@
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Build
+target/
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Environment (no incluir secrets en la imagen)
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+
+# Agents
+.agents/
+skills-lock.json
+
+# Documentation
+HELP.md
+*.md

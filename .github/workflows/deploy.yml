@@ -1,0 +1,55 @@
+name: CD - Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Backend
+        run: |
+          docker build -t spartan876/veterinaria:backend-${{ github.sha }} ./Backend
+          docker tag spartan876/veterinaria:backend-${{ github.sha }} spartan876/veterinaria:backend-latest
+
+      - name: Build Frontend
+        run: |
+          docker build -t spartan876/veterinaria:frontend-${{ github.sha }} ./Frontend
+          docker tag spartan876/veterinaria:frontend-${{ github.sha }} spartan876/veterinaria:frontend-latest
+
+      - name: Push a Docker Hub
+        run: |
+          docker push spartan876/veterinaria:backend-${{ github.sha }}
+          docker push spartan876/veterinaria:backend-latest
+          docker push spartan876/veterinaria:frontend-${{ github.sha }}
+          docker push spartan876/veterinaria:frontend-latest
+
+  deploy-vps:
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copiar archivos al VPS
+        run: |
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no docker-compose.yml nginx.conf .env ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/azureuser/veterinaria/
+
+      - name: Deploy en VPS
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "cd /home/azureuser/veterinaria && docker compose pull && docker compose up -d"
