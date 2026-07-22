@@ -45,11 +45,6 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Copiar archivos al VPS
-        run: |
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no docker-compose.yml .env ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/azureuser/veterinaria/
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no Frontend/nginx.conf ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/azureuser/veterinaria/
-
       - name: Deploy en VPS
         run: |
           ssh -i ~/.ssh/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
