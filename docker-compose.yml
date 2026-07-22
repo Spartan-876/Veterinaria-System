@@ -13,7 +13,7 @@ services:
 
   backend:
     build: ./Backend
-    image: spartan876/veterinaria-backend:latest
+    image: spartan876/veterinaria:backend-latest
     depends_on:
       db: { condition: service_healthy }
     environment:
@@ -27,7 +27,7 @@ services:
 
   frontend:
     build: ./Frontend
-    image: spartan876/veterinaria-frontend:latest
+    image: spartan876/veterinaria:frontend-latest
     depends_on: [backend]
     ports:
       - "4002:80"
