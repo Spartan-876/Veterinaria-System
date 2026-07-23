@@ -24,21 +24,49 @@
         </h4>
 
         @if (!sinBoleta) {
-          <div class="flex gap-3">
-            <div class="flex-1">
-              <input type="text" [(ngModel)]="dniBusqueda"
-                     placeholder="Buscar por DNI (8 dígitos)"
-                     maxlength="8"
-                     (keyup.enter)="buscarCliente()"
-                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none text-sm"/>
-              @if (buscarClienteError) {
-                <p class="text-red-500 text-xs mt-1">{{ buscarClienteError }}</p>
-              }
+          <div class="relative">
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <input type="text" [(ngModel)]="dniBusqueda"
+                       placeholder="Buscar por DNI, nombre o apellido..."
+                       (input)="onBusquedaDni()"
+                       (blur)="cerrarBusqueda()"
+                       (focus)="onBusquedaDni()"
+                       class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary-container transition-all outline-none text-sm"/>
+                @if (buscarClienteError) {
+                  <p class="text-red-500 text-xs mt-1">{{ buscarClienteError }}</p>
+                }
+              </div>
+              <button (click)="buscarCliente()"
+                      class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-darker transition-colors cursor-pointer">
+                <i class="pi pi-search"></i>
+              </button>
             </div>
-            <button (click)="buscarCliente()"
-                    class="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-darker transition-colors cursor-pointer">
-              <i class="pi pi-search"></i>
-            </button>
+
+            <!-- Dropdown autocomplete -->
+            @if (mostrandoClientes && (clientesEncontrados.length > 0 || buscandoCliente)) {
+              <div class="absolute z-50 w-full mt-1 bg-white rounded-xl border border-gray-200 shadow-lg max-h-60 overflow-y-auto">
+                @if (buscandoCliente) {
+                  <div class="flex items-center justify-center py-4 gap-2">
+                    <i class="pi pi-spin pi-spinner text-primary text-sm"></i>
+                    <span class="text-xs text-gray-400">Buscando...</span>
+                  </div>
+                } @else {
+                  @for (c of clientesEncontrados; track c.id) {
+                    <button (mousedown)="seleccionarCliente(c)"
+                            class="w-full px-4 py-3 flex items-center gap-3 hover:bg-primary-container/30 transition-colors cursor-pointer border-b border-gray-50 last:border-0 text-left">
+                      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                        {{ c.nombres.charAt(0) }}
+                      </div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-sm font-semibold text-gray-800 truncate">{{ c.nombres }} {{ c.apellidos }}</p>
+                        <p class="text-xs text-gray-400 font-mono">DNI: {{ c.dni }}</p>
+                      </div>
+                    </button>
+                  }
+                }
+              </div>
+            }
           </div>
         }
 

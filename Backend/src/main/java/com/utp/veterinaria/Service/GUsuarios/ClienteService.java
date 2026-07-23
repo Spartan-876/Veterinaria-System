@@ -43,4 +43,8 @@ public class ClienteService {
         return clienteRepository.findByDni(dni);
     }
 
+    public List<Cliente> buscarClientes(String texto) {
+        return clienteRepository.buscarPorTexto(texto);
+    }
+
 }

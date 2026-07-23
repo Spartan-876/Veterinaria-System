@@ -31,6 +31,12 @@ export class Ventas implements OnInit {
   buscarClienteError = '';
   sinBoleta = false;
 
+  // Autocomplete clientes
+  clientesEncontrados: Cliente[] = [];
+  mostrandoClientes = false;
+  buscandoCliente = false;
+  private busquedaTimer: ReturnType<typeof setTimeout> | null = null;
+
   productos: Producto[] = [];
   productoSeleccionado: Producto | null = null;
   cantidadProducto = 1;
@@ -82,6 +88,53 @@ export class Ventas implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  onBusquedaDni(): void {
+    this.buscarClienteError = '';
+    if (this.busquedaTimer) clearTimeout(this.busquedaTimer);
+
+    if (!this.dniBusqueda || this.dniBusqueda.length < 2) {
+      this.clientesEncontrados = [];
+      this.mostrandoClientes = false;
+      this.cdr.markForCheck();
+      return;
+    }
+
+    this.buscandoCliente = true;
+    this.mostrandoClientes = true;
+    this.cdr.markForCheck();
+
+    this.busquedaTimer = setTimeout(() => {
+      this.ventaService.buscarClientes(this.dniBusqueda).subscribe({
+        next: (clientes) => {
+          this.clientesEncontrados = clientes;
+          this.buscandoCliente = false;
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.clientesEncontrados = [];
+          this.buscandoCliente = false;
+          this.cdr.markForCheck();
+        }
+      });
+    }, 300);
+  }
+
+  seleccionarCliente(cliente: Cliente): void {
+    this.cliente = cliente;
+    this.dniBusqueda = cliente.dni;
+    this.clientesEncontrados = [];
+    this.mostrandoClientes = false;
+    this.buscarClienteError = '';
+    this.cdr.markForCheck();
+  }
+
+  cerrarBusqueda(): void {
+    setTimeout(() => {
+      this.mostrandoClientes = false;
+      this.cdr.markForCheck();
+    }, 200);
   }
 
   activarSinBoleta(): void {

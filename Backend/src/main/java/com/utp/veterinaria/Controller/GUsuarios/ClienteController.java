@@ -42,6 +42,14 @@ public class ClienteController {
         return clienteService.listarTodosConContador();
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Cliente>> buscar(@RequestParam String q) {
+        if (q == null || q.trim().isEmpty()) {
+            return ResponseEntity.ok(List.of());
+        }
+        return ResponseEntity.ok(clienteService.buscarClientes(q.trim()));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         clienteService.eliminar(id);

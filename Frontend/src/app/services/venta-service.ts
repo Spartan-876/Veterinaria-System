@@ -28,6 +28,10 @@ export class VentaService {
     return this.http.get<Cliente>(`${this.clientesUrl}/dni/${dni}`);
   }
 
+  buscarClientes(query: string): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.clientesUrl}/buscar`, { params: { q: query } });
+  }
+
   // ===== PAGOS =====
   registrarPagoVenta(ventaId: number, metodoPago: string, monto: number): Observable<Venta> {
     return this.http.post<Venta>(`${environment.apiUrl}/api/pagos`, { ventaId, metodoPago, monto });

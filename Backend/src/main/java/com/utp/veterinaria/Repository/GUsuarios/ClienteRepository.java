@@ -4,6 +4,7 @@ import com.utp.veterinaria.DTO.ClienteDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     boolean existsByDni(String dni);
 
     Optional<Cliente> findByDni(String dni);
+
+    @Query("SELECT c FROM Cliente c WHERE c.activo = true AND " +
+            "(c.dni LIKE %:q% OR LOWER(c.nombres) LIKE LOWER(CONCAT('%',:q,'%')) OR LOWER(c.apellidos) LIKE LOWER(CONCAT('%',:q,'%')))")
+    List<Cliente> buscarPorTexto(@Param("q") String q);
 }
