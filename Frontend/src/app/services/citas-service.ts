@@ -36,4 +36,17 @@ export class CitasService {
   mascotasPorCliente(clienteId: number): Observable<Mascota[]> {
     return this.http.get<Mascota[]>(`${this.url}/mascotas/cliente/${clienteId}`);
   }
+
+  // ===== PAGOS =====
+  pagarCitaAdmin(citaId: number, metodoPago: string): Observable<Cita> {
+    return this.http.post<Cita>(`${this.url}/${citaId}/pagar`, { metodoPago });
+  }
+
+  pagarCitaCliente(citaId: number, metodoPago: string, monto: number): Observable<Cita> {
+    return this.http.post<Cita>(`${this.url}/${citaId}/pagar-cliente`, { metodoPago, monto });
+  }
+
+  obtenerBoletaCita(citaId: number): Observable<Cita> {
+    return this.http.get<Cita>(`${this.url}/${citaId}/boleta`);
+  }
 }

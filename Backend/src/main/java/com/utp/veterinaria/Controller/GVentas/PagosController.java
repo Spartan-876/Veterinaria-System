@@ -3,6 +3,7 @@ package com.utp.veterinaria.Controller.GVentas;
 import com.utp.veterinaria.DTO.PagosResumenDTO;
 import com.utp.veterinaria.DTO.PagoRequestDTO;
 import com.utp.veterinaria.Model.GestionVentas.Pago;
+import com.utp.veterinaria.Model.GestionVentas.Venta;
 import com.utp.veterinaria.Service.GVentas.PagosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class PagosController {
     }
 
     @PostMapping
-    public ResponseEntity<Pago> registrarPago(@RequestBody PagoRequestDTO dto) {
+    public ResponseEntity<Venta> registrarPago(@RequestBody PagoRequestDTO dto) {
         return ResponseEntity.ok(pagosService.registrarPago(dto));
     }
 

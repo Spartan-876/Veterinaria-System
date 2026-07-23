@@ -15,6 +15,7 @@ export interface VentaRequestDTO {
     precioUnitario: number;
     cantidad: number;
   }[];
+  metodoPago?: string;
 }
 
 export interface Venta {

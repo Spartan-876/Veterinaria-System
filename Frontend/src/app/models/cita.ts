@@ -12,6 +12,9 @@ export interface Cita {
   clienteNombre: string;
   trabajadorId: number;
   trabajadorNombre: string;
+  pagoId?: number;
+  pagoMetodo?: string;
+  pagoFecha?: string;
 }
 
 export interface CitaRequestDTO {

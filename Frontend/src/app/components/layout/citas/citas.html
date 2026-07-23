@@ -77,6 +77,7 @@
             <div class="flex items-center gap-2"><i class="pi pi-user text-green-500"></i> Trabajador</div>
           </th>
           <th class="px-4 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider" style="width:10rem">Estado</th>
+          <th class="px-4 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider" style="width:8rem">Pago</th>
           <th class="px-4 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider" style="width:5rem">Ver</th>
         </tr>
       </ng-template>
@@ -149,6 +150,23 @@
                     }">
                 {{ cita.estado }}
               </span>
+            }
+          </td>
+
+          <!-- Pago -->
+          <td class="px-4 py-4">
+            @if (cita.estado === 'PENDIENTE' && !tienePago(cita)) {
+              <button (click)="abrirPago(cita)"
+                      class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-darker transition-colors cursor-pointer">
+                Registrar Pago
+              </button>
+            } @else if (tienePago(cita)) {
+              <button (click)="descargarBoleta(cita)"
+                      class="px-3 py-1.5 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-200 hover:bg-green-100 transition-colors cursor-pointer flex items-center gap-1">
+                <i class="pi pi-download text-xs"></i> Boleta
+              </button>
+            } @else {
+              <span class="text-xs text-gray-400 italic">—</span>
             }
           </td>
 
@@ -384,14 +402,90 @@
       </div>
     </form>
 
+<ng-template pTemplate="footer">
+        <div class="flex gap-3 justify-end pt-2">
+          <button pButton severity="secondary" label="Cancelar"
+                  class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayCrear = false"></button>
+          <button pButton label="Guardar" icon="pi pi-check" [disabled]="fCita.invalid || creando"
+                  (click)="crearCita()"
+                  class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
+                  [ngClass]="{'opacity-50 cursor-not-allowed': fCita.invalid || creando}">
+          </button>
+        </div>
+      </ng-template>
+    </p-dialog>
+
+  <!-- Modal pago -->
+  <p-dialog header="Registrar Pago" [(visible)]="displayPago" [modal]="true"
+            [style]="{width: '480px'}" [draggable]="false" [resizable]="false">
+    @if (citaPago) {
+      <div class="flex flex-col gap-4 mt-4">
+        <div class="flex justify-between items-center">
+          <span class="font-mono text-xs text-gray-400">
+            #{{ (citaPago.id ?? 0).toString().padStart(4,'0') }}
+          </span>
+          <span class="text-xs px-3 py-1.5 rounded-full font-semibold border bg-primary-container text-primary-dark border-primary">
+            {{ citaPago.estado }}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs text-gray-400 mb-1">Servicio</p>
+            <p class="font-semibold text-gray-800 text-sm">{{ citaPago.servicioNombre }}</p>
+            @if (citaPago.precioServicio) {
+              <p class="text-xs text-primary-dark font-bold">S/ {{ citaPago.precioServicio | number:'1.2-2' }}</p>
+            }
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs text-gray-400 mb-1">Cliente</p>
+            <p class="font-semibold text-gray-800 text-sm">{{ citaPago.clienteNombre }}</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs text-gray-400 mb-1">Mascota</p>
+            <p class="font-semibold text-gray-800 text-sm">{{ citaPago.mascotaNombre }}</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <p class="text-xs text-gray-400 mb-1">Fecha y hora</p>
+            <p class="font-semibold text-gray-800 text-sm">{{ citaPago.fechaHora | date:'dd/MM/yyyy' }}</p>
+            <p class="text-xs text-gray-500 font-mono">{{ citaPago.fechaHora | date:'HH:mm' }} hrs</p>
+          </div>
+        </div>
+
+        <div class="bg-primary-container/30 rounded-xl p-4 border border-primary/20">
+          <p class="text-xs text-gray-400 mb-1">Monto a pagar</p>
+          <p class="text-2xl font-bold text-primary-dark">S/ {{ montoPago(citaPago) | number:'1.2-2' }}</p>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-3">Método de pago *</label>
+          <div class="flex flex-wrap gap-3">
+            @for (metodo of metodosPago; track metodo) {
+              <label class="flex-1 min-w-[120px] cursor-pointer">
+                <input type="radio" name="metodoPago" [(ngModel)]="metodoPagoSel" [value]="metodo"
+                       class="peer hidden">
+                <div class="p-3 rounded-lg border-2 text-center transition-all"
+                     [ngClass]="metodoPagoSel === metodo
+                       ? 'border-primary bg-primary-container/40 text-primary-dark'
+                       : 'border-gray-200 hover:border-primary hover:bg-primary-hover'">
+                  {{ metodo }}
+                </div>
+              </label>
+            }
+          </div>
+        </div>
+      </div>
+    }
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end pt-2">
         <button pButton severity="secondary" label="Cancelar"
-                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayCrear = false"></button>
-        <button pButton label="Guardar" icon="pi pi-check" [disabled]="fCita.invalid || creando"
-                (click)="crearCita()"
+                class="p-button-text !text-gray-600 hover:!bg-gray-200" (click)="displayPago = false"></button>
+        <button pButton label="Confirmar Pago" icon="pi pi-check" [disabled]="pagando"
+                (click)="confirmarPago()"
                 class="!bg-primary hover:!bg-primary-darker px-6 py-2.5 rounded-xl text-white hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold border-none"
-                [ngClass]="{'opacity-50 cursor-not-allowed': fCita.invalid || creando}">
+                [ngClass]="{'opacity-50 cursor-not-allowed': pagando}">
+          @if (pagando) { <i class="pi pi-spin pi-spinner"></i> }
+          {{ pagando ? 'Procesando...' : 'Confirmar Pago' }}
         </button>
       </div>
     </ng-template>

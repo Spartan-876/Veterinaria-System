@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { SelectModule } from 'primeng/select';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { Cita } from '../../../models/cita';
 import { CitasService } from '../../../services/citas-service';
 import { ClienteService } from '../../../services/cliente-service';
@@ -15,11 +16,12 @@ import { Cliente } from '../../../models/cliente';
 import { Servicio } from '../../../models/servicios';
 import { Mascota, TrabajadorDisponible } from '../../../models/cita';
 import { GToast } from '../../../services/gtoast';
+import { PdfService } from '../../../services/pdf-service';
 
 @Component({
   selector: 'app-citas',
   standalone: true,
-  imports: [FormsModule, CommonModule, DialogModule, ButtonModule, InputTextModule, TableModule, SelectModule],
+  imports: [FormsModule, CommonModule, DialogModule, ButtonModule, InputTextModule, TableModule, SelectModule, RadioButtonModule],
   templateUrl: './citas.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -56,10 +58,18 @@ export class Citas implements OnInit {
 
   readonly fechaMin: string;
 
+  // Modal pago
+  displayPago = false;
+  citaPago: Cita | null = null;
+  metodoPagoSel = 'EFECTIVO';
+  readonly metodosPago = ['EFECTIVO', 'TARJETA', 'YAPE', 'PLIN'];
+  pagando = false;
+
   constructor(
     private citaService: CitasService,
     private clienteService: ClienteService,
     private servicioService: ServiciosService,
+    private pdfService: PdfService,
     private toast: GToast,
     private cdr: ChangeDetectorRef
   ) {
@@ -239,5 +249,50 @@ export class Citas implements OnInit {
     this.motivo = '';
     this.creando = false;
     this.cargandoTrabajadores = false;
+  }
+
+  // ── PAGO ────────────────────────────────────────────
+
+  abrirPago(cita: Cita): void {
+    this.citaPago = cita;
+    this.metodoPagoSel = 'EFECTIVO';
+    this.displayPago = true;
+  }
+
+  confirmarPago(): void {
+    if (!this.citaPago) return;
+    this.pagando = true;
+    this.cdr.markForCheck();
+
+    this.citaService.pagarCitaAdmin(this.citaPago.id!, this.metodoPagoSel).subscribe({
+      next: (citaActualizada) => {
+        const idx = this.citas.findIndex(c => c.id === this.citaPago!.id);
+        if (idx >= 0) this.citas[idx] = citaActualizada;
+        this.citas = [...this.citas];
+        if (this.citaDetalle?.id === this.citaPago!.id) this.citaDetalle = citaActualizada;
+        this.toast.success('Pago registrado correctamente');
+        this.descargarBoleta(citaActualizada);
+        this.displayPago = false;
+        this.pagando = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.pagando = false;
+        this.toast.error(err.error?.message ?? 'Error al registrar pago');
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  descargarBoleta(cita: Cita): void {
+    this.pdfService.generarBoletaCita(cita);
+  }
+
+  tienePago(cita: Cita): boolean {
+    return !!(cita.pagoId && cita.pagoMetodo);
+  }
+
+  montoPago(cita: Cita): number {
+    return cita.precioServicio ?? 0;
   }
 }

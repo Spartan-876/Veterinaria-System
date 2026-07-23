@@ -1,6 +1,7 @@
 package com.utp.veterinaria.Model.GestionUsuarios;
 
 import com.utp.veterinaria.Model.GestionMedica.Mascota;
+import com.utp.veterinaria.Model.GestionVentas.Pago;
 import com.utp.veterinaria.Model.GestionVentas.Servicio;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -45,6 +46,10 @@ public class Cita {
     @JoinColumn(name = "trabajador_id")
     @JsonIgnoreProperties({"usuario", "servicios", "citas"})
     private Trabajador trabajador;
+
+    @OneToOne(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("cita")
+    private Pago pago;
 
     public enum EstadoCita{
         PENDIENTE, CONFIRMADA, REALIZADA, CANCELADA

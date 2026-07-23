@@ -27,4 +27,9 @@ export class VentaService {
   buscarClientePorDni(dni: string): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.clientesUrl}/dni/${dni}`);
   }
+
+  // ===== PAGOS =====
+  registrarPagoVenta(ventaId: number, metodoPago: string, monto: number): Observable<Venta> {
+    return this.http.post<Venta>(`${environment.apiUrl}/api/pagos`, { ventaId, metodoPago, monto });
+  }
 }

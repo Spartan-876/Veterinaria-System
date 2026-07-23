@@ -3,10 +3,13 @@ package com.utp.veterinaria.Service.GVentas;
 import com.utp.veterinaria.DTO.PagosResumenDTO;
 import com.utp.veterinaria.DTO.PagoRequestDTO;
 import com.utp.veterinaria.Model.GestionUsuarios.Cita;
+import com.utp.veterinaria.Model.GestionVentas.DetalleVenta;
 import com.utp.veterinaria.Model.GestionVentas.Pago;
+import com.utp.veterinaria.Model.GestionVentas.Producto;
 import com.utp.veterinaria.Model.GestionVentas.Venta;
 import com.utp.veterinaria.Repository.GUsuarios.CitaRepository;
 import com.utp.veterinaria.Repository.GVentas.PagoRepository;
+import com.utp.veterinaria.Repository.GVentas.ProductoRepository;
 import com.utp.veterinaria.Repository.GVentas.VentaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,9 +26,10 @@ public class PagosService {
     private final VentaRepository ventaRepository;
     private final CitaRepository citaRepository;
     private final PagoRepository pagoRepository;
+    private final ProductoRepository productoRepository;
 
     @Transactional
-    public Pago registrarPago(PagoRequestDTO dto) {
+    public Venta registrarPago(PagoRequestDTO dto) {
         if (dto.getVentaId() == null && dto.getCitaId() == null) {
             throw new RuntimeException("Debe especificar una venta o una cita");
         }
@@ -41,6 +45,24 @@ public class PagosService {
         if (dto.getVentaId() != null) {
             Venta venta = ventaRepository.findById(dto.getVentaId())
                     .orElseThrow(() -> new RuntimeException("Venta no encontrada"));
+            
+            if (venta.getEstado() == Venta.Estadoventa.COMPLETADA) {
+                throw new RuntimeException("La venta ya está completada");
+            }
+
+            // Descontar stock de productos al completar la venta
+            for (DetalleVenta detalle : venta.getDetalles()) {
+                if (detalle.getProducto() != null) {
+                    Producto producto = productoRepository.findById(detalle.getProducto().getId())
+                            .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + detalle.getProducto().getId()));
+                    if (producto.getStock() < detalle.getCantidad()) {
+                        throw new RuntimeException("Stock insuficiente para: " + producto.getNombre() + ". Disponible: " + producto.getStock());
+                    }
+                    producto.setStock(producto.getStock() - detalle.getCantidad());
+                    productoRepository.save(producto);
+                }
+            }
+
             pago.setVenta(venta);
             venta.setEstado(Venta.Estadoventa.COMPLETADA);
             venta.setMetodoPago(dto.getMetodoPago());
@@ -53,7 +75,12 @@ public class PagosService {
             pago.setCita(cita);
         }
 
-        return pagoRepository.save(pago);
+        pagoRepository.save(pago);
+
+        if (dto.getVentaId() != null) {
+            return ventaRepository.findById(dto.getVentaId()).orElse(null);
+        }
+        return null;
     }
 
     public List<Pago> listarPorVenta(Long ventaId) {

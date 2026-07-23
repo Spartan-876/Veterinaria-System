@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/citas")
@@ -75,5 +76,47 @@ public class CitaController {
     @GetMapping("/mascotas/cliente/{clienteId}")
     public ResponseEntity<List<Mascota>> mascotasPorCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(mascotaRepository.findByClienteId(clienteId));
+    }
+
+    // ===== NUEVOS ENDPOINTS PARA PAGOS =====
+
+    @PostMapping("/{id}/pagar")
+    public ResponseEntity<CitaDTO> pagarCitaAdmin(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String metodoPago = body.get("metodoPago");
+        if (metodoPago == null || metodoPago.isBlank()) {
+            throw new RuntimeException("Método de pago requerido");
+        }
+        CitaDTO cita = citaService.registrarPagoCita(id, null, metodoPago);
+        return ResponseEntity.ok(cita);
+    }
+
+    @PostMapping("/{id}/pagar-cliente")
+    public ResponseEntity<CitaDTO> pagarCitaCliente(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> body) {
+        String metodoPago = (String) body.get("metodoPago");
+        if (metodoPago == null || metodoPago.isBlank()) {
+            throw new RuntimeException("Método de pago requerido");
+        }
+        Double monto = body.get("monto") != null ? Double.valueOf(body.get("monto").toString()) : null;
+        CitaDTO cita = citaService.registrarPagoCita(id, monto, metodoPago);
+        return ResponseEntity.ok(cita);
+    }
+
+    @GetMapping("/{id}/boleta")
+    public ResponseEntity<CitaDTO> getBoletaCita(@PathVariable Long id) {
+        // Retorna la cita con datos de pago para generar PDF en frontend
+        List<CitaDTO> citas = citaService.listarCitas();
+        CitaDTO cita = citas.stream().filter(c -> c.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        return ResponseEntity.ok(cita);
+    }
+
+    @PostMapping("/cancelar-vencidas")
+    public ResponseEntity<Map<String, Object>> cancelarVencidasManual() {
+        citaService.cancelarCitasVencidas();
+        return ResponseEntity.ok(Map.of("mensaje", "Citas vencidas canceladas correctamente"));
     }
 }

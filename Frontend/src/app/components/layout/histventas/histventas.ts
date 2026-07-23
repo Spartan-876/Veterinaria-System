@@ -2,14 +2,16 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 import { Venta } from '../../../models/carrito';
 import { VentaService } from '../../../services/venta-service';
 import { PdfService } from '../../../services/pdf-service';
+import { GToast } from '../../../services/gtoast';
 
 @Component({
   selector: 'app-histventas',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule],
   templateUrl: './histventas.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -19,9 +21,17 @@ export class Histventas implements OnInit {
   cargando = true;
   terminoBusqueda = '';
 
+  // Modal pago
+  displayPago = false;
+  ventaPago: Venta | null = null;
+  metodoPagoSel = 'EFECTIVO';
+  readonly metodosPago = ['EFECTIVO', 'TARJETA', 'YAPE', 'PLIN'];
+  pagando = false;
+
   constructor(
     private ventaService: VentaService,
     private pdfService: PdfService,
+    private toast: GToast,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -61,6 +71,38 @@ export class Histventas implements OnInit {
 
   descargarBoleta(venta: Venta): void {
     this.pdfService.generarBoletaVenta(venta);
+  }
+
+  abrirPago(venta: Venta): void {
+    this.ventaPago = venta;
+    this.metodoPagoSel = 'EFECTIVO';
+    this.displayPago = true;
+  }
+
+  confirmarPagoVenta(): void {
+    if (!this.ventaPago) return;
+    this.pagando = true;
+    this.cdr.markForCheck();
+
+    this.ventaService.registrarPagoVenta(this.ventaPago.id!, this.metodoPagoSel, this.ventaPago.total).subscribe({
+      next: (ventaActualizada) => {
+        const idx = this.ventas.findIndex(v => v.id === this.ventaPago!.id);
+        if (idx >= 0) this.ventas[idx] = ventaActualizada;
+        this.ventas = [...this.ventas];
+        if (this.ventaExpandida === this.ventaPago!.id) this.ventaExpandida = null;
+        this.toast.success('Pago registrado correctamente');
+        this.descargarBoleta(ventaActualizada);
+        this.displayPago = false;
+        this.pagando = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.pagando = false;
+        const msg = typeof err.error === 'string' ? err.error : (err.error?.message ?? 'Error al registrar pago');
+        this.toast.error(msg);
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   get totalVentas(): number {

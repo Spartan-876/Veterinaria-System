@@ -11,10 +11,10 @@ public class CitaDTO {
     private String motivo;
     private String estado;
 
-    // Servicio ← agregar servicioId
+    // Servicio
     private Long servicioId;
     private String servicioNombre;
-    private Double precioServicio; // renombrar de precioAcordado
+    private Double precioServicio;
 
     // Mascota
     private Long mascotaId;
@@ -27,4 +27,9 @@ public class CitaDTO {
     // Trabajador
     private Long trabajadorId;
     private String trabajadorNombre;
+
+    // Pago
+    private Long pagoId;
+    private String pagoMetodo;
+    private LocalDateTime pagoFecha;
 }

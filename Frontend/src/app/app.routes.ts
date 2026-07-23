@@ -21,6 +21,7 @@ import { clienteGuard} from './services/clienteGuard';
 import {AgendarCita} from './components/inicio/agendar-cita/agendar-cita';
 import {MisCitas} from './components/inicio/mis-citas/mis-citas';
 import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
+import {PagarCita} from './components/inicio/pagar-cita/pagar-cita';
 import {Roles} from './components/layout/roles/roles';
 import {Usuarios} from './components/layout/usuarios/usuarios';
 import { RedirectToFirst } from './components/redirect-to-first';
@@ -54,6 +55,7 @@ export const routes: Routes = [
   },
   { path: 'agendar-cit', component: AgendarCita, canActivate: [clienteGuard] },
   { path: 'mis-citas',    component: MisCitas,    canActivate: [clienteGuard] },
+  { path: 'pagar-cita/:id', component: PagarCita, canActivate: [clienteGuard] },
   { path: 'mis-mascotas', component: MisMascotas, canActivate: [clienteGuard] },
 
   {

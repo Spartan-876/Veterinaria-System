@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { Venta, VentaRequestDTO } from '../../../models/carrito';
 import { Cliente } from '../../../models/cliente';
 import { Producto } from '../../../models/producto';
@@ -19,7 +21,7 @@ interface CarritoItem {
 @Component({
   selector: 'app-ventas',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, RadioButtonModule],
   templateUrl: './ventas.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -36,6 +38,13 @@ export class Ventas implements OnInit {
   carrito: CarritoItem[] = [];
   cargando = false;
   registrando = false;
+
+  // Modal pago Público General
+  displayPago = false;
+  metodoPagoSel = 'EFECTIVO';
+  readonly metodosPago = ['EFECTIVO', 'TARJETA', 'YAPE', 'PLIN'];
+  pagando = false;
+  ventaPendiente: VentaRequestDTO | null = null;
 
   constructor(
     private ventaService: VentaService,
@@ -154,9 +163,29 @@ export class Ventas implements OnInit {
       return;
     }
 
-    this.registrando = true;
+    // Si es Público General, abrir modal de pago obligatorio
+    if (this.sinBoleta && this.cliente.dni === '00000000') {
+      this.ventaPendiente = {
+        clienteId: this.cliente.id!,
+        detalles: this.carrito.map(item => ({
+          productoId: item.producto.id,
+          nombreProducto: item.producto.nombre,
+          precioUnitario: item.producto.precio,
+          cantidad: item.cantidad,
+        }))
+      };
+      this.metodoPagoSel = 'EFECTIVO';
+      this.displayPago = true;
+      return;
+    }
 
-    const dto: VentaRequestDTO = {
+    // Flujo normal (cliente registrado) -> PENDIENTE
+    this.ejecutarVenta(false);
+  }
+
+  abrirPagoVenta(): void {
+    if (!this.cliente || this.carrito.length === 0) return;
+    this.ventaPendiente = {
       clienteId: this.cliente.id!,
       detalles: this.carrito.map(item => ({
         productoId: item.producto.id,
@@ -165,16 +194,43 @@ export class Ventas implements OnInit {
         cantidad: item.cantidad,
       }))
     };
+    this.metodoPagoSel = 'EFECTIVO';
+    this.displayPago = true;
+  }
+
+  private ejecutarVenta(conPagoInmediato: boolean): void {
+    if (!this.ventaPendiente && !this.cliente) return;
+
+    this.registrando = true;
+    this.cdr.markForCheck();
+
+    const dto: VentaRequestDTO = this.ventaPendiente || {
+      clienteId: this.cliente!.id!,
+      detalles: this.carrito.map(item => ({
+        productoId: item.producto.id,
+        nombreProducto: item.producto.nombre,
+        precioUnitario: item.producto.precio,
+        cantidad: item.cantidad,
+      }))
+    };
+
+    // Agregar método de pago si es pago inmediato
+    if (conPagoInmediato) {
+      dto.metodoPago = this.metodoPagoSel;
+    }
 
     this.ventaService.realizarVenta(dto).subscribe({
       next: (venta) => {
-        this.toast.success('Venta registrada correctamente');
+        this.toast.success(conPagoInmediato ? 'Venta completada y pagada' : 'Venta registrada correctamente (Pendiente de pago)');
         this.carrito = [];
         this.cliente = null;
         this.dniBusqueda = '';
         this.sinBoleta = false;
         this.registrando = false;
+        this.displayPago = false;
+        this.ventaPendiente = null;
 
+        // Generar boleta
         this.pdfService.generarBoletaVenta(venta);
         this.cdr.markForCheck();
       },
@@ -184,5 +240,14 @@ export class Ventas implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  confirmarPagoVenta(): void {
+    this.ejecutarVenta(true);
+  }
+
+  cancelarPagoVenta(): void {
+    this.displayPago = false;
+    this.ventaPendiente = null;
   }
 }

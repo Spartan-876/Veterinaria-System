@@ -62,12 +62,11 @@ public class VentaService {
             if (d.getProductoId() != null) {
                 Producto producto = productoRepository.findById(d.getProductoId())
                         .orElseThrow(() -> new RuntimeException("Producto no encontrado: ID " + d.getProductoId()));
+                // Validar stock disponible pero NO descontar aún (se descuenta al pagar)
                 if (producto.getStock() < d.getCantidad()) {
                     throw new RuntimeException("Stock insuficiente para: " + producto.getNombre()
                             + ". Disponible: " + producto.getStock() + ", solicitado: " + d.getCantidad());
                 }
-                producto.setStock(producto.getStock() - d.getCantidad());
-                productoRepository.save(producto);
                 det.setProducto(producto);
             }
             return det;

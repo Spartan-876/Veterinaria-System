@@ -1,7 +1,7 @@
 // components/inicio/mis-citas/mis-citas.ts
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CitasService } from '../../../services/citas-service';
 import { Cita } from '../../../models/cita';
 import { GToast } from '../../../services/gtoast';
@@ -21,7 +21,8 @@ export class MisCitas implements OnInit {
   constructor(
     private citaService: CitasService,
     private toast: GToast,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +65,14 @@ export class MisCitas implements OnInit {
 
   puedeCancelar(cita: Cita): boolean {
     return cita.estado === 'PENDIENTE';
+  }
+
+  puedePagar(cita: Cita): boolean {
+    return cita.estado === 'PENDIENTE' && !cita.pagoId;
+  }
+
+  irAPagar(cita: Cita): void {
+    this.router.navigate(['/pagar-cita', cita.id]);
   }
   get proximasCitas(): number {
     return this.citas.filter(c =>

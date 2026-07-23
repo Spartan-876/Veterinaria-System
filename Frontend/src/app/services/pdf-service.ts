@@ -28,7 +28,7 @@ export class PdfService {
 
     await new Promise((resolve) => {
       img.onload = () => {
-        let jsPDF1 = doc.addImage(img, 'PNG', 155, 5, 40, 25);
+        doc.addImage(img, 'PNG', 155, 5, 40, 25);
         resolve(null);
       };
       img.onerror = () => resolve(null);
@@ -133,5 +133,145 @@ export class PdfService {
     doc.text('cristianJ@huellitasvet.com  |  +51 999 999 999', 105, 285, { align: 'center' });
 
     doc.save(`boleta-${String(venta.id).padStart(4, '0')}.pdf`);
+  }
+
+  async generarBoletaCita(cita: any): Promise<void> {
+    const doc = new jsPDF();
+    // Header
+    doc.setFillColor(45, 106, 79);
+    doc.rect(0, 0, 210, 35, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Huellitas Vet', 15, 15);
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Clínica Veterinaria', 15, 22);
+    doc.text('Av. Sáenz Peña 580, Chiclayo, Perú', 15, 28);
+
+    const logoUrl = 'https://lmuclkgmsvlusqgqbqyn.supabase.co/storage/v1/object/public/Peluche/logo.png';
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = logoUrl;
+
+    await new Promise((resolve) => {
+      img.onload = () => {
+        doc.addImage(img, 'PNG', 155, 5, 40, 25);
+        resolve(null);
+      };
+      img.onerror = () => resolve(null);
+    });
+
+
+    doc.setTextColor(45, 106, 79);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('BOLETA DE SERVICIO', 105, 50, { align: 'center' });
+
+    doc.setDrawColor(82, 183, 136);
+    doc.setLineWidth(0.5);
+    doc.line(15, 55, 195, 55);
+
+    doc.setTextColor(50, 50, 50);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+
+    const fecha = new Date(cita.fechaHora).toLocaleDateString('es-PE', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+
+    doc.text(`N° Cita:`, 15, 65);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`#${String(cita.id).padStart(4, '0')}`, 50, 65);
+
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Fecha:`, 15, 72);
+    doc.setFont('helvetica', 'bold');
+    doc.text(fecha, 50, 72);
+
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Estado:`, 15, 79);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(45, 106, 79);
+    doc.text(cita.estado, 50, 79);
+
+    doc.setTextColor(50, 50, 50);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Cliente:`, 120, 65);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${cita.clienteNombre}`, 145, 65);
+
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Mascota:`, 120, 72);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${cita.mascotaNombre}`, 145, 72);
+
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Servicio:`, 120, 79);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${cita.servicioNombre}`, 145, 79);
+
+    doc.setTextColor(50, 50, 50);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Detalle del servicio', 15, 92);
+
+    autoTable(doc, {
+      startY: 96,
+      head: [['Servicio', 'Precio']],
+      body: [
+        [cita.servicioNombre, `S/ ${Number(cita.precioServicio).toFixed(2)}`]
+      ],
+      headStyles: {
+        fillColor: [45, 106, 79],
+        textColor: 255,
+        fontStyle: 'bold',
+        fontSize: 10
+      },
+      bodyStyles: { fontSize: 9, textColor: [50, 50, 50] },
+      alternateRowStyles: { fillColor: [240, 250, 244] },
+      columnStyles: {
+        0: { cellWidth: 140 },
+        1: { halign: 'right', cellWidth: 40 }
+      },
+      margin: { left: 15, right: 15 }
+    });
+
+    const finalY = (doc as any).lastAutoTable.finalY + 8;
+
+    doc.setDrawColor(82, 183, 136);
+    doc.setLineWidth(0.3);
+    doc.line(120, finalY, 195, finalY);
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(45, 106, 79);
+    doc.text('TOTAL A PAGAR:', 120, finalY + 8);
+    doc.setFontSize(14);
+    doc.text(`S/ ${Number(cita.precioServicio).toFixed(2)}`, 195, finalY + 8, { align: 'right' });
+
+    if (cita.pagoMetodo) {
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Método de pago: ${cita.pagoMetodo}`, 15, finalY + 18);
+      if (cita.pagoFecha) {
+        const fechaPago = new Date(cita.pagoFecha).toLocaleDateString('es-PE', {
+          day: '2-digit', month: '2-digit', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+        doc.text(`Fecha de pago: ${fechaPago}`, 15, finalY + 24);
+      }
+    }
+
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Gracias por confiar en Huellitas Vet', 105, 280, { align: 'center' });
+    doc.text('cristianJ@huellitasvet.com  |  +51 999 999 999', 105, 285, { align: 'center' });
+
+    doc.save(`boleta-cita-${String(cita.id).padStart(4, '0')}.pdf`);
   }
 }

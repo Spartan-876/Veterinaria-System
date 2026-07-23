@@ -8,6 +8,7 @@ import java.util.List;
 public class VentaRequestDTO {
     private Long clienteId;
     private List<DetalleDTO> detalles;
+    private String metodoPago;
 
     @Data
     public static class DetalleDTO {

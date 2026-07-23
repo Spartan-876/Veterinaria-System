@@ -5,15 +5,22 @@ import com.utp.veterinaria.DTO.DashboardDTO;
 import com.utp.veterinaria.Model.GestionMedica.Mascota;
 import com.utp.veterinaria.Model.GestionUsuarios.Cita;
 import com.utp.veterinaria.Model.GestionUsuarios.Trabajador;
+import com.utp.veterinaria.Model.GestionVentas.Pago;
 import com.utp.veterinaria.Model.GestionVentas.Servicio;
 import com.utp.veterinaria.Repository.GMedica.MascotaRepository;
 import com.utp.veterinaria.Repository.GUsuarios.CitaRepository;
 import com.utp.veterinaria.Repository.GUsuarios.ClienteRepository;
 import com.utp.veterinaria.Repository.GUsuarios.TrabajadorRepository;
 import com.utp.veterinaria.Repository.GUsuarios.TrabajadorServicioRepository;
+import com.utp.veterinaria.Repository.GVentas.PagoRepository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import com.utp.veterinaria.Repository.GVentas.ServicioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +42,8 @@ public class CitaService {
     private final ClienteRepository clienteRepository;
 
     private final TrabajadorServicioRepository trabajadorServicioRepository;
+
+    private final PagoRepository pagoRepository;
 
     public List<CitaDTO> listarCitas() {
         return citaRepository.findAll()
@@ -79,6 +88,12 @@ public class CitaService {
             dto.setServicioId(cita.getServicio().getId());
             dto.setServicioNombre(cita.getServicio().getNombre());
             dto.setPrecioServicio(cita.getServicio().getPrecio());
+        }
+
+        if (cita.getPago() != null) {
+            dto.setPagoId(cita.getPago().getId());
+            dto.setPagoMetodo(cita.getPago().getMetodoPago());
+            dto.setPagoFecha(cita.getPago().getFechaPago());
         }
 
         return dto;
@@ -149,6 +164,7 @@ public class CitaService {
         return toDTO(citaRepository.save(cita));
     }
 
+
 public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
     LocalDate hoy = LocalDate.now();
     LocalDateTime inicioHoy = hoy.atStartOfDay();
@@ -174,18 +190,14 @@ public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
             dto.setCitasHoy(citaRepository.countCitasHoy(inicioHoy, finHoy));
             dto.setVentasMes(citaRepository.sumVentasMes(inicioMes, finMes));
             dto.setCitasDeHoy(citaRepository.findByFechaHoraBetween(inicioHoy, finHoy)
-                    .stream()
-                    .map(this::toDTO)
-                    .collect(Collectors.toList()));
+                    .stream().map(this::toDTO).collect(Collectors.toList()));
         } else if (trabajadorId != null) {
             // Vista de médico: solo sus citas
             dto.setCitasHoy(citaRepository.countCitasHoyTrabajador(trabajadorId, inicioHoy, finHoy));
             dto.setVentasMes(citaRepository.sumVentasMesTrabajador(trabajadorId, inicioMes, finMes));
             dto.setCitasDeHoy(citaRepository.findByTrabajadorIdAndFechaHoraBetween(
                     trabajadorId, inicioHoy, finHoy)
-                    .stream()
-                    .map(this::toDTO)
-                    .collect(Collectors.toList()));
+                    .stream().map(this::toDTO).collect(Collectors.toList()));
         }
     }
 
@@ -228,6 +240,59 @@ public DashboardDTO getDashboard(List<String> modulos, Long trabajadorId) {
 
         cita.setEstado(nuevoEstado);
         return toDTO(citaRepository.save(cita));
+    }
+
+    @Transactional
+    public CitaDTO registrarPagoCita(Long citaId, Double monto, String metodoPago) {
+        Cita cita = citaRepository.findById(citaId)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+
+        if (cita.getEstado() != Cita.EstadoCita.PENDIENTE && cita.getEstado() != Cita.EstadoCita.CONFIRMADA) {
+            throw new RuntimeException("La cita no está en estado válido para pago");
+        }
+
+        if (cita.getPago() != null) {
+            throw new RuntimeException("Esta cita ya tiene un pago registrado");
+        }
+
+        if (cita.getServicio() == null || cita.getServicio().getPrecio() == null) {
+            throw new RuntimeException("La cita no tiene servicio con precio definido");
+        }
+
+        // Validar monto = precio del servicio
+        Double precioServicio = cita.getServicio().getPrecio();
+        if (monto == null) {
+            monto = precioServicio;
+        }
+        if (monto.compareTo(precioServicio) != 0) {
+            throw new RuntimeException("El monto debe ser igual al precio del servicio: S/ " + precioServicio);
+        }
+
+        // Crear pago
+        Pago pago = new Pago();
+        pago.setCita(cita);
+        pago.setMonto(monto);
+        pago.setMetodoPago(metodoPago);
+        pago.setComentario("Pago de cita - " + cita.getServicio().getNombre());
+        pagoRepository.save(pago);
+
+        // Cambiar estado a CONFIRMADA
+        cita.setEstado(Cita.EstadoCita.CONFIRMADA);
+        citaRepository.save(cita);
+
+        return toDTO(cita);
+    }
+
+    @Scheduled(fixedRate = 300000) // Cada 5 minutos
+    @Transactional
+    public void cancelarCitasVencidas() {
+        LocalDateTime limite = LocalDateTime.now().minusMinutes(30);
+        List<Cita> citasVencidas = citaRepository.findCitasPendientesVencidas(limite);
+
+        for (Cita cita : citasVencidas) {
+            cita.setEstado(Cita.EstadoCita.CANCELADA);
+            citaRepository.save(cita);
+        }
     }
 
     public List<Trabajador> trabajadoresDisponibles(Long servicioId, LocalDateTime fechaHora) {

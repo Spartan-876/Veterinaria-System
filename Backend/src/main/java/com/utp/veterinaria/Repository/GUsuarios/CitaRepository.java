@@ -36,4 +36,9 @@ public interface CitaRepository extends JpaRepository<Cita,Long> {
     @Query("SELECT COALESCE(SUM(s.precio), 0) FROM Cita c JOIN c.servicio s " +
            "WHERE c.trabajador.id = :trabajadorId AND c.fechaHora BETWEEN :inicio AND :fin AND c.estado = 'REALIZADA'")
     double sumVentasMesTrabajador(@Param("trabajadorId") Long trabajadorId, @Param("inicio") LocalDateTime inicio, @Param("fin") LocalDateTime fin);
+
+    @Query("SELECT c FROM Cita c WHERE c.estado = 'PENDIENTE' " +
+           "AND c.fechaHora < :limite " +
+           "AND c.pago IS NULL")
+    List<Cita> findCitasPendientesVencidas(@Param("limite") LocalDateTime limite);
 }
